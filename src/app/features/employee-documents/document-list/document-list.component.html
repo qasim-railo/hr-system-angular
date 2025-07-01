@@ -25,9 +25,28 @@
         <ng-container matColumnDef="actions">
             <th mat-header-cell *matHeaderCellDef>Actions</th>
             <td mat-cell *matCellDef="let doc">
-                <button mat-icon-button color="primary" (click)="download(doc.id)">
+                <!-- <button mat-icon-button color="primary" (click)="download(doc.id)">
                     <mat-icon>download</mat-icon>
-                </button>
+                </button> -->
+                <div class="file-preview-container">
+                    <ng-container [ngSwitch]="getFileType(doc.filePath)">
+
+                        <!-- Image Preview -->
+                        <img *ngSwitchCase="'image'" [src]="doc.filePath" alt="preview" class="file-thumbnail" />
+
+                        <!-- PDF Icon -->
+                        <a *ngSwitchCase="'pdf'" (click)="download(doc.id)" mat-icon-button>
+                            <mat-icon>picture_as_pdf</mat-icon>
+                        </a>
+
+                        <!-- Default File Icon -->
+                        <a *ngSwitchDefault (click)="download(doc.id)" mat-icon-button>
+                            <mat-icon>insert_drive_file</mat-icon>
+                        </a>
+
+                    </ng-container>
+                </div>
+
                 <button mat-icon-button color="warn" (click)="delete(doc.id)">
                     <mat-icon>delete</mat-icon>
                 </button>

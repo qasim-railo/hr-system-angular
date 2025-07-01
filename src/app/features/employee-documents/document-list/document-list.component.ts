@@ -35,7 +35,13 @@ export class DocumentListComponent implements OnInit,OnChanges  {
       this.loadDocuments();
     }
   }
-  
+  getFileType(filePath: string): 'image' | 'pdf' | 'other' {
+  var extensionx = filePath.split('.').pop()?.toLowerCase();
+  if (['jpg', 'jpeg', 'png', 'gif'].includes(extensionx!)) return 'image';
+  if (extensionx === 'pdf') return 'pdf';
+  return 'other';
+}
+
 
   loadDocuments() {
     this.documentService.getByEmployeeId(this.employeeId).subscribe((docs) => {
