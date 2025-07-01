@@ -1,27 +1,85 @@
-# HrSystem
+# HR System
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.3.13.
+A comprehensive Human Resources management system built with ASP.NET Core and Angular.
 
-## Development server
+## Features
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+- Employee management (CRUD)
+- Department and Company management
+- Employment details tracking
+- Attendance entry and tracking
+- Leave management with approval workflow
+- Payroll generation and payslip export
+- Employee asset assignment
+- Final settlement and gratuity reports
+- Increment history and more...
 
-## Code scaffolding
+## Technology Stack
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+- **Backend:** ASP.NET Core (Web API)
+- **Frontend:** Angular 17+
+- **Database:** SQL Server (or your choice)
+- **Authentication:** JWT Token-based
+- **Version Control:** Git + GitHub
 
-## Build
+## Getting Started
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+### Prerequisites
 
-## Running unit tests
+- [.NET SDK](https://dotnet.microsoft.com/download)
+- [Node.js and npm](https://nodejs.org/en/download/)
+- Angular CLI (install globally if not installed):
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+```bash
+npm install -g @angular/cli
 
-## Running end-to-end tests
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+Backend Setup
+Navigate to the backend project folder (e.g., hr-system-backend).
 
-## Further help
+Restore dependencies and build:
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+bash 
+dotnet restore
+dotnet build
+Configure connection strings in appsettings.json.
+
+Run migrations and update the database if using EF Core:
+
+bash 
+dotnet ef database update
+Run the backend API:
+
+bash 
+dotnet run
+Frontend Setup
+Navigate to the frontend project folder (e.g., hr-system-frontend).
+
+Install dependencies:
+
+bash 
+npm install
+Serve the Angular app locally:
+
+bash
+ng serve
+Open your browser at http://localhost:4200.
+
+Project Structure
+/backend – ASP.NET Core Web API
+
+/frontend – Angular client app
+
+Contributing
+Contributions are welcome! Please open issues or submit pull requests.
+
+License
+This project is licensed under the MIT License.
+
+Created by Qasim Ali
+📍 Doha, Qatar
+📧 qasim.railo@gmail.com
+📞 +974 74001784
+🔗 LinkedIn
+
+ 
