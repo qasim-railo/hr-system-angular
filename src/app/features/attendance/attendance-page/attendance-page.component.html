@@ -1,0 +1,54 @@
+<mat-card class="p-4">
+    <h2>🕒 Attendance Entry</h2>
+
+    <!-- Employee Dropdown -->
+    <mat-form-field appearance="outline" class="w-100 mb-4">
+        <mat-label>Select Employee</mat-label>
+        <mat-select (selectionChange)="onEmployeeChange($event.value)">
+            <mat-option *ngFor="let emp of employees" [value]="emp.employeeId">
+                {{ emp.firstName }} {{ emp.lastName }}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <ng-container *ngIf="selectedEmployeeId">
+        <!-- Attendance Form -->
+        <app-attendance-form [employeeId]="selectedEmployeeId" (saved)="refreshList()"></app-attendance-form>
+
+        <!-- Import Excel -->
+        <!-- <app-attendance-import (imported)="refreshList()" [employeeId]="selectedEmployeeId"></app-attendance-import> -->
+
+        <!-- Attendance List Table -->
+        <mat-table [dataSource]="attendanceList" class="mat-elevation-z8 mt-4" *ngIf="attendanceList.length > 0">
+            <ng-container matColumnDef="date">
+                <mat-header-cell *matHeaderCellDef>Date</mat-header-cell>
+                <mat-cell *matCellDef="let item">{{ item.date | date: 'yyyy-MM-dd' }}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="checkIn">
+                <mat-header-cell *matHeaderCellDef>Check-In</mat-header-cell>
+                <mat-cell *matCellDef="let item">{{ item.checkIn }}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="checkOut">
+                <mat-header-cell *matHeaderCellDef>Check-Out</mat-header-cell>
+                <mat-cell *matCellDef="let item">{{ item.checkOut }}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="ot1">
+                <mat-header-cell *matHeaderCellDef>OT1</mat-header-cell>
+                <mat-cell *matCellDef="let item">{{ item.oT1 }} min</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="ot2">
+                <mat-header-cell *matHeaderCellDef>OT2</mat-header-cell>
+                <mat-cell *matCellDef="let item">{{ item.oT2 }} min</mat-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="['date', 'checkIn', 'checkOut', 'ot1', 'ot2']"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: ['date', 'checkIn', 'checkOut', 'ot1', 'ot2']"></mat-row>
+        </mat-table>
+
+        <div *ngIf="attendanceList.length === 0" class="text-muted mt-3">No attendance records found.</div>
+    </ng-container>
+</mat-card>

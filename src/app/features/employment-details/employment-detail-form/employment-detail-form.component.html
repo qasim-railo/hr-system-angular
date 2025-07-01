@@ -1,0 +1,199 @@
+<mat-card>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="row g-3">
+
+    <!-- Joining Date -->
+    <div class="col-md-4">
+      <mat-form-field appearance="fill" class="w-100">
+        <mat-label>Joining Date</mat-label>
+        <input matInput [matDatepicker]="joiningPicker" formControlName="joiningDate">
+        <mat-datepicker-toggle matSuffix [for]="joiningPicker"></mat-datepicker-toggle>
+        <mat-datepicker #joiningPicker></mat-datepicker>
+      </mat-form-field>
+    </div>
+
+    <!-- Category -->
+    <div class="col-md-4">
+      <mat-form-field appearance="fill" class="w-100">
+        <mat-label>Category</mat-label>
+        <input matInput formControlName="category">
+      </mat-form-field>
+    </div>
+
+    <!-- Offer Designation -->
+    <div class="col-md-4">
+      <mat-form-field appearance="fill" class="w-100">
+        <mat-label>Offer Designation</mat-label>
+        <input matInput formControlName="offerDesignation">
+      </mat-form-field>
+    </div>
+
+    <!-- MOL Designation -->
+    <div class="col-md-4">
+      <mat-form-field appearance="fill" class="w-100">
+        <mat-label>MOL Designation</mat-label>
+        <input matInput formControlName="molDesignation">
+      </mat-form-field>
+    </div>
+
+    <!-- Salaries -->
+    <div class="col-md-4" *ngFor="let field of ['basicSalary', 'accommodationAllowance', 'travelAllowance', 'otherAllowance', 'molBasicSalary', 'molGrossSalary', 'currentGrossSalary']">
+      <mat-form-field appearance="fill" class="w-100">
+        <mat-label>{{ field | titlecase }}</mat-label>
+        <input matInput type="number" formControlName="{{field}}">
+      </mat-form-field>
+    </div>
+
+    <!-- OT Eligible -->
+    <div class="col-md-4 d-flex align-items-center">
+      <mat-checkbox formControlName="ot_Eligible">OT Eligible</mat-checkbox>
+    </div>
+
+    <!-- Salary Mode -->
+    <div class="col-md-4">
+      <mat-form-field appearance="fill" class="w-100">
+        <mat-label>Salary Mode</mat-label>
+        <input matInput formControlName="salaryMode">
+      </mat-form-field>
+    </div>
+
+    <!-- Bank Details -->
+    <div class="col-md-4">
+      <mat-form-field appearance="fill" class="w-100">
+        <mat-label>Bank Details</mat-label>
+        <input matInput formControlName="bankDetails">
+      </mat-form-field>
+    </div>
+
+    <!-- Bank Account No -->
+    <div class="col-md-4">
+      <mat-form-field appearance="fill" class="w-100">
+        <mat-label>Bank Account No</mat-label>
+        <input matInput formControlName="bankAccountNo">
+      </mat-form-field>
+    </div>
+
+    <!-- IBAN -->
+    <div class="col-md-4">
+      <mat-form-field appearance="fill" class="w-100">
+        <mat-label>IBAN</mat-label>
+        <input matInput formControlName="iban">
+      </mat-form-field>
+    </div>
+
+    <!-- Work Location -->
+    <div class="col-md-4">
+      <mat-form-field appearance="fill" class="w-100">
+        <mat-label>Work Location</mat-label>
+        <input matInput formControlName="workLocation">
+      </mat-form-field>
+    </div>
+
+    <!-- Contract Type -->
+    <div class="col-md-4">
+      <mat-form-field appearance="fill" class="w-100">
+        <mat-label>Contract Type</mat-label>
+        <input matInput formControlName="contractType">
+      </mat-form-field>
+    </div>
+
+    <!-- Other Salary Details -->
+    <div class="col-md-4">
+      <mat-form-field appearance="fill" class="w-100">
+        <mat-label>Other Salary Details</mat-label>
+        <input matInput formControlName="otherSalaryDetails">
+      </mat-form-field>
+    </div>
+
+    <!-- Visa -->
+    <div class="col-md-4">
+      <mat-form-field appearance="fill" class="w-100">
+        <mat-label>Visa No</mat-label>
+        <input matInput formControlName="visaNo">
+      </mat-form-field>
+    </div>
+    <div class="col-md-4">
+      <mat-form-field appearance="fill" class="w-100">
+        <mat-label>Visa Issue Date</mat-label>
+        <input matInput [matDatepicker]="visaIssuePicker" formControlName="visaIssueDate">
+        <mat-datepicker-toggle matSuffix [for]="visaIssuePicker"></mat-datepicker-toggle>
+        <mat-datepicker #visaIssuePicker></mat-datepicker>
+      </mat-form-field>
+    </div>
+    <div class="col-md-4">
+      <mat-form-field appearance="fill" class="w-100">
+        <mat-label>Visa Expiry</mat-label>
+        <input matInput [matDatepicker]="visaExpiryPicker" formControlName="visaExpiry">
+        <mat-datepicker-toggle matSuffix [for]="visaExpiryPicker"></mat-datepicker-toggle>
+        <mat-datepicker #visaExpiryPicker></mat-datepicker>
+      </mat-form-field>
+    </div>
+
+    <!-- Emirates ID -->
+    <div class="col-md-4">
+      <mat-form-field appearance="fill" class="w-100">
+        <mat-label>Emirates ID</mat-label>
+        <input matInput formControlName="emiratesId">
+      </mat-form-field>
+    </div>
+    <div class="col-md-4">
+      <mat-form-field appearance="fill" class="w-100">
+        <mat-label>Emirates Issue Date</mat-label>
+        <input matInput [matDatepicker]="eidIssuePicker" formControlName="emiratesIssueDate">
+        <mat-datepicker-toggle matSuffix [for]="eidIssuePicker"></mat-datepicker-toggle>
+        <mat-datepicker #eidIssuePicker></mat-datepicker>
+      </mat-form-field>
+    </div>
+    <div class="col-md-4">
+      <mat-form-field appearance="fill" class="w-100">
+        <mat-label>Emirates Expiry</mat-label>
+        <input matInput [matDatepicker]="eidExpiryPicker" formControlName="emiratesExpiry">
+        <mat-datepicker-toggle matSuffix [for]="eidExpiryPicker"></mat-datepicker-toggle>
+        <mat-datepicker #eidExpiryPicker></mat-datepicker>
+      </mat-form-field>
+    </div>
+
+    <!-- Labor Card -->
+    <div class="col-md-4">
+      <mat-form-field appearance="fill" class="w-100">
+        <mat-label>Labor Card No</mat-label>
+        <input matInput formControlName="laborCardNo">
+      </mat-form-field>
+    </div>
+    <div class="col-md-4">
+      <mat-form-field appearance="fill" class="w-100">
+        <mat-label>Labor Card Issue Date</mat-label>
+        <input matInput [matDatepicker]="lcIssuePicker" formControlName="laborCardIssueDate">
+        <mat-datepicker-toggle matSuffix [for]="lcIssuePicker"></mat-datepicker-toggle>
+        <mat-datepicker #lcIssuePicker></mat-datepicker>
+      </mat-form-field>
+    </div>
+    <div class="col-md-4">
+      <mat-form-field appearance="fill" class="w-100">
+        <mat-label>Labor Card Expiry</mat-label>
+        <input matInput [matDatepicker]="lcExpiryPicker" formControlName="laborCardExpiry">
+        <mat-datepicker-toggle matSuffix [for]="lcExpiryPicker"></mat-datepicker-toggle>
+        <mat-datepicker #lcExpiryPicker></mat-datepicker>
+      </mat-form-field>
+    </div>
+
+    <!-- Remarks -->
+    <div class="col-md-12">
+      <mat-form-field appearance="fill" class="w-100">
+        <mat-label>Remarks</mat-label>
+        <textarea matInput rows="3" formControlName="remarks"></textarea>
+      </mat-form-field>
+    </div>
+
+    <!-- Is Active -->
+    <div class="col-md-4 d-flex align-items-center">
+      <mat-checkbox formControlName="isActive">Is Active</mat-checkbox>
+    </div>
+
+    <!-- Submit Button -->
+    <div class="col-12">
+      <button mat-raised-button color="primary" type="submit">
+        {{ isEditMode ? 'Update' : 'Create' }}
+      </button>
+    </div>
+  </form>
+</mat-card>

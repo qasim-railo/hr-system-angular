@@ -1,0 +1,22 @@
+<div class="container mt-4">
+  <mat-card class="p-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h3>🧾 Final Settlements</h3>
+      <button mat-raised-button color="primary" (click)="navigateToGenerate()">
+        ➕ Generate New Settlement
+      </button>
+    </div>
+
+    <ng-container *ngIf="loading">Loading...</ng-container>
+    <ng-container *ngIf="!loading && settlements.length === 0">
+      <p>No settlements found.</p>
+    </ng-container>
+
+    <!-- Placeholder for final-settlement-list component -->
+    <app-final-settlement-list
+      *ngIf="!loading && settlements.length > 0"
+      [settlements]="settlements"
+      (refresh)="loadSettlements()"
+    ></app-final-settlement-list>
+  </mat-card>
+</div>

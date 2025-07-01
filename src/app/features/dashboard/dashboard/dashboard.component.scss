@@ -1,0 +1,24 @@
+.dashboard-container {
+  max-width: 1200px;
+  margin: auto;
+}
+
+.stat-cards {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.stat-card {
+  flex: 1 1 22%;
+  padding: 1rem;
+  color: #fff;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  min-width: 200px;
+}
+
+.chart-container {
+  width: 100%;
+}

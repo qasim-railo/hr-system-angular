@@ -1,0 +1,44 @@
+<mat-card class="mt-4">
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 w-100">
+    <ng-container matColumnDef="assetId">
+      <th mat-header-cell *matHeaderCellDef>Asset</th>
+      <td mat-cell *matCellDef="let element">{{ element.assetId }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="assignedDate">
+      <th mat-header-cell *matHeaderCellDef>Assigned</th>
+      <td mat-cell *matCellDef="let element">{{ element.assignedDate | date }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="returnedDate">
+      <th mat-header-cell *matHeaderCellDef>Returned</th>
+      <td mat-cell *matCellDef="let element">
+        {{ element.returnedDate ? (element.returnedDate | date) : '-' }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="status">
+      <th mat-header-cell *matHeaderCellDef>Status</th>
+      <td mat-cell *matCellDef="let element">{{ element.status }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef>Actions</th>
+      <td mat-cell *matCellDef="let element">
+        <button mat-icon-button color="primary" (click)="onEdit(element)">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-icon-button color="warn" (click)="onDelete(element.id)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+
+  <div *ngIf="dataSource.length === 0" class="text-center text-muted mt-3">
+    No assigned assets found.
+  </div>
+</mat-card>

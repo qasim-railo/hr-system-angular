@@ -1,0 +1,81 @@
+<div class="container mt-5">
+  <mat-card class="p-4">
+
+    <!-- Header Row -->
+    <div class="row align-items-center mb-3">
+      <div class="col-md-6">
+        <h2 class="mb-0">📦 Asset List</h2>
+      </div>
+
+      <div class="col-md-4">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Search</mat-label>
+          <input matInput (keyup)="applyFilter($event)" placeholder="Search assets..." />
+        </mat-form-field>
+      </div>
+
+      <div class="col-md-2 text-end">
+        <button mat-raised-button color="primary" [routerLink]="['/assets/add']" class="w-100">
+          + Add
+        </button>
+      </div>
+    </div>
+
+    <!-- Table -->
+    <div class="table-responsive">
+      <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 w-100" *ngIf="dataSource">
+
+        <!-- ID -->
+        <ng-container matColumnDef="id">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+          <td mat-cell *matCellDef="let asset">{{ asset.id }}</td>
+        </ng-container>
+
+        <!-- Name -->
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+          <td mat-cell *matCellDef="let asset">{{ asset.name }}</td>
+        </ng-container>
+
+        <!-- Category -->
+        <ng-container matColumnDef="category">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Category</th>
+          <td mat-cell *matCellDef="let asset">{{ asset.category }}</td>
+        </ng-container>
+
+        <!-- Asset Code -->
+        <ng-container matColumnDef="assetCode">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Asset Code</th>
+          <td mat-cell *matCellDef="let asset">{{ asset.assetCode }}</td>
+        </ng-container>
+
+        <!-- Purchase Date -->
+        <ng-container matColumnDef="purchaseDate">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Purchase Date</th>
+          <td mat-cell *matCellDef="let asset">{{ asset.purchaseDate | date }}</td>
+        </ng-container>
+
+        <!-- Actions -->
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef>Actions</th>
+          <td mat-cell *matCellDef="let asset">
+            <button mat-button color="accent" [routerLink]="['/assets/edit', asset.id]">Edit</button>
+          </td>
+        </ng-container>
+
+        <!-- Header and Row Definitions -->
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+    </div>
+
+    <!-- Paginator -->
+    <mat-paginator [pageSize]="5" [pageSizeOptions]="[5, 10, 20]"></mat-paginator>
+
+    <!-- No Data -->
+    <div class="text-center mt-3 text-muted" *ngIf="!dataSource || dataSource.data.length === 0">
+      No assets found.
+    </div>
+
+  </mat-card>
+</div>

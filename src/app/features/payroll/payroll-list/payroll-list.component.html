@@ -1,0 +1,75 @@
+<div class="table-responsive">
+  <table mat-table [dataSource]="payrolls" class="mat-elevation-z2 w-100">
+
+    <!-- Employee ID -->
+    <ng-container matColumnDef="employeeId">
+      <th mat-header-cell *matHeaderCellDef>Employee ID</th>
+      <td mat-cell *matCellDef="let row">{{ row.employeeId }}</td>
+    </ng-container>
+
+    <!-- Basic Salary -->
+    <ng-container matColumnDef="basicSalary">
+      <th mat-header-cell *matHeaderCellDef>Basic Salary</th>
+      <td mat-cell *matCellDef="let row">{{ row.basicSalary | currency }}</td>
+    </ng-container>
+
+    <!-- OT1 -->
+    <ng-container matColumnDef="ot1Amount">
+      <th mat-header-cell *matHeaderCellDef>OT1</th>
+      <td mat-cell *matCellDef="let row">{{ row.ot1Amount | currency }}</td>
+    </ng-container>
+
+    <!-- OT2 -->
+    <ng-container matColumnDef="ot2Amount">
+      <th mat-header-cell *matHeaderCellDef>OT2</th>
+      <td mat-cell *matCellDef="let row">{{ row.ot2Amount | currency }}</td>
+    </ng-container>
+
+    <!-- Deductions -->
+    <ng-container matColumnDef="deductions">
+      <th mat-header-cell *matHeaderCellDef>Deductions</th>
+      <td mat-cell *matCellDef="let row">{{ row.deductions | currency }}</td>
+    </ng-container>
+
+    <!-- Net Salary -->
+    <ng-container matColumnDef="netSalary">
+      <th mat-header-cell *matHeaderCellDef>Net Salary</th>
+      <td mat-cell *matCellDef="let row">{{ row.netSalary | currency }}</td>
+    </ng-container>
+
+    <!-- Status -->
+    <ng-container matColumnDef="isApproved">
+      <th mat-header-cell *matHeaderCellDef>Status</th>
+      <td mat-cell *matCellDef="let row">
+        <span [ngClass]="row.isApproved ? 'text-success' : 'text-warning'">
+          {{ row.isApproved ? 'Approved' : 'Pending' }}
+        </span>
+      </td>
+    </ng-container>
+
+    <!-- Actions -->
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef class="text-end">Actions</th>
+      <td mat-cell *matCellDef="let row" class="text-end">
+        <button mat-icon-button color="primary" (click)="downloadPayslip(row.id)" matTooltip="Download Payslip">
+          <mat-icon>download</mat-icon>
+        </button>
+
+        <button
+          mat-icon-button
+          color="accent"
+          (click)="approve(row.id)"
+          matTooltip="Approve"
+          [disabled]="row.isApproved"
+        >
+          <mat-icon>check_circle</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <!-- Header and Row Definitions -->
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
+  </table>
+</div>

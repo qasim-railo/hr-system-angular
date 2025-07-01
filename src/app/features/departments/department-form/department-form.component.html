@@ -1,0 +1,47 @@
+<div class="container mt-5">
+  <mat-card class="p-4">
+    <h2 class="mb-4">{{ isEditMode ? '✏️ Edit Department' : '➕ Add Department' }}</h2>
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div class="row g-3">
+        <!-- Name Field -->
+        <div class="col-md-4">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Name</mat-label>
+            <input matInput formControlName="name" />
+          </mat-form-field>
+        </div>
+
+        <!-- Description Field -->
+        <div class="col-md-8">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Description</mat-label>
+            <textarea matInput formControlName="description"></textarea>
+          </mat-form-field>
+        </div>
+
+        <!-- Company Selector -->
+        <div class="col-md-4">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Select Company</mat-label>
+            <mat-select formControlName="companyId" required>
+              <mat-option *ngFor="let company of companies" [value]="company.companyId">
+                {{ company.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <!-- Spacer -->
+        <div class="col-md-4"></div>
+
+        <!-- Submit Button -->
+        <div class="col-md-4 d-flex align-items-end justify-content-end">
+          <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">
+            {{ isEditMode ? 'Update' : 'Create' }}
+          </button>
+        </div>
+      </div>
+    </form>
+  </mat-card>
+</div>

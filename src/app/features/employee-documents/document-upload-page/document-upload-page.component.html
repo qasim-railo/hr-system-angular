@@ -1,0 +1,31 @@
+<!-- <mat-card class="mb-4">
+  <h2>Select Employee to Upload Document</h2>
+  <mat-selection-list [multiple]="false" (selectionChange)="onEmployeeSelect($event)">
+    <mat-list-option *ngFor="let emp of employees" [value]="emp.employeeId">
+      {{ emp.firstName }} {{ emp.lastName }}
+    </mat-list-option>
+  </mat-selection-list>
+</mat-card> -->
+<mat-card class="mb-4">
+  <h2>Select Employee to Upload Document</h2>
+
+  <mat-form-field appearance="outline" class="w-100">
+    <mat-label>Select Employee</mat-label>
+    <mat-select [(value)]="selectedEmployeeId">
+      <mat-option *ngFor="let emp of employees" [value]="emp.employeeId">
+        {{ emp.firstName }} {{ emp.lastName }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+</mat-card>
+
+<div *ngIf="selectedEmployeeId">
+  <app-document-upload
+    [employeeId]="selectedEmployeeId"
+    (uploadDone)="onUploadDone()"
+  ></app-document-upload>
+</div>
+<div  *ngIf="selectedEmployeeId">
+<app-document-list [employeeId]="selectedEmployeeId"></app-document-list>
+
+</div>

@@ -1,0 +1,59 @@
+<table mat-table [dataSource]="leaves" class="mat-elevation-z2 w-100">
+
+  <!-- Employee -->
+  <ng-container matColumnDef="employee">
+    <th mat-header-cell *matHeaderCellDef>Employee</th>
+    <td mat-cell *matCellDef="let row">{{ row.employeeName }}</td>
+  </ng-container>
+
+  <!-- Leave Type -->
+  <ng-container matColumnDef="type">
+    <th mat-header-cell *matHeaderCellDef>Type</th>
+    <td mat-cell *matCellDef="let row">{{ row.leaveType }}</td>
+  </ng-container>
+
+  <!-- Dates -->
+  <ng-container matColumnDef="dates">
+    <th mat-header-cell *matHeaderCellDef>Dates</th>
+    <td mat-cell *matCellDef="let row">
+      {{ row.startDate | date:'mediumDate' }} - {{ row.endDate | date:'mediumDate' }}
+    </td>
+  </ng-container>
+
+  <!-- Reason -->
+  <ng-container matColumnDef="reason">
+    <th mat-header-cell *matHeaderCellDef>Reason</th>
+    <td mat-cell *matCellDef="let row">{{ row.reason }}</td>
+  </ng-container>
+
+  <!-- Status -->
+  <ng-container matColumnDef="status">
+    <th mat-header-cell *matHeaderCellDef>Status</th>
+    <td mat-cell *matCellDef="let row">
+      <span [ngClass]="{
+        'text-success': row.status === 'Approved',
+        'text-danger': row.status === 'Rejected',
+        'text-warning': row.status === 'Pending'
+      }">{{ row.status }}</span>
+    </td>
+  </ng-container>
+
+  <!-- Actions -->
+  <ng-container matColumnDef="actions">
+    <th mat-header-cell *matHeaderCellDef class="text-end">Actions</th>
+    <td mat-cell *matCellDef="let row" class="text-end">
+      <button mat-icon-button color="primary" matTooltip="Approve"
+              (click)="approve(row.id)" [disabled]="row.status !== 'Pending'">
+        <mat-icon>check</mat-icon>
+      </button>
+      <button mat-icon-button color="warn" matTooltip="Reject"
+              (click)="reject(row.id)" [disabled]="row.status !== 'Pending'">
+        <mat-icon>cancel</mat-icon>
+      </button>
+    </td>
+  </ng-container>
+
+  <!-- Row Headers -->
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>

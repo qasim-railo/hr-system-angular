@@ -1,0 +1,74 @@
+<div class="container mt-5">
+  <mat-card class="p-4">
+
+    <!-- Header Row -->
+    <div class="row align-items-center mb-3">
+      <div class="col-md-6">
+        <h2 class="mb-0">🏢 Department List</h2>
+      </div>
+
+      <div class="col-md-4">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Search</mat-label>
+          <input matInput (keyup)="applyFilter($event)" placeholder="Search departments..." />
+        </mat-form-field>
+      </div>
+
+      <div class="col-md-2 text-end">
+        <button mat-raised-button color="primary" [routerLink]="['/departments/add']" class="w-100">
+          + Add
+        </button>
+      </div>
+    </div>
+
+    <!-- Table -->
+    <div class="table-responsive">
+      <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 w-100" *ngIf="dataSource">
+
+        <!-- ID Column -->
+        <ng-container matColumnDef="id">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+          <td mat-cell *matCellDef="let dept">{{ dept.departmentId }}</td>
+        </ng-container>
+
+        <!-- Name Column -->
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+          <td mat-cell *matCellDef="let dept">{{ dept.name }}</td>
+        </ng-container>
+
+        <!-- Company Column -->
+        <ng-container matColumnDef="companyName">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Company</th>
+          <td mat-cell *matCellDef="let dept">{{ dept.companyName }}</td>
+        </ng-container>
+        <!-- Company Column -->
+        <ng-container matColumnDef="description">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Description</th>
+          <td mat-cell *matCellDef="let dept">{{ dept.description }}</td>
+        </ng-container>
+
+        <!-- Actions -->
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef>Actions</th>
+          <td mat-cell *matCellDef="let dept">
+            <a mat-button color="accent" [routerLink]="['/departments/edit', dept.departmentId ]">Edit</a>
+          </td>
+        </ng-container>
+
+        <!-- Header and Row Definitions -->
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+    </div>
+
+    <!-- Paginator -->
+    <mat-paginator [pageSize]="5" [pageSizeOptions]="[5, 10, 20]"></mat-paginator>
+
+    <!-- No Data -->
+    <div class="text-center mt-3 text-muted" *ngIf="!dataSource || dataSource.data.length === 0">
+      No departments found.
+    </div>
+
+  </mat-card>
+</div>

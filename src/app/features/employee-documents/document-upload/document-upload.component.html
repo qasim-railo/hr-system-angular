@@ -1,0 +1,32 @@
+<mat-card class="mb-4">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="row g-3">
+        <div class="col-md-4">
+            <mat-form-field appearance="outline" class="w-100">
+                <mat-label>Document Type</mat-label>
+                <mat-select formControlName="fileType" required>
+                    <mat-option *ngFor="let type of documentTypes" [value]="type">
+                        {{ type }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+
+        <div class="col-md-6">
+         <div class="file-input-wrapper">
+  <label for="fileUpload">File</label>
+  <input id="fileUpload" type="file" (change)="onFileChange($event)" required />
+</div>
+
+            <!-- <mat-form-field appearance="outline" class="w-100">
+        <mat-label>File</mat-label>
+        <input type="file" matInput (change)="onFileChange($event)" required />
+      </mat-form-field> -->
+        </div>
+
+        <div class="col-md-2 text-end">
+            <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid || !selectedFile">
+                Upload
+            </button>
+        </div>
+    </form>
+</mat-card>

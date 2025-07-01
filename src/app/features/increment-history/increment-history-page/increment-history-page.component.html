@@ -1,0 +1,82 @@
+<div class="container mt-4">
+  <h3>📈 Increment History</h3>
+
+  <!-- Employee Filter -->
+  <mat-form-field appearance="outline" class="w-100 mb-3">
+    <mat-label>Select Employee</mat-label>
+    <mat-select [(ngModel)]="selectedEmployeeId" (selectionChange)="onEmployeeSelect()">
+      <mat-option [value]="null">All Employees</mat-option>
+      <mat-option *ngFor="let emp of employees" [value]="emp.employeeId">
+        {{ emp.firstName }} {{ emp.lastName }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <!-- List Table -->
+  <table class="table table-striped table-bordered mt-3">
+    <thead>
+      <tr>
+        <th>Employee</th>
+        <th>Date</th>
+        <th>Old Salary</th>
+        <th>New Salary</th>
+        <th>Approved By</th>
+        <th>Reason</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let i of filteredIncrements">
+        <td>{{ i.employee?.firstName }} {{ i.employee?.lastName }}</td>
+        <td>{{ i.incrementDate | date }}</td>
+        <td>{{ i.oldSalary | currency }}</td>
+        <td>{{ i.newSalary | currency }}</td>
+        <td>{{ i.approvedBy }}</td>
+        <td>{{ i.reason }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Form: Shown only if employee selected -->
+  <form *ngIf="selectedEmployeeId" [formGroup]="form" (ngSubmit)="onSubmit()" class="mt-4 row g-3">
+    <div class="col-md-6">
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-label>Increment Date</mat-label>
+        <input matInput type="date" formControlName="incrementDate" />
+      </mat-form-field>
+    </div>
+
+    <div class="col-md-3">
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-label>Old Salary</mat-label>
+        <input matInput type="number" formControlName="oldSalary" />
+      </mat-form-field>
+    </div>
+
+    <div class="col-md-3">
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-label>New Salary</mat-label>
+        <input matInput type="number" formControlName="newSalary" />
+      </mat-form-field>
+    </div>
+
+    <div class="col-md-6">
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-label>Approved By</mat-label>
+        <input matInput formControlName="approvedBy" />
+      </mat-form-field>
+    </div>
+
+    <div class="col-md-6">
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-label>Reason</mat-label>
+        <input matInput formControlName="reason" />
+      </mat-form-field>
+    </div>
+
+    <div class="col-12 text-end">
+      <button mat-raised-button color="primary" [disabled]="form.invalid">
+        ➕ Add Increment
+      </button>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,31 @@
+<div class="container mt-4">
+  <mat-card class="p-4">
+    <div class="row align-items-center mb-3">
+      <div class="col-md-3">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Month</mat-label>
+          <mat-select [(ngModel)]="selectedMonth" (selectionChange)="onMonthChange()">
+            <mat-option *ngFor="let m of [1,2,3,4,5,6,7,8,9,10,11,12]" [value]="m.toString().padStart(2, '0')">
+              {{ m.toString().padStart(2, '0') }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="col-md-3">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Year</mat-label>
+          <input matInput type="number" [(ngModel)]="selectedYear" (change)="onMonthChange()" />
+        </mat-form-field>
+      </div>
+
+      <div class="col-md-6 text-end">
+        <button mat-raised-button color="primary" (click)="exportPayroll()">
+          ⬇️ Export Payroll
+        </button>
+      </div>
+    </div>
+
+    <app-payroll-list [payrolls]="payrolls" (refresh)="loadPayrolls()"></app-payroll-list>
+  </mat-card>
+</div>

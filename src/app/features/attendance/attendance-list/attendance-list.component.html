@@ -1,0 +1,48 @@
+<mat-card>
+  <h2>📋 Attendance Records</h2>
+
+  <mat-form-field appearance="outline" class="w-100 mb-3">
+    <mat-label>Select Employee</mat-label>
+    <mat-select [(ngModel)]="selectedEmployeeId" (selectionChange)="onEmployeeChange()">
+      <mat-option *ngFor="let emp of employees" [value]="emp.employeeId">
+        {{ emp.firstName }} {{ emp.lastName }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <div *ngIf="attendances.length > 0; else noData">
+    <table mat-table [dataSource]="attendances" class="mat-elevation-z8 w-100">
+      <ng-container matColumnDef="date">
+        <th mat-header-cell *matHeaderCellDef>Date</th>
+        <td mat-cell *matCellDef="let a">{{ a.date | date }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="checkIn">
+        <th mat-header-cell *matHeaderCellDef>Check In</th>
+        <td mat-cell *matCellDef="let a">{{ a.checkIn }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="checkOut">
+        <th mat-header-cell *matHeaderCellDef>Check Out</th>
+        <td mat-cell *matCellDef="let a">{{ a.checkOut }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="ot1">
+        <th mat-header-cell *matHeaderCellDef>OT1 (min)</th>
+        <td mat-cell *matCellDef="let a">{{ a.ot1 }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="ot2">
+        <th mat-header-cell *matHeaderCellDef>OT2 (min)</th>
+        <td mat-cell *matCellDef="let a">{{ a.ot2 }}</td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  </div>
+
+  <ng-template #noData>
+    <div class="text-muted text-center mt-4">No attendance data found.</div>
+  </ng-template>
+</mat-card>

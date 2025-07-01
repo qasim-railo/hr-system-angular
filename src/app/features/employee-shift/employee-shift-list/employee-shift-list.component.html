@@ -1,0 +1,77 @@
+<div class="container mt-5">
+  <mat-card class="p-4">
+
+    <!-- Header -->
+    <div class="row align-items-center mb-3">
+      <div class="col-md-6">
+        <h2 class="mb-0">📅 Employee Shift Schedule</h2>
+      </div>
+      <div class="col-md-4">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Search</mat-label>
+          <input matInput (keyup)="applyFilter($event)" placeholder="Search..." />
+        </mat-form-field>
+      </div>
+      <div class="col-md-2 text-end">
+        <button mat-raised-button color="primary" [routerLink]="['/employee-shift/add']" class="w-100">
+          + Assign
+        </button>
+      </div>
+    </div>
+
+    <!-- Table -->
+    <div class="table-responsive">
+      <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 w-100">
+
+        <!-- ID -->
+        <ng-container matColumnDef="id">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+          <td mat-cell *matCellDef="let row">{{ row.id }}</td>
+        </ng-container>
+
+        <!-- Employee -->
+        <ng-container matColumnDef="employee">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Employee</th>
+          <td mat-cell *matCellDef="let row">
+            {{ row.employee?.firstName }} {{ row.employee?.lastName }}
+          </td>
+        </ng-container>
+
+        <!-- Shift -->
+        <ng-container matColumnDef="shift">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Shift</th>
+          <td mat-cell *matCellDef="let row">
+            {{ row.shift?.name }} ({{ row.shift?.startTime }} - {{ row.shift?.endTime }})
+          </td>
+        </ng-container>
+
+        <!-- Date -->
+        <ng-container matColumnDef="date">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Date</th>
+          <td mat-cell *matCellDef="let row">
+            {{ row.date | date: 'yyyy-MM-dd' }}
+          </td>
+        </ng-container>
+
+        <!-- Actions -->
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef>Actions</th>
+          <td mat-cell *matCellDef="let row">
+            <button mat-button color="accent" [routerLink]="['/employee-shift/edit', row.id]">Edit</button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+    </div>
+
+    <!-- Paginator -->
+    <mat-paginator [pageSize]="5" [pageSizeOptions]="[5, 10, 20]"></mat-paginator>
+
+    <!-- No Data -->
+    <div class="text-center text-muted mt-3" *ngIf="dataSource.data.length === 0">
+      No shift schedules found.
+    </div>
+  </mat-card>
+</div>

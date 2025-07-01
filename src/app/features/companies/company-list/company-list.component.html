@@ -1,0 +1,42 @@
+<div class="container mt-5">
+    <mat-card>
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h2>Companies</h2>
+            <button mat-raised-button color="primary" [routerLink]="['/companies/add']">
+                + Add Company
+            </button>
+        </div>
+
+        <table mat-table [dataSource]="companies" class="mat-elevation-z8" *ngIf="companies.length">
+
+            <ng-container matColumnDef="companyId">
+                <th mat-header-cell *matHeaderCellDef>ID</th>
+                <td mat-cell *matCellDef="let c">{{ c.companyId }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef>Name</th>
+                <td mat-cell *matCellDef="let c">{{ c.name }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="address">
+                <th mat-header-cell *matHeaderCellDef>Address</th>
+                <td mat-cell *matCellDef="let c">{{ c.address }}</td>
+            </ng-container>
+
+
+            <!-- Actions -->
+            <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef>Actions</th>
+                <td mat-cell *matCellDef="let dept">
+                    <a mat-button color="accent" [routerLink]="['/departments/edit', dept.companyId ]">Edit</a>
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="['companyId', 'name', 'address', 'actions']"></tr>
+            <tr mat-row *matRowDef="let row; columns: ['companyId', 'name', 'address', 'actions']"></tr>
+        </table>
+
+        <p *ngIf="!companies.length">No companies found.</p>
+    </mat-card>
+</div>

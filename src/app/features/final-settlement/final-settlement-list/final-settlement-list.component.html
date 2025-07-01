@@ -1,0 +1,63 @@
+<table mat-table [dataSource]="settlements" class="mat-elevation-z8 w-100">
+
+    <!-- Employee Name -->
+    <ng-container matColumnDef="employeeName">
+        <th mat-header-cell *matHeaderCellDef>Employee</th>
+        <td mat-cell *matCellDef="let row">{{ row.employeeName || 'N/A' }}</td>
+    </ng-container>
+
+    <!-- Settlement Date -->
+    <ng-container matColumnDef="settlementDate">
+        <th mat-header-cell *matHeaderCellDef>Date</th>
+        <td mat-cell *matCellDef="let row">{{ row.settlementDate | date:'mediumDate' }}</td>
+    </ng-container>
+
+    <!-- Leave Encashment -->
+    <ng-container matColumnDef="leaveEncashment">
+        <th mat-header-cell *matHeaderCellDef>Leave Encashment</th>
+        <td mat-cell *matCellDef="let row">{{ row.leaveEncashment | currency }}</td>
+    </ng-container>
+
+    <!-- Gratuity Amount -->
+    <ng-container matColumnDef="gratuityAmount">
+        <th mat-header-cell *matHeaderCellDef>Gratuity</th>
+        <td mat-cell *matCellDef="let row">{{ row.gratuityAmount | currency }}</td>
+    </ng-container>
+
+    <!-- Deductions -->
+    <ng-container matColumnDef="deductions">
+        <th mat-header-cell *matHeaderCellDef>Deductions</th>
+        <td mat-cell *matCellDef="let row">{{ row.deductions | currency }}</td>
+    </ng-container>
+
+    <!-- Net Payable -->
+    <ng-container matColumnDef="netPayable">
+        <th mat-header-cell *matHeaderCellDef>Net Payable</th>
+        <td mat-cell *matCellDef="let row">{{ row.netPayable | currency }}</td>
+    </ng-container>
+
+    <!-- Employee Signed -->
+    <ng-container matColumnDef="employeeSigned">
+        <th mat-header-cell *matHeaderCellDef>Employee Signed</th>
+        <td mat-cell *matCellDef="let row">{{ row.employeeSigned ? '✔️' : '❌' }}</td>
+    </ng-container>
+
+    <!-- HR Signed -->
+    <ng-container matColumnDef="hrSigned">
+        <th mat-header-cell *matHeaderCellDef>HR Signed</th>
+        <td mat-cell *matCellDef="let row">{{ row.hrSigned ? '✔️' : '❌' }}</td>
+    </ng-container>
+
+    <!-- Actions -->
+    <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef class="text-end">Actions</th>
+        <td mat-cell *matCellDef="let row" class="text-end">
+            <button mat-icon-button color="primary" (click)="signOff(row.employeeId)" [disabled]="row.hrSigned">
+                <mat-icon>how_to_reg</mat-icon>
+            </button>
+        </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>

@@ -1,0 +1,36 @@
+<div class="container mt-4">
+    <mat-card class="p-4" *ngIf="detail">
+        <h2 class="mb-4">📋 Employment Details</h2>
+
+        <div class="row g-3">
+            <div class="col-md-4"><strong>Joining Date:</strong> {{ detail.joiningDate | date }}</div>
+            <div class="col-md-4"><strong>Category:</strong> {{ detail.category }}</div>
+            <div class="col-md-4"><strong>Offer Designation:</strong> {{ detail.offerDesignation }}</div>
+
+            <div class="col-md-4"><strong>Basic Salary:</strong> {{ detail.basicSalary | currency }}</div>
+            <div class="col-md-4"><strong>Accommodation:</strong> {{ detail.accommodationAllowance | currency }}</div>
+            <div class="col-md-4"><strong>Travel Allowance:</strong> {{ detail.travelAllowance | currency }}</div>
+
+            <div class="col-md-4"><strong>MOL Basic:</strong> {{ detail.molBasicSalary | currency }}</div>
+            <div class="col-md-4"><strong>MOL Gross:</strong> {{ detail.molGrossSalary | currency }}</div>
+            <div class="col-md-4"><strong>Current Gross:</strong> {{ detail.currentGrossSalary | currency }}</div>
+
+            <div class="col-md-4"><strong>OT Eligible:</strong> {{ detail.ot_Eligible ? 'Yes' : 'No' }}</div>
+            <div class="col-md-4"><strong>Salary Mode:</strong> {{ detail.salaryMode }}</div>
+            <div class="col-md-4"><strong>Bank Account:</strong> {{ detail.bankAccountNo }}</div>
+
+            <div class="col-md-12"><strong>Remarks:</strong> {{ detail.remarks }}</div>
+        </div>
+
+        <div class="text-end mt-4">
+            <button mat-raised-button color="primary" [routerLink]="['/employees/employment-details',  employeeId]">
+                ✏️ Edit Employment Details
+            </button>
+        </div>
+    </mat-card>
+
+    <mat-card *ngIf="!detail">
+
+        <p>No Employment Details found. . . <a [routerLink]="['/employees/employment-details', employeeId]">Add Now</a></p>
+    </mat-card>
+</div>

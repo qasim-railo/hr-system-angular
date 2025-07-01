@@ -1,0 +1,13 @@
+<div class="container mt-4">
+  <mat-card class="p-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h4 class="mb-0">📅 Leave Requests</h4>
+      <button mat-raised-button color="primary" [routerLink]="['/leaves/add']">
+        ➕ Apply for Leave
+      </button>
+    </div>
+
+    <!-- Leave List Component -->
+    <app-leave-list [leaves]="leaveRequests" (refresh)="onRefresh()"></app-leave-list>
+  </mat-card>
+</div>

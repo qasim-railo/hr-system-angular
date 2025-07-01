@@ -1,0 +1,34 @@
+export interface EmploymentDetail {
+  employmentDetailId: number;
+  employeeId: number;
+  joiningDate: string;
+  category: string;
+  offerDesignation: string;
+  molDesignation: string;
+  basicSalary: number;
+  accommodationAllowance: number;
+  travelAllowance: number;
+  otherAllowance: number;
+  molBasicSalary: number;
+  molGrossSalary: number;
+  currentGrossSalary: number;
+  ot_Eligible: boolean;
+  salaryMode: string;
+  bankDetails: string;
+  bankAccountNo: string;
+  iban: string;
+  workLocation: string;
+  contractType: string;
+  otherSalaryDetails: string;
+  visaNo: string;
+  visaIssueDate: string;
+  visaExpiry: string;
+  emiratesId: string;
+  emiratesIssueDate: string;
+  emiratesExpiry: string;
+  laborCardNo: string;
+  laborCardIssueDate: string;
+  laborCardExpiry: string;
+  remarks: string;
+  isActive: boolean;
+}

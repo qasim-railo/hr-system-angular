@@ -1,0 +1,25 @@
+<mat-card>
+    <h2>{{ isEditMode ? 'Edit Company' : 'Add Company' }}</h2>
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+
+        <mat-form-field appearance="outline" class="w-100 mb-3">
+            <mat-label>Company Name</mat-label>
+            <input matInput formControlName="name" required />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="w-100 mb-3">
+            <mat-label>Address</mat-label>
+            <input matInput formControlName="address" />
+        </mat-form-field>
+
+        <button mat-raised-button color="primary" type="submit">
+            {{ isEditMode ? 'Update' : 'Save' }}
+        </button>
+
+        <button mat-button type="button" color="warn" routerLink="/companies">
+            Cancel
+        </button>
+
+    </form>
+</mat-card>

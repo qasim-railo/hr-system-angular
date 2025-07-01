@@ -1,0 +1,49 @@
+<div class="container mt-5">
+  <mat-card class="p-4">
+    <h2 class="mb-4">{{ isEditMode ? '✏️ Edit' : '➕ Add' }} Asset</h2>
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div class="row g-3">
+
+        <!-- Name -->
+        <div class="col-md-4">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Asset Name</mat-label>
+            <input matInput formControlName="name" required />
+          </mat-form-field>
+        </div>
+
+        <!-- Category -->
+        <div class="col-md-4">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Category</mat-label>
+            <input matInput formControlName="category" required />
+          </mat-form-field>
+        </div>
+
+        <!-- Asset Code -->
+        <div class="col-md-4">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Asset Code</mat-label>
+            <input matInput formControlName="assetCode" required />
+          </mat-form-field>
+        </div>
+
+        <!-- Purchase Date -->
+        <div class="col-md-4">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Purchase Date</mat-label>
+            <input matInput type="date" formControlName="purchaseDate" required />
+          </mat-form-field>
+        </div>
+      </div>
+
+      <!-- Submit Button -->
+      <div class="text-end mt-4">
+        <button mat-raised-button color="primary" type="submit">
+          {{ isEditMode ? 'Update' : 'Save' }}
+        </button>
+      </div>
+    </form>
+  </mat-card>
+</div>

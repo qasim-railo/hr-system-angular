@@ -1,0 +1,47 @@
+<div class="container mt-5">
+  <mat-card class="p-4">
+    <h2 class="mb-4">{{ isEditMode ? '✏️ Edit Shift' : '➕ Assign Shift' }}</h2>
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div class="row g-3">
+        <!-- Employee -->
+        <div class="col-md-4">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Select Employee</mat-label>
+            <mat-select formControlName="employeeId" required>
+              <mat-option *ngFor="let emp of employees" [value]="emp.employeeId">
+                {{ emp.firstName }} {{ emp.lastName }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <!-- Shift -->
+        <div class="col-md-4">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Select Shift</mat-label>
+            <mat-select formControlName="shiftId" required>
+              <mat-option *ngFor="let shift of shifts" [value]="shift.id">
+                {{ shift.name }} ({{ shift.startTime }} - {{ shift.endTime }})
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <!-- Date -->
+        <div class="col-md-4">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Date</mat-label>
+            <input matInput type="date" formControlName="date" />
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="text-end mt-4">
+        <button mat-raised-button color="primary" type="submit">
+          {{ isEditMode ? 'Update' : 'Assign' }}
+        </button>
+      </div>
+    </form>
+  </mat-card>
+</div>

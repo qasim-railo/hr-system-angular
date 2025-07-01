@@ -1,0 +1,25 @@
+<div class="container mt-4">
+  <mat-card class="p-4">
+    <h3>🏆 Gratuity Report</h3>
+
+    <form [formGroup]="form">
+      <mat-form-field appearance="outline" class="w-100 mb-3">
+        <mat-label>Select Employee</mat-label>
+        <mat-select formControlName="employeeId">
+          <mat-option *ngFor="let emp of employees" [value]="emp.employeeId">
+            {{ emp.firstName }} {{ emp.lastName }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </form>
+
+    <mat-card *ngIf="loading" class="p-3 mt-3">Loading report...</mat-card>
+
+    <mat-card *ngIf="report" class="p-3 mt-3">
+      <p><strong>Join Date:</strong> {{ report.joinDate | date }}</p>
+      <p><strong>End Date:</strong> {{ report.endDate | date }}</p>
+      <p><strong>Basic Salary:</strong> {{ report.basicSalary | currency }}</p>
+      <p><strong>Gratuity Amount:</strong> {{ report.gratuityAmount | currency }}</p>
+    </mat-card>
+  </mat-card>
+</div>

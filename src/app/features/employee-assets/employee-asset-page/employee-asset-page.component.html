@@ -1,0 +1,13 @@
+ 
+<div class="container mt-4">
+    <!-- [asset]="selectedAsset" -->
+  <app-employee-asset-form    [asset]="selectedAsset" (saved)="onSaved()"></app-employee-asset-form>
+ <!-- <app-employee-asset-form
+  [asset]="selectedAsset"
+  [employees]="employees"
+  [assets]="assets"
+  (saved)="onSave($event)"
+  (canceled)="onCancel()">
+</app-employee-asset-form> -->
+  <app-employee-asset-list (edit)="onEdit($event)"></app-employee-asset-list>
+</div>

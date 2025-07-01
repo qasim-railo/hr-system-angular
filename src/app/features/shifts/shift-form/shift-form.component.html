@@ -1,0 +1,52 @@
+<div class="container mt-5">
+  <mat-card class="p-4">
+    <h2 class="mb-4">{{ isEditMode ? '✏️ Edit Shift' : '➕ Add Shift' }}</h2>
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div class="row g-3">
+
+        <!-- Name -->
+        <div class="col-md-6">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Shift Name</mat-label>
+            <input matInput formControlName="name" required />
+          </mat-form-field>
+        </div>
+
+        <!-- Start Time -->
+        <div class="col-md-3">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Start Time</mat-label>
+            <input matInput type="time" formControlName="startTime" required />
+          </mat-form-field>
+        </div>
+
+        <!-- End Time -->
+        <div class="col-md-3">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>End Time</mat-label>
+            <input matInput type="time" formControlName="endTime" required />
+          </mat-form-field>
+        </div>
+
+        <!-- Type -->
+        <div class="col-md-6">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Type</mat-label>
+            <mat-select formControlName="type" required>
+              <mat-option value="Staff">Staff</mat-option>
+              <mat-option value="Labor">Labor</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <!-- Submit Button -->
+      <div class="text-end mt-4">
+        <button mat-raised-button color="primary" type="submit">
+          {{ isEditMode ? 'Update' : 'Save' }}
+        </button>
+      </div>
+    </form>
+  </mat-card>
+</div>

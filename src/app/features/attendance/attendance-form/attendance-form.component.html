@@ -1,0 +1,58 @@
+<mat-card>
+  <h2>➕ Add Attendance Entry</h2>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="row">
+      <div class="col-md-6">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Employee</mat-label>
+          <mat-select formControlName="employeeId">
+            <mat-option *ngFor="let emp of employees" [value]="emp.employeeId">
+              {{ emp.firstName }} {{ emp.lastName }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="col-md-6">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Date</mat-label>
+          <input matInput type="date" formControlName="date" />
+        </mat-form-field>
+      </div>
+
+      <div class="col-md-6">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Check-In</mat-label>
+          <input matInput type="time" formControlName="checkIn" />
+        </mat-form-field>
+      </div>
+
+      <div class="col-md-6">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Check-Out</mat-label>
+          <input matInput type="time" formControlName="checkOut" />
+        </mat-form-field>
+      </div>
+
+      <div class="col-md-6">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>OT1 (minutes)</mat-label>
+          <input matInput type="number" formControlName="ot1" />
+        </mat-form-field>
+      </div>
+
+      <div class="col-md-6">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>OT2 (minutes)</mat-label>
+          <input matInput type="number" formControlName="ot2" />
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="text-end">
+      <button mat-raised-button color="primary" [disabled]="form.invalid">
+        Save
+      </button>
+    </div>
+  </form>
+</mat-card>

@@ -1,0 +1,163 @@
+<div class="container mt-5">
+  <mat-card class="p-4">
+    <h2 class="mb-4">{{ isEditMode ? '✏️ Edit' : '➕ Add' }} Employee</h2>
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div class="row g-3">
+
+       
+        <!-- First Name -->
+        <div class="col-md-4">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>First Name</mat-label>
+            <input matInput formControlName="firstName" required />
+          </mat-form-field>
+        </div>
+
+        <!-- Last Name -->
+        <div class="col-md-4">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Last Name</mat-label>
+            <input matInput formControlName="lastName" required />
+          </mat-form-field>
+        </div>
+
+        <!-- Email -->
+        <div class="col-md-4">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Email</mat-label>
+            <input matInput type="email" formControlName="email" />
+          </mat-form-field>
+        </div>
+
+        <!-- Passport Number -->
+        <div class="col-md-4">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Passport Number</mat-label>
+            <input matInput formControlName="passportNumber" />
+          </mat-form-field>
+        </div>
+
+        <!-- Passport Expiry -->
+        <div class="col-md-4">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Passport Expiry</mat-label>
+            <input matInput type="date" formControlName="passportExpiry" />
+          </mat-form-field>
+        </div>
+
+        <!-- Passport Country -->
+        <div class="col-md-4">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Passport Country</mat-label>
+            <input matInput formControlName="passportCountry" />
+          </mat-form-field>
+        </div>
+
+        <!-- Date of Birth -->
+        <div class="col-md-4">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Date of Birth</mat-label>
+            <input matInput type="date" formControlName="dateOfBirth" />
+          </mat-form-field>
+        </div>
+
+        <!-- Gender -->
+        <div class="col-md-4">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Gender</mat-label>
+            <input matInput formControlName="gender" />
+          </mat-form-field>
+        </div>
+
+        <!-- Nationality -->
+        <div class="col-md-4">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Nationality</mat-label>
+            <input matInput formControlName="nationality" />
+          </mat-form-field>
+        </div>
+
+        <!-- Mother's Name -->
+        <div class="col-md-4">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Mother's Name</mat-label>
+            <input matInput formControlName="motherName" />
+          </mat-form-field>
+        </div>
+
+        <!-- Home Country Address -->
+        <div class="col-md-4">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Home Country Address</mat-label>
+            <input matInput formControlName="homeCountryAddress" />
+          </mat-form-field>
+        </div>
+
+        <!-- Home Country Phone -->
+        <div class="col-md-4">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Home Country Phone</mat-label>
+            <input matInput formControlName="homeCountryPhone" />
+          </mat-form-field>
+        </div>
+
+        <!-- Emergency Contact Name -->
+        <div class="col-md-4">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Emergency Contact Name</mat-label>
+            <input matInput formControlName="emergencyContactName" />
+          </mat-form-field>
+        </div>
+
+        <!-- Emergency Phone -->
+        <div class="col-md-4">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Emergency Phone</mat-label>
+            <input matInput formControlName="emergencyPhone" />
+          </mat-form-field>
+        </div>
+
+        <!-- Photo Path -->
+        <!-- <div class="col-md-4">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Photo Path</mat-label>
+            <input matInput formControlName="photoPath" />
+          </mat-form-field>
+        </div> -->
+
+        <!-- Company ID -->
+        <div class="col-md-4">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Select Company</mat-label>
+            <mat-select formControlName="companyId" required>
+              <mat-option *ngFor="let company of companies" [value]="company.companyId">
+                {{ company.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+
+        </div>
+
+        <div class="col-md-4">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Select Department</mat-label>
+            <mat-select formControlName="departmentId" required>
+              <mat-option *ngFor="let dept of departments" [value]="dept.departmentId">
+                {{ dept.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <!-- Submit Button -->
+      <div class="text-end mt-4">
+        <button mat-raised-button color="primary" type="submit">
+          {{ isEditMode ? 'Update' : 'Save' }}
+        </button>
+      </div>
+    </form>
+  </mat-card>
+</div>

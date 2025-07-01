@@ -1,0 +1,53 @@
+<!-- <div class="login-container">
+  <h2>Login</h2>
+  <form [formGroup]="loginForm" (ngSubmit)="login()">
+    <input formControlName="username" placeholder="Username" />
+    <input formControlName="password" type="password" placeholder="Password" />
+    <button type="submit">Login</button>
+    <div class="error" *ngIf="error">{{ error }}</div>
+  </form>
+</div> -->
+<div class="container vh-100 d-flex justify-content-center align-items-center">
+  <div class="card shadow-lg p-4" style="width: 100%; max-width: 400px;">
+    <div class="text-center mb-4">
+      <h2 class="fw-bold text-primary">Login</h2>
+      <p class="text-muted">Please enter your credentials</p>
+    </div>
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <div class="mb-3">
+        <label for="username" class="form-label">Username</label>
+        <input
+          id="username"
+          type="text"
+          class="form-control"
+          formControlName="username"
+          [class.is-invalid]="submitted && loginForm.controls.username.invalid"
+        />
+        <div *ngIf="submitted && loginForm.controls.username.invalid" class="invalid-feedback">
+          Username is required
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label for="password" class="form-label">Password</label>
+        <input
+          id="password"
+          type="password"
+          class="form-control"
+          formControlName="password"
+          [class.is-invalid]="submitted && loginForm.controls.password.invalid"
+        />
+        <div *ngIf="submitted && loginForm.controls.password.invalid" class="invalid-feedback">
+          Password is required
+        </div>
+      </div>
+
+      <div class="d-grid">
+        <button class="btn btn-primary" type="submit">
+          <i class="bi bi-box-arrow-in-right me-1"></i> Login
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
