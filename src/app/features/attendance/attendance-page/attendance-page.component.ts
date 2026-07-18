@@ -12,7 +12,7 @@ import { AttendanceImportComponent } from '../attendance-import/attendance-impor
 @Component({
   selector: 'app-attendance-page',
   standalone: true,
-  imports: [CommonModule, ...MATERIAL_UI_MODULES, AttendanceFormComponent],
+  imports: [CommonModule, ...MATERIAL_UI_MODULES, AttendanceFormComponent, AttendanceImportComponent],
   templateUrl: './attendance-page.component.html',
   providers: [{ provide: MAT_DATE_LOCALE, useValue: 'en-GB' }],
 })
@@ -23,6 +23,7 @@ export class AttendancePageComponent implements OnInit {
   employees: Employee[] = [];
   selectedEmployeeId: number | null = null;
   attendanceList: Attendance[] = [];
+  selectedTab = 0;
 
   ngOnInit(): void {
     this.employeeService.getAll().subscribe((res) => {

@@ -1,1 +1,50 @@
-<p>attendance-import works!</p>
+<div class="container mt-5">
+  <mat-card class="p-4">
+    <h2 class="mb-4">📤 Import Attendance from Excel</h2>
+
+    <div class="alert alert-info mb-3" role="alert">
+      <strong>📋 Instructions:</strong> Please upload an Excel file (.xlsx or .xls) with the following columns:
+      <ul class="mt-2 mb-0">
+        <li>EmployeeId</li>
+        <li>AttendanceDate</li>
+        <li>Status (Present/Absent/Leave)</li>
+      </ul>
+    </div>
+
+    <div class="row">
+      <div class="col-md-8">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Select Excel File</mat-label>
+          <input
+            matInput
+            type="file"
+            accept=".xlsx,.xls"
+            (change)="onFileSelected($event)"
+            [disabled]="isUploading"
+          />
+        </mat-form-field>
+      </div>
+
+      <div class="col-md-4">
+        <button
+          mat-raised-button
+          color="primary"
+          (click)="onUpload()"
+          [disabled]="!selectedFile || isUploading"
+          class="w-100"
+        >
+          <span *ngIf="!isUploading">📤 Upload & Import</span>
+          <span *ngIf="isUploading">
+            <mat-spinner diameter="20" [strokeWidth]="2"></mat-spinner> Uploading...
+          </span>
+        </button>
+      </div>
+    </div>
+
+    <div class="mt-3" *ngIf="selectedFile">
+      <p class="text-muted">
+        <strong>Selected file:</strong> {{ selectedFile.name }} ({{ (selectedFile.size / 1024).toFixed(2) }} KB)
+      </p>
+    </div>
+  </mat-card>
+</div>

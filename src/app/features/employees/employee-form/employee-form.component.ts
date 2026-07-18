@@ -1,5 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { DuplicateOverrideDialogComponent } from '../duplicate-override-dialog.component';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -30,6 +32,7 @@ export class EmployeeFormComponent implements OnInit {
   private departmentService = inject(DepartmentService);
   private employeeService = inject(EmployeeService);
   private alertService = inject(AlertService);
+  private dialog = inject(MatDialog);
 
   companies: Company[] = [];
   departments: Department[] = [];
@@ -65,6 +68,7 @@ export class EmployeeFormComponent implements OnInit {
   employeeId!: number;
 
   ngOnInit() {
+
     // Load all companies
     this.companyService.getCompanies().subscribe(data => {
       this.companies = data;
@@ -99,6 +103,28 @@ export class EmployeeFormComponent implements OnInit {
   }
 
 
+  private getTokenPayload(): any {
+    try {
+      const raw = localStorage.getItem('jwt');
+      if (!raw) return null;
+      const parts = raw.split('.');
+      if (parts.length < 2) return null;
+      const payload = atob(parts[1].replace(/-/g, '+').replace(/_/g, '/'));
+      return JSON.parse(payload);
+    } catch {
+      return null;
+    }
+  }
+
+  canCurrentUserOverride(): boolean {
+    const p = this.getTokenPayload();
+    if (!p) return false;
+    // look for role claim
+    if (p && (p.role === 'Admin' || (p.roles && p.roles.indexOf('Admin') !== -1))) return true;
+    if (p && (p['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'] === 'Admin')) return true;
+    return false;
+  }
+
   onSubmit() {
     console.log(this.form.value)
     if (this.form.invalid) return;
@@ -107,16 +133,50 @@ export class EmployeeFormComponent implements OnInit {
 
     if (this.isEditMode) {
       this.employeeService.update(this.employeeId, employee).subscribe(() => {
-        this.alertService.success('Updated successful'),
-
-          this.router.navigate(['/employees']);
+        this.alertService.success('Updated successful');
+        this.router.navigate(['/employees']);
       });
     } else {
-      this.employeeService.create(employee).subscribe(() => {
-        // console.log(employee)
-        this.alertService.success('Added successful'),
+      // Before creating, run duplicate check
+      const payload = {
+        passportNumber: employee.passportNumber,
+        email: employee.email,
+        firstName: employee.firstName,
+        lastName: employee.lastName,
+        dateOfBirth: employee.dateOfBirth
+      };
 
+      this.employeeService.duplicateCheck(payload).subscribe((dup: any) => {
+        if (dup && dup.hasPotentialDuplicates) {
+          // Open override dialog
+          const canOverride = this.canCurrentUserOverride();
+          const dialogRef = this.dialog.open(DuplicateOverrideDialogComponent, { data: { matches: dup.candidates || dup.candidates, canOverride } });
+          dialogRef.afterClosed().subscribe((res: any) => {
+            if (!res) return;
+            if (res.action === 'open') {
+              // Open existing employee
+              this.router.navigate(['/employees', res.id]);
+              return;
+            }
+            if (res.action === 'override') {
+              // Call create with override header
+              this.employeeService.createWithOverride(employee, res.reason).subscribe(() => {
+                this.alertService.success('Added successful (override)');
+                this.router.navigate(['/employees']);
+              }, err => {
+                this.alertService.error('Error creating employee: ' + (err.error?.message || err.message));
+              });
+            }
+            // otherwise canceled
+          });
+
+          return;
+        }
+
+        this.employeeService.create(employee).subscribe(() => {
+          this.alertService.success('Added successful');
           this.router.navigate(['/employees']);
+        });
       });
     }
   }

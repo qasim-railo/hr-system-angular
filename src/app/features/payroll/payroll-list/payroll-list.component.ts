@@ -1,7 +1,9 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { saveAs } from 'file-saver';
 import { PayrollDto } from '../../../core/models/payroll.model';
 import { PayrollService } from '../../../core/services/payroll.service';
 import { MATERIAL_UI_MODULES } from '../../../shared/material-ui.imports';
+import { AlertService } from '../../../core/services/alert.service';
 
 @Component({
   selector: 'app-payroll-list',
@@ -24,18 +26,31 @@ displayedColumns: string[] = [
   'actions'
 ];
 
-  constructor(private payrollService: PayrollService) {}
+  constructor(private payrollService: PayrollService, private alertService: AlertService) {}
 
   approve(payrollId: number): void {
     this.payrollService.approvePayroll(payrollId).subscribe({
-      next: () => this.refresh.emit(),
-      error: err => console.error('Approval failed', err)
+      next: () => {
+        this.alertService.success('Payroll approved successfully');
+        this.refresh.emit();
+      },
+      error: err => {
+        console.error('Approval failed', err);
+        this.alertService.error('Failed to approve payroll');
+      }
     });
   }
 
   downloadPayslip(payrollId: number): void {
-    this.payrollService.getPayslip(payrollId).subscribe(blob => {
-      // saveAs(blob, `Payslip-${payrollId}.pdf`);
+    this.payrollService.getPayslip(payrollId).subscribe({
+      next: blob => {
+        saveAs(blob, `Payslip-${payrollId}.pdf`);
+        this.alertService.success('Payslip downloaded successfully');
+      },
+      error: err => {
+        console.error('Download failed', err);
+        this.alertService.error('Failed to download payslip');
+      }
     });
   }
 }

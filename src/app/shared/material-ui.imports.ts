@@ -19,6 +19,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatListModule } from '@angular/material/list';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatDialogModule } from '@angular/material/dialog';
 
 export const MATERIAL_UI_MODULES = [
   CommonModule,
@@ -39,6 +42,8 @@ export const MATERIAL_UI_MODULES = [
   MatOptionModule,
   MatTableModule,
   MatListModule, 
+  MatTabsModule,
+  MatProgressSpinnerModule,
 
   // 🟢 Add These Two for Datepicker
   MatDatepickerModule,

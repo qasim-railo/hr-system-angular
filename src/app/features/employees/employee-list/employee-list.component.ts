@@ -38,23 +38,33 @@ export class EmployeeListComponent implements AfterViewInit {
 
   ngAfterViewInit(): void {
     this.loadEmployees();
+
+    // paginator change
+    this.paginator.page.subscribe(() => {
+      this.loadEmployees();
+    });
   }
 
-  loadEmployees(): void {
-    this.employeeService.getAll().subscribe((employees: any[]) => {
-      this.dataSource.data = employees;
+  loadEmployees(page: number = 1, size: number = 5, search: string | null = null): void {
+    const filter: any = { pageNumber: page, pageSize: size };
+    if (search) filter.search = search;
+
+    this.employeeService.getList(filter).subscribe((res: any) => {
+      this.dataSource.data = res.items;
+      // set paginator length if available
+      if (res.total !== undefined && this.paginator) {
+        this.paginator.length = res.total;
+      }
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
     });
   }
+
   applyFilter(event: Event): void {
     const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
-
-    // Optional: reset to first page on filter
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
-    }
+    // call backend filter
+    this.paginator.firstPage();
+    this.loadEmployees(1, this.paginator.pageSize || 5, filterValue.trim());
   }
 
 }
