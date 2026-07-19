@@ -21,8 +21,8 @@ export class DepartmentService {
   getById(id: number): Observable<Department> {
     return this.http.get<Department>(`${this.apiUrl}/${id}`);
   }
-  getDepartmentsByCompanyId(id: number): Observable<Department> {
-    return this.http.get<Department>(`${this.apiUrl}/by-company/${id}`);
+  getDepartmentsByCompanyId(id: number): Observable<Department[]> {
+    return this.http.get<Department[]>(`${this.apiUrl}/by-company/${id}`);
   }
 
 

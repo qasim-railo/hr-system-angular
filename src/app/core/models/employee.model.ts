@@ -19,5 +19,11 @@ export interface Employee {
   passportExpiry?: string; // optional if not collected initially
   passportCountry?: string;
   photoPath?: string;
+  status?: number;
+  companyName?: string;
+  departmentName?: string;
+  category?: string;
+  designation?: string;
+  joiningDate?: string;
 }
 
