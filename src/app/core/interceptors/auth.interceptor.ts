@@ -3,7 +3,7 @@
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
   let token: string | null = null;
   if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
-    token = localStorage.getItem('token');
+    token = localStorage.getItem('jwt');
   }
 
   const authReq = token

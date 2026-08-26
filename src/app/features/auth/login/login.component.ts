@@ -42,6 +42,7 @@ export class LoginComponent {
     this.authService.login(username!, password!).subscribe({
       next: (response) => {
         this.loading = false;
+        this.authService.setToken(response.token);
         this.alertService.success('Login successful'),
         this.router.navigate(['/dashboard']);  
       },

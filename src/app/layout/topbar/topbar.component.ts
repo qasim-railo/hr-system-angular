@@ -12,7 +12,7 @@ export class TopbarComponent {
   constructor(private router: Router) { }
 
   logout() {
-    localStorage.removeItem('token');
+    localStorage.removeItem('jwt');
     this.router.navigate(['/login']);
   }
 }
