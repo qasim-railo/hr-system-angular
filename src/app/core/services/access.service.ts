@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 export interface AccessRole {
   id: number;
   name: string;
-  permissions: string[];
+  permissions: { name: string; dataScope: string; scopeIds: number[] }[];
 }
 
 export interface AccessUser {
@@ -27,8 +27,8 @@ export class AccessService {
   getPermissions(): Observable<{ id: number; name: string; description?: string }[]> { return this.http.get<any[]>(`${this.apiUrl}/permissions`); }
   getUsers(): Observable<AccessUser[]> { return this.http.get<AccessUser[]>(`${this.apiUrl}/users`); }
 
-  createRole(name: string, permissions: string[]): Observable<AccessRole> {
-    return this.http.post<AccessRole>(`${this.apiUrl}/roles`, { name, permissions });
+  createRole(name: string, permissions: string[], permissionScopes: { permission: string; dataScope?: string; scopeIds?: number[] }[]): Observable<AccessRole> {
+    return this.http.post<AccessRole>(`${this.apiUrl}/roles`, { name, permissions, permissionScopes });
   }
 
   createUser(username: string, password: string, roles: string[], isActive: boolean): Observable<AccessUser> {

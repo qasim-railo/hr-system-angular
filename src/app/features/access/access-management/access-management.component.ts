@@ -18,6 +18,8 @@ export class AccessManagementComponent implements OnInit {
   message = '';
   error = '';
 
+  scopeOptions = ['TenantWide', 'SelectedCompanies', 'SelectedBranches', 'SelectedDepartments', 'OwnTeam', 'Self'];
+  permissionScopes: Record<string, { dataScope: string; scopeIds: number[] }> = {};
   roleForm = this.fb.group({ name: ['', [Validators.required, Validators.maxLength(100)]], permissions: [[] as string[]] });
   userForm = this.fb.group({ username: ['', [Validators.required, Validators.maxLength(100)]], password: ['', [Validators.required, Validators.minLength(6)]], roles: [[] as string[]], isActive: [true] });
 
@@ -35,8 +37,9 @@ export class AccessManagementComponent implements OnInit {
   createRole(): void {
     if (this.roleForm.invalid) return;
     const value = this.roleForm.getRawValue();
-    this.access.createRole(value.name!.trim(), value.permissions || []).subscribe({
-      next: () => { this.message = 'Role created successfully.'; this.error = ''; this.roleForm.reset({ name: '', permissions: [] }); this.loadData(); },
+    const permissionScopes = (value.permissions || []).map(permission => ({ permission, ...this.permissionScopes[permission] })).filter(item => item.dataScope);
+    this.access.createRole(value.name!.trim(), value.permissions || [], permissionScopes).subscribe({
+      next: () => { this.message = 'Role created successfully.'; this.error = ''; this.permissionScopes = {}; this.roleForm.reset({ name: '', permissions: [] }); this.loadData(); },
       error: err => this.showError(err)
     });
   }
@@ -61,6 +64,22 @@ export class AccessManagementComponent implements OnInit {
     const selected = this.roleForm.value.permissions || [];
     const permissions = checked ? [...selected, name] : selected.filter(permission => permission !== name);
     this.roleForm.patchValue({ permissions: [...new Set(permissions)] });
+    if (checked && !this.permissionScopes[name]) this.permissionScopes[name] = { dataScope: 'TenantWide', scopeIds: [] };
+  }
+
+  scopeFor(permission: string): { dataScope: string; scopeIds: number[] } {
+    return this.permissionScopes[permission] || { dataScope: 'TenantWide', scopeIds: [] };
+  }
+
+  updateScope(permission: string, dataScope: string): void {
+    this.permissionScopes[permission] = { ...this.scopeFor(permission), dataScope };
+  }
+
+  updateScopeIds(permission: string, value: string): void {
+    this.permissionScopes[permission] = {
+      ...this.scopeFor(permission),
+      scopeIds: value.split(',').map(id => Number(id.trim())).filter(id => Number.isInteger(id) && id > 0)
+    };
   }
 
   private showError(error: any): void {

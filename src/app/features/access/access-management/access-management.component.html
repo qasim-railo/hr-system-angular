@@ -18,6 +18,11 @@
         <mat-form-field appearance="outline"><mat-label>Role name</mat-label><input matInput formControlName="name" placeholder="e.g. Payroll Manager"></mat-form-field>
         <p class="field-label">Permissions</p>
         <div class="permission-grid"><mat-checkbox *ngFor="let permission of permissions" [checked]="roleForm.value.permissions?.includes(permission.name)" (change)="togglePermission(permission.name, $event.checked)">{{ permission.name }}</mat-checkbox></div>
+        <div class="scope-grid" *ngFor="let permission of roleForm.value.permissions">
+          <strong>{{ permission }} scope</strong>
+          <mat-form-field appearance="outline"><mat-label>Data scope</mat-label><mat-select [value]="scopeFor(permission).dataScope" (selectionChange)="updateScope(permission, $event.value)"><mat-option *ngFor="let scope of scopeOptions" [value]="scope">{{ scope }}</mat-option></mat-select></mat-form-field>
+          <mat-form-field appearance="outline" *ngIf="scopeFor(permission).dataScope.startsWith('Selected')"><mat-label>Scope IDs</mat-label><input matInput [value]="scopeFor(permission).scopeIds.join(',')" (change)="updateScopeIds(permission, $any($event.target).value)"></mat-form-field>
+        </div>
         <button mat-flat-button color="primary" type="submit" [disabled]="roleForm.invalid"><span class="material-symbols-rounded">add</span>Create role</button>
       </form>
     </mat-card>
