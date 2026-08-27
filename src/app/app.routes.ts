@@ -11,6 +11,12 @@ export const routes: Routes = [
   // Unprotected Auth Route
   { path: 'login', component: LoginComponent },
   { path: 'register', loadComponent: () => import('./features/auth/registration/registration.component').then(m => m.RegistrationComponent) },
+  { path: '', pathMatch: 'full', redirectTo: 'home' },
+  ...(['home', 'features', 'solutions', 'pricing', 'about', 'faq', 'contact'] as const).map(page => ({
+    path: page,
+    data: { page },
+    loadComponent: () => import('./features/public-site/public-site.component').then(m => m.PublicSiteComponent)
+  })),
 
   // Protected Main Layout
   {
