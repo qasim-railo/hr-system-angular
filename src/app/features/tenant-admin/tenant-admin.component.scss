@@ -1,0 +1,15 @@
+.tenant-admin-page { padding: 2rem; color: #123d50; }
+.page-heading, .card-heading { display: flex; justify-content: space-between; align-items: flex-start; }
+.eyebrow { color: #158f91; font-size: .75rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; margin: 0 0 .5rem; }
+h1 { margin: 0; font-size: 2.1rem; } h2 { margin: 0; } .subtitle { color: #6b7e87; }
+.heading-icon, .card-heading > .material-symbols-rounded { color: #158f91; font-size: 2.5rem; }
+.stats-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 1rem; margin: 1.5rem 0; }
+.stats-grid article, .card { background: #fff; border-radius: 14px; padding: 1.25rem; box-shadow: 0 8px 24px #183b4d12; }
+.stats-grid article { display: grid; gap: .35rem; } .stats-grid strong { font-size: 1.5rem; } .stats-grid span { color: #6b7e87; }
+.admin-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; } .card-heading { margin-bottom: 1.25rem; }
+.card label { display: grid; gap: .3rem; color: #6b7e87; font-size: .8rem; margin-bottom: .75rem; }.card input { border: 1px solid #d7e1e5; border-radius: 7px; padding: .6rem; color: #123d50; }
+button { background: #158f91; color: #fff; border: 0; border-radius: 7px; padding: .6rem .9rem; cursor: pointer; }.setting { display: grid; grid-template-columns: 1fr auto; gap: .5rem; align-items: end; }.setting button { margin-bottom: .75rem; }
+.subscription-card { margin-top: 1rem; display: flex; justify-content: space-between; align-items: center; }.subscription-card a { color: #158f91; font-weight: 700; }
+.alert { padding: .75rem; margin: 1rem 0; border-radius: 8px; }.success { background: #e7f6ee; color: #1b7c56; }.error { background: #fdeceb; color: #b44b42; }
+@media (max-width: 1000px) { .stats-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 700px) { .admin-grid { grid-template-columns: 1fr; }.stats-grid { grid-template-columns: repeat(2, 1fr); } }

@@ -38,7 +38,7 @@
     <div class="card-heading"><span class="icon-tile coral"><span class="material-symbols-rounded">manage_accounts</span></span><div><h2>Directory</h2><p>Current users and their effective permissions.</p></div></div>
     <div class="empty-state" *ngIf="!loading && !users.length">No users found.</div>
     <div class="user-list" *ngIf="users.length">
-      <div class="user-row" *ngFor="let user of users"><div class="avatar">{{ user.username.charAt(0).toUpperCase() }}</div><div class="user-info"><strong>{{ user.username }}</strong><span>{{ user.permissions.length }} permissions</span></div><div class="role-list"><span class="role-chip" *ngFor="let role of user.roles">{{ role }}</span></div></div>
+      <div class="user-row" *ngFor="let user of users"><div class="avatar">{{ user.username.charAt(0).toUpperCase() }}</div><div class="user-info"><strong>{{ user.username }}</strong><span>{{ user.permissions.length }} permissions · {{ user.isActive === false ? 'Disabled' : 'Active' }}</span></div><div class="role-list"><span class="role-chip" *ngFor="let role of user.roles">{{ role }}</span></div><button mat-stroked-button type="button" *ngIf="user.isActive !== false" (click)="disableUser(user)">Disable</button></div>
     </div>
   </mat-card>
 </section>

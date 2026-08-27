@@ -50,6 +50,13 @@ export class AccessManagementComponent implements OnInit {
     });
   }
 
+  disableUser(user: AccessUser): void {
+    this.access.disableUser(user.id).subscribe({
+      next: () => { this.message = `${user.username} has been disabled.`; this.loadData(); },
+      error: err => this.showError(err)
+    });
+  }
+
   togglePermission(name: string, checked: boolean): void {
     const selected = this.roleForm.value.permissions || [];
     const permissions = checked ? [...selected, name] : selected.filter(permission => permission !== name);

@@ -14,6 +14,7 @@ export interface AccessUser {
   username: string;
   roles: string[];
   permissions: string[];
+  isActive?: boolean;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -32,5 +33,13 @@ export class AccessService {
 
   createUser(username: string, password: string, roles: string[], isActive: boolean): Observable<AccessUser> {
     return this.http.post<AccessUser>(`${this.apiUrl}/users`, { username, password, roles, isActive });
+  }
+
+  inviteUser(username: string, roles: string[], temporaryPassword?: string): Observable<AccessUser> {
+    return this.http.post<AccessUser>(`${this.apiUrl}/users/invite`, { username, roles, temporaryPassword, isActive: true });
+  }
+
+  disableUser(id: number): Observable<void> {
+    return this.http.post<void>(`${this.apiUrl}/users/${id}/disable`, {});
   }
 }
