@@ -10,4 +10,18 @@
     <article class="card"><div class="card-heading"><div><p class="eyebrow">Tenant settings</p><h2>Module configuration</h2></div><span class="material-symbols-rounded">tune</span></div><div class="setting" *ngFor="let setting of settings"><label>{{ setting.key }}<input [(ngModel)]="setting.value"></label><button type="button" (click)="saveSetting(setting)">Save</button></div><p *ngIf="!settings.length">No settings configured yet.</p><div class="setting new-setting"><label>New setting key<input [(ngModel)]="newSettingKey" placeholder="e.g. payroll.currency"></label><label>Value<input [(ngModel)]="newSettingValue"></label><button type="button" (click)="addSetting()">Add setting</button></div></article>
   </div>
   <article class="card subscription-card" *ngIf="dashboard?.subscription"><div><p class="eyebrow">Subscription and usage</p><h2>{{ dashboard?.subscription?.plan }}</h2><p>Status: <strong>{{ dashboard?.subscription?.status }}</strong></p><p>Storage used: <strong>{{ formatStorage(dashboard?.usage?.storageUsedBytes || 0) }}</strong></p></div><a routerLink="/plan">View plan details</a></article>
+  <article class="card custom-fields-card">
+    <div class="card-heading"><div><p class="eyebrow">Employee profile</p><h2>Custom fields</h2><p class="subtitle">Add tenant-specific fields without code changes.</p></div><span class="material-symbols-rounded">tune</span></div>
+    <div class="custom-field-editor">
+      <label>Key<input [(ngModel)]="newField.key" placeholder="e.g. visaSponsor"></label>
+      <label>Label<input [(ngModel)]="newField.label" placeholder="Visa sponsor"></label>
+      <label>Type<select [(ngModel)]="newField.fieldType"><option *ngFor="let type of fieldTypes; let i = index" [ngValue]="i">{{ type }}</option></select></label>
+      <label>Display order<input type="number" [(ngModel)]="newField.displayOrder"></label>
+      <label class="check"><input type="checkbox" [(ngModel)]="newField.isRequired"> Required</label>
+      <label class="check"><input type="checkbox" [(ngModel)]="newField.isActive"> Active</label>
+      <label class="options">Options (comma separated)<input [ngModel]="optionsText" (ngModelChange)="updateOptions($event)"></label>
+      <button type="button" (click)="saveCustomField()">{{ newField.customFieldDefinitionId ? 'Update' : 'Add' }} field</button>
+    </div>
+    <div class="custom-field-list"><div *ngFor="let field of customFields" class="custom-field-row"><span><strong>{{ field.label }}</strong> <small>{{ field.key }} · {{ fieldTypeName(field.fieldType) }}<span *ngIf="!field.isActive"> · Archived</span></small></span><span><button type="button" (click)="editCustomField(field)">Edit</button><button type="button" *ngIf="field.isActive" (click)="archiveCustomField(field)">Archive</button></span></div><p *ngIf="!customFields.length">No custom fields configured.</p></div>
+  </article>
 </section>

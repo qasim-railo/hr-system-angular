@@ -26,6 +26,9 @@ export class EmployeeProfileComponent implements OnInit {
     { label: 'History', route: 'history' }, { label: 'Final Settlement', route: 'final-settlement' }
   ];
   constructor(private route: ActivatedRoute, private employees: EmployeeService) {}
+  customFieldValue(key: string): string | null {
+    return this.profile?.customFields?.find((value: { key: string }) => value.key === key)?.value || null;
+  }
   ngOnInit(): void {
     this.employeeId = Number(this.route.snapshot.paramMap.get('id'));
     this.employees.getProfile(this.employeeId).subscribe({

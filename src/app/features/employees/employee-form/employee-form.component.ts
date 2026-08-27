@@ -16,6 +16,7 @@ import { Department } from '../../../core/models/department.model';
 import { Company } from '../../../core/models/company.model';
 import { DepartmentService } from '../../departments/services/department.service';
 import { AlertService } from '../../../core/services/alert.service';
+import { CustomFieldDefinition, CustomFieldService } from '../../../core/services/custom-field.service';
 @Component({
   selector: 'app-employee-form',
   standalone: true,
@@ -33,9 +34,12 @@ export class EmployeeFormComponent implements OnInit {
   private employeeService = inject(EmployeeService);
   private alertService = inject(AlertService);
   private dialog = inject(MatDialog);
+  private customFieldService = inject(CustomFieldService);
 
   companies: Company[] = [];
   departments: Department[] = [];
+  customFields: CustomFieldDefinition[] = [];
+  customFieldValues: Record<string, string> = {};
 
   constructor(
     private fb: FormBuilder,
@@ -73,6 +77,7 @@ export class EmployeeFormComponent implements OnInit {
     this.companyService.getCompanies().subscribe(data => {
       this.companies = data;
     });
+    this.customFieldService.getDefinitions(false).subscribe(data => this.customFields = data);
 
     // Load departments when companyId changes
     this.form.get('companyId')?.valueChanges.subscribe(companyId => {
@@ -88,6 +93,7 @@ export class EmployeeFormComponent implements OnInit {
         emp.dateOfBirth = this.formatDate(emp.dateOfBirth);
         emp.passportExpiry = this.formatDate(emp.passportExpiry!);
         this.form.patchValue(emp);
+        this.customFieldValues = { ...(emp as Employee & { customFields?: Record<string, string> }).customFields };
         // Load departments of the employee's company
         this.loadDepartments(emp.companyId);
       });
@@ -100,6 +106,9 @@ export class EmployeeFormComponent implements OnInit {
   } formatDate(dateString: string): string {
     const date = new Date(dateString);
     return date.toISOString().split('T')[0]; // returns yyyy-MM-dd
+  }
+  setCustomFieldBoolean(key: string, event: Event): void {
+    this.customFieldValues[key] = (event.target as HTMLInputElement).checked ? 'true' : 'false';
   }
 
 
@@ -129,7 +138,7 @@ export class EmployeeFormComponent implements OnInit {
     console.log(this.form.value)
     if (this.form.invalid) return;
 
-    var employee: Employee = this.form.value;
+    const employee: Employee & { customFields?: Record<string, string> } = { ...this.form.value, customFields: this.customFieldValues };
 
     if (this.isEditMode) {
       this.employeeService.update(this.employeeId, employee).subscribe(() => {

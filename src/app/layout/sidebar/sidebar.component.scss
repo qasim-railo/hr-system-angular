@@ -1,12 +1,18 @@
 .sidebar-nav {
   width: 258px;
-  min-height: 100vh;
+  height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden;
   background: #172b2b;
   box-shadow: 12px 0 30px rgba(18, 42, 38, .08);
   position: fixed;
   inset: 0 auto 0 0;
   z-index: 10;
+  scrollbar-width: thin;
+  scrollbar-color: #4a6a64 transparent;
 }
+.sidebar-nav::-webkit-scrollbar { width: 6px; }
+.sidebar-nav::-webkit-scrollbar-thumb { background: #4a6a64; border-radius: 999px; }
 .brand-lockup { display: flex; align-items: center; gap: 11px; padding: 8px 9px 28px; font-family: 'Space Grotesk', sans-serif; }
 .brand-lockup strong, .brand-lockup small { display: block; }
 .brand-lockup strong { font-size: 20px; letter-spacing: -.03em; }

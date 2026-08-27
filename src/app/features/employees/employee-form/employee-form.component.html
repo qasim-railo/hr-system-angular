@@ -150,6 +150,17 @@
             </mat-select>
           </mat-form-field>
         </div>
+        <div class="col-md-4" *ngFor="let field of customFields">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>{{ field.label }}<span *ngIf="field.isRequired"> *</span></mat-label>
+            <mat-select *ngIf="field.fieldType === 3" [(ngModel)]="customFieldValues[field.key]" [ngModelOptions]="{standalone: true}">
+              <mat-option *ngFor="let option of field.options" [value]="option">{{ option }}</mat-option>
+            </mat-select>
+            <textarea matInput *ngIf="field.fieldType === 4" [(ngModel)]="customFieldValues[field.key]" [ngModelOptions]="{standalone: true}"></textarea>
+            <input *ngIf="field.fieldType === 5 || field.fieldType === 6" type="checkbox" [checked]="customFieldValues[field.key] === 'true'" (change)="setCustomFieldBoolean(field.key, $event)" />
+            <input matInput *ngIf="field.fieldType !== 3 && field.fieldType !== 4 && field.fieldType !== 5 && field.fieldType !== 6" [type]="field.fieldType === 2 ? 'date' : field.fieldType === 1 || field.fieldType === 7 ? 'number' : 'text'" [(ngModel)]="customFieldValues[field.key]" [ngModelOptions]="{standalone: true}" />
+          </mat-form-field>
+        </div>
       </div>
 
       <!-- Submit Button -->
