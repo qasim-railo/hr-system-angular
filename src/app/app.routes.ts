@@ -45,6 +45,11 @@ export const routes: Routes = [
         canActivate: [permissionGuard('Users.Manage')],
         loadComponent: () => import('./features/access/access-management/access-management.component').then(m => m.AccessManagementComponent)
       },
+      {
+        path: 'organization',
+        canActivate: [permissionGuard('Users.Manage')],
+        loadComponent: () => import('./features/organization/organization.component').then(m => m.OrganizationComponent)
+      },
 
       // Employees (Standalone Components)
       {

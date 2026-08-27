@@ -1,0 +1,18 @@
+<section class="organization-page">
+  <header><div><p class="eyebrow">Organization</p><h1>Organization setup</h1><p class="subtitle">Configure your tenant hierarchy without hard-coded structure.</p></div><span class="material-symbols-rounded">account_tree</span></header>
+  <div class="alert success" *ngIf="message">{{ message }}</div><div class="alert error" *ngIf="error">{{ error }}</div>
+  <nav class="tabs"><button *ngFor="let type of types" [class.active]="type === selectedType" (click)="selectType(type)">{{ type | titlecase }}</button></nav>
+  <div class="grid">
+    <mat-card class="form-card"><h2>{{ editing ? 'Edit' : 'Add' }} {{ selectedType | slice:0:-1 | titlecase }}</h2>
+      <mat-form-field appearance="outline"><mat-label>Name</mat-label><input matInput [(ngModel)]="form.name"></mat-form-field>
+      <mat-form-field appearance="outline" *ngIf="selectedType === 'branches' || selectedType === 'positions'"><mat-label>Code</mat-label><input matInput [(ngModel)]="form.code"></mat-form-field>
+      <mat-form-field appearance="outline" *ngIf="selectedType !== 'branches'"><mat-label>Parent</mat-label><mat-select [(ngModel)]="form.parentId"><mat-option *ngFor="let parent of parents" [value]="parent.id">{{ parent.name }}</mat-option></mat-select></mat-form-field>
+      <mat-form-field appearance="outline" *ngIf="selectedType === 'branches'"><mat-label>Company</mat-label><mat-select [(ngModel)]="form.companyId"><mat-option *ngFor="let company of companies" [value]="company.id">{{ company.name }}</mat-option></mat-select></mat-form-field>
+      <mat-form-field appearance="outline"><mat-label>Description</mat-label><textarea matInput [(ngModel)]="form.description"></textarea></mat-form-field>
+      <mat-checkbox [(ngModel)]="form.isActive">Active</mat-checkbox><div class="actions"><button mat-flat-button color="primary" (click)="save()">Save</button><button mat-button *ngIf="editing" (click)="reset()">Cancel</button></div>
+    </mat-card>
+    <mat-card><h2>{{ selectedType | titlecase }}</h2><div class="empty" *ngIf="!units.length">No {{ selectedType }} configured.</div>
+      <div class="unit" *ngFor="let unit of units"><div><strong>{{ unit.name }}</strong><small>{{ unit.code || 'No code' }} · {{ unit.isActive ? 'Active' : 'Archived' }} · {{ unit.employeeCount }} employees</small></div><button mat-button (click)="edit(unit)">Edit</button><button mat-button color="warn" *ngIf="unit.isActive" (click)="archive(unit)">Archive</button><button mat-button color="warn" (click)="remove(unit)">Delete</button></div>
+    </mat-card>
+  </div>
+</section>
