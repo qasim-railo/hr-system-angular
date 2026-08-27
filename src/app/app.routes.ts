@@ -252,6 +252,10 @@ export const routes: Routes = [
         path: 'attendance',
         loadComponent: () => import('./features/attendance/attendance-page/attendance-page.component').then(c => c.AttendancePageComponent)
       },
+      {
+        path: 'profile/:id',
+        loadComponent: () => import('./features/employees/employee-profile/employee-profile.component').then(m => m.EmployeeProfileComponent)
+      },
 
       {
         path: 'employee-assets',
