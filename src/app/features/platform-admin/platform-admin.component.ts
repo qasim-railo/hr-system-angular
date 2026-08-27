@@ -3,6 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { PlatformAdminService } from '../../core/services/platform-admin.service';
 import { Plan, PlatformStatistics, PlatformTenant } from '../../core/models/platform-tenant.model';
+import { Subscription } from '../../core/models/subscription.model';
+import { SubscriptionService } from '../../core/services/subscription.service';
 
 @Component({
   standalone: true,
@@ -16,12 +18,15 @@ export class PlatformAdminComponent implements OnInit {
   statistics?: PlatformStatistics;
   plans: Plan[] = [];
   featureCodesText: Record<number, string> = {};
+  subscriptions: Subscription[] = [];
+  subscriptionRenewal: Record<number, string> = {};
+  selectedPlan: Record<number, number> = {};
   search = '';
   loading = true;
   error = '';
   message = '';
 
-  constructor(private platform: PlatformAdminService) {}
+  constructor(private platform: PlatformAdminService, private subscriptionService: SubscriptionService) {}
 
   ngOnInit(): void {
     this.load();
@@ -45,6 +50,46 @@ export class PlatformAdminComponent implements OnInit {
       },
       error: err => this.showError(err)
     });
+    this.subscriptionService.getAll().subscribe({
+      next: subscriptions => {
+        this.subscriptions = subscriptions;
+        subscriptions.forEach(subscription => {
+          this.subscriptionRenewal[subscription.tenantId] = subscription.renewalDate?.slice(0, 10) ?? '';
+          this.selectedPlan[subscription.tenantId] = subscription.planId;
+        });
+      },
+      error: err => this.showError(err)
+    });
+  }
+
+  subscriptionStatus(status: string | number): string {
+    const labels = ['Trial', 'Active', 'PastDue', 'Suspended', 'Cancelled', 'Expired'];
+    return typeof status === 'number' ? labels[status] ?? 'Unknown' : status;
+  }
+
+  activateSubscription(subscription: Subscription): void {
+    this.subscriptionService.activate(subscription.tenantId, {
+      planId: this.selectedPlan[subscription.tenantId],
+      billingCycle: subscription.billingCycle,
+      renewalDate: this.subscriptionRenewal[subscription.tenantId] || undefined
+    }).subscribe({ next: () => { this.message = `${subscription.tenantName} activated.`; this.load(); }, error: err => this.showError(err) });
+  }
+
+  changeSubscriptionPlan(subscription: Subscription): void {
+    this.subscriptionService.changePlan(subscription.tenantId, this.selectedPlan[subscription.tenantId])
+      .subscribe({ next: () => { this.message = `${subscription.tenantName} plan changed.`; this.load(); }, error: err => this.showError(err) });
+  }
+
+  extendSubscription(subscription: Subscription): void {
+    const renewalDate = this.subscriptionRenewal[subscription.tenantId];
+    if (!renewalDate) { this.error = 'Select a renewal date before extending a subscription.'; return; }
+    this.subscriptionService.extend(subscription.tenantId, renewalDate)
+      .subscribe({ next: () => { this.message = `${subscription.tenantName} extended.`; this.load(); }, error: err => this.showError(err) });
+  }
+
+  setSubscriptionStatus(subscription: Subscription, action: 'suspend' | 'cancel'): void {
+    this.subscriptionService.setStatus(subscription.tenantId, action)
+      .subscribe({ next: () => { this.message = `${subscription.tenantName} ${action}ed.`; this.load(); }, error: err => this.showError(err) });
   }
 
   savePlan(plan: Plan): void {

@@ -10,6 +10,7 @@
 
   <p *ngIf="loading">Loading current plan...</p>
   <div class="alert error" *ngIf="error">{{ error }}</div>
+  <div class="alert error" *ngIf="subscriptionError">{{ subscriptionError }}</div>
   <article class="plan-card" *ngIf="plan">
     <div class="plan-card-heading"><div><span class="eyebrow">{{ plan.code }}</span><h2>{{ plan.name }}</h2></div><span class="material-symbols-rounded">verified</span></div>
     <div class="limits">
@@ -20,5 +21,10 @@
     </div>
     <h3>Included features</h3>
     <div class="feature-list"><span *ngFor="let feature of plan.featureCodes"><span class="material-symbols-rounded">check</span>{{ feature.replace('_', ' ') }}</span></div>
+    <div class="subscription-summary" *ngIf="subscription">
+      <div><span>Subscription status</span><strong>{{ statusLabel(subscription.status) }}</strong></div>
+      <div><span>Billing cycle</span><strong>{{ subscription.billingCycle }}</strong></div>
+      <div><span>Renews</span><strong>{{ subscription.renewalDate ? (subscription.renewalDate | date:'mediumDate') : 'Not scheduled' }}</strong></div>
+    </div>
   </article>
 </section>

@@ -58,5 +58,25 @@
       </article>
     </div>
   </section>
+  <section class="subscriptions-section" *ngIf="subscriptions.length">
+    <div class="section-heading"><div><p class="eyebrow">Lifecycle control</p><h2>Tenant subscriptions</h2></div><span class="material-symbols-rounded">autorenew</span></div>
+    <div class="subscription-table">
+      <article class="subscription-row" *ngFor="let subscription of subscriptions">
+        <div><strong>{{ subscription.tenantName }}</strong><small>{{ subscription.planName }}</small></div>
+        <span class="status" [class.suspended]="subscriptionStatus(subscription.status) === 'Suspended'">{{ subscriptionStatus(subscription.status) }}</span>
+        <div class="subscription-fields">
+          <label>Plan<select [(ngModel)]="selectedPlan[subscription.tenantId]"><option *ngFor="let plan of plans" [ngValue]="plan.planId">{{ plan.name }}</option></select></label>
+          <label>Renewal<input type="date" [(ngModel)]="subscriptionRenewal[subscription.tenantId]"></label>
+        </div>
+        <div class="actions">
+          <button *ngIf="subscriptionStatus(subscription.status) !== 'Active'" (click)="activateSubscription(subscription)">Activate</button>
+          <button (click)="changeSubscriptionPlan(subscription)">Change plan</button>
+          <button (click)="extendSubscription(subscription)">Extend</button>
+          <button *ngIf="subscriptionStatus(subscription.status) !== 'Suspended'" (click)="setSubscriptionStatus(subscription, 'suspend')">Suspend</button>
+          <button *ngIf="subscriptionStatus(subscription.status) !== 'Cancelled'" (click)="setSubscriptionStatus(subscription, 'cancel')">Cancel</button>
+        </div>
+      </article>
+    </div>
+  </section>
   <ng-template #loadingState><p>Loading platform tenants...</p></ng-template>
 </section>
