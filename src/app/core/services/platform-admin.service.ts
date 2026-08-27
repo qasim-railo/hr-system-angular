@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { PlatformStatistics, PlatformTenant } from '../models/platform-tenant.model';
+import { Plan, PlatformStatistics, PlatformTenant } from '../models/platform-tenant.model';
 
 @Injectable({ providedIn: 'root' })
 export class PlatformAdminService {
@@ -21,5 +21,13 @@ export class PlatformAdminService {
 
   changeStatus(id: number, action: 'activate' | 'suspend' | 'resume' | 'archive'): Observable<void> {
     return this.http.post<void>(`${this.apiUrl}/tenants/${id}/${action}`, {});
+  }
+
+  getPlans(): Observable<Plan[]> {
+    return this.http.get<Plan[]>(this.apiUrl + '/plans');
+  }
+
+  updatePlan(plan: Plan): Observable<Plan> {
+    return this.http.put<Plan>(`${this.apiUrl}/plans/${plan.planId}`, plan);
   }
 }

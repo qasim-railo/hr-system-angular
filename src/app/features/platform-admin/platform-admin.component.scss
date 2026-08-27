@@ -18,4 +18,18 @@ button { border: 0; border-radius: 7px; padding: .55rem .8rem; cursor: pointer; 
 .alert { padding: .75rem; margin-bottom: 1rem; border-radius: 8px; }
 .success { background: #e7f6ee; color: #1b7c56; }
 .error { background: #fdeceb; color: #b44b42; }
+.plans-section { margin-top: 2rem; }
+.section-heading { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem; }
+.section-heading h2 { margin: 0; color: #123d50; }
+.section-heading > .material-symbols-rounded { color: #158f91; font-size: 2rem; }
+.plans-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+.plan-editor { background: #fff; border-radius: 14px; padding: 1.25rem; box-shadow: 0 8px 24px #183b4d12; }
+.plan-editor-heading { display: flex; justify-content: space-between; }
+.plan-editor-heading h3 { margin: 0 0 1rem; color: #123d50; }
+.plan-editor-heading > .material-symbols-rounded { color: #158f91; }
+.plan-limits { display: grid; grid-template-columns: repeat(2, 1fr); gap: .75rem; }
+.plan-editor label { display: grid; gap: .3rem; color: #6b7e87; font-size: .8rem; margin-bottom: .75rem; }
+.plan-editor input, .plan-editor textarea { border: 1px solid #d7e1e5; border-radius: 7px; padding: .55rem; font: inherit; color: #123d50; }
+.save-plan { background: #158f91; color: #fff; }
+@media (max-width: 700px) { .plans-grid { grid-template-columns: 1fr; } }
 @media (max-width: 1000px) { .stats-grid { grid-template-columns: repeat(3, 1fr); } .tenant-row { grid-template-columns: 1fr 1fr; } .tenant-row.header { display: none; } }

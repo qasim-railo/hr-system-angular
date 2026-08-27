@@ -32,6 +32,10 @@ export const routes: Routes = [
         loadComponent: () => import('./features/platform-admin/platform-admin.component').then(m => m.PlatformAdminComponent)
       },
       {
+        path: 'plan',
+        loadComponent: () => import('./features/tenant-plan/tenant-plan.component').then(m => m.TenantPlanComponent)
+      },
+      {
         path: 'access-management',
         canActivate: [permissionGuard('Users.Manage')],
         loadComponent: () => import('./features/access/access-management/access-management.component').then(m => m.AccessManagementComponent)

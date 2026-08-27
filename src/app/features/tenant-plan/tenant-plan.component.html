@@ -1,0 +1,24 @@
+<section class="plan-page">
+  <header class="page-heading">
+    <div>
+      <p class="eyebrow">Tenant subscription</p>
+      <h1>Current plan</h1>
+      <p class="subtitle">Your PeopleOS features and workspace limits.</p>
+    </div>
+    <span class="material-symbols-rounded heading-icon">workspace_premium</span>
+  </header>
+
+  <p *ngIf="loading">Loading current plan...</p>
+  <div class="alert error" *ngIf="error">{{ error }}</div>
+  <article class="plan-card" *ngIf="plan">
+    <div class="plan-card-heading"><div><span class="eyebrow">{{ plan.code }}</span><h2>{{ plan.name }}</h2></div><span class="material-symbols-rounded">verified</span></div>
+    <div class="limits">
+      <div><strong>{{ plan.maxEmployees }}</strong><span>Employees</span></div>
+      <div><strong>{{ plan.maxUsers }}</strong><span>Users</span></div>
+      <div><strong>{{ plan.maxBranches }}</strong><span>Branches</span></div>
+      <div><strong>{{ formatStorage(plan.maxStorageBytes) }}</strong><span>Storage</span></div>
+    </div>
+    <h3>Included features</h3>
+    <div class="feature-list"><span *ngFor="let feature of plan.featureCodes"><span class="material-symbols-rounded">check</span>{{ feature.replace('_', ' ') }}</span></div>
+  </article>
+</section>

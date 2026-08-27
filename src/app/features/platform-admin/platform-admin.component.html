@@ -41,5 +41,22 @@
     </div>
     <p *ngIf="!tenants.length">No tenants found.</p>
   </div>
+  <section class="plans-section" *ngIf="plans.length">
+    <div class="section-heading"><div><p class="eyebrow">SaaS catalog</p><h2>Plans and feature access</h2></div><span class="material-symbols-rounded">layers</span></div>
+    <div class="plans-grid">
+      <article class="plan-editor" *ngFor="let plan of plans">
+        <div class="plan-editor-heading"><div><span class="eyebrow">{{ plan.code }}</span><h3>{{ plan.name }}</h3></div><span class="material-symbols-rounded">workspace_premium</span></div>
+        <div class="plan-limits">
+          <label>Name<input [(ngModel)]="plan.name"></label>
+          <label>Employees<input type="number" min="0" [(ngModel)]="plan.maxEmployees"></label>
+          <label>Users<input type="number" min="0" [(ngModel)]="plan.maxUsers"></label>
+          <label>Branches<input type="number" min="0" [(ngModel)]="plan.maxBranches"></label>
+          <label>Storage (bytes)<input type="number" min="0" [(ngModel)]="plan.maxStorageBytes"></label>
+        </div>
+        <label>Feature codes (comma separated)<textarea rows="3" [(ngModel)]="featureCodesText[plan.planId]"></textarea></label>
+        <button type="button" class="save-plan" (click)="savePlan(plan)">Save plan</button>
+      </article>
+    </div>
+  </section>
   <ng-template #loadingState><p>Loading platform tenants...</p></ng-template>
 </section>

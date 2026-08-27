@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { PlatformAdminService } from '../../core/services/platform-admin.service';
-import { PlatformStatistics, PlatformTenant } from '../../core/models/platform-tenant.model';
+import { Plan, PlatformStatistics, PlatformTenant } from '../../core/models/platform-tenant.model';
 
 @Component({
   standalone: true,
@@ -14,6 +14,8 @@ import { PlatformStatistics, PlatformTenant } from '../../core/models/platform-t
 export class PlatformAdminComponent implements OnInit {
   tenants: PlatformTenant[] = [];
   statistics?: PlatformStatistics;
+  plans: Plan[] = [];
+  featureCodesText: Record<number, string> = {};
   search = '';
   loading = true;
   error = '';
@@ -35,6 +37,28 @@ export class PlatformAdminComponent implements OnInit {
     this.platform.getTenants(this.search).subscribe({
       next: tenants => { this.tenants = tenants; this.loading = false; },
       error: err => { this.loading = false; this.showError(err); }
+    });
+    this.platform.getPlans().subscribe({
+      next: plans => {
+        this.plans = plans;
+        plans.forEach(plan => this.featureCodesText[plan.planId] = plan.featureCodes.join(', '));
+      },
+      error: err => this.showError(err)
+    });
+  }
+
+  savePlan(plan: Plan): void {
+    plan.featureCodes = this.featureCodesText[plan.planId]
+      .split(',')
+      .map(code => code.trim().toUpperCase())
+      .filter(Boolean);
+    this.platform.updatePlan(plan).subscribe({
+      next: saved => {
+        const index = this.plans.findIndex(item => item.planId === saved.planId);
+        if (index >= 0) this.plans[index] = saved;
+        this.message = `${saved.name} updated successfully.`;
+      },
+      error: err => this.showError(err)
     });
   }
 

@@ -23,3 +23,14 @@ export interface PlatformStatistics {
   totalEmployees: number;
   totalStorageUsedBytes: number;
 }
+
+export interface Plan {
+  planId: number;
+  code: string;
+  name: string;
+  maxEmployees: number;
+  maxUsers: number;
+  maxBranches: number;
+  maxStorageBytes: number;
+  featureCodes: string[];
+}
