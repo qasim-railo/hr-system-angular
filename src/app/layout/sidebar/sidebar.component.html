@@ -89,6 +89,10 @@
       <a class="nav-link text-white" routerLink="/access-management" routerLinkActive="active"
         [routerLinkActiveOptions]="{ exact: true }"><span class="material-symbols-rounded">admin_panel_settings</span>Access Management</a>
     </li>
+    <li class="nav-item" *ngIf="auth.hasPermission('Platform.Tenants')">
+      <a class="nav-link text-white" routerLink="/platform-admin" routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"><span class="material-symbols-rounded">domain</span>PeopleOS Super Admin</a>
+    </li>
 
     <!-- <li class="nav-item">
       <a class="nav-link text-white" routerLink="/settings" routerLinkActive="active"

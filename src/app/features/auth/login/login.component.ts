@@ -1,14 +1,14 @@
 import { Component } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MATERIAL_UI_MODULES } from '../../../shared/material-ui.imports';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
 import { AlertService } from '../../../core/services/alert.service';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [MATERIAL_UI_MODULES, ReactiveFormsModule],
+  imports: [MATERIAL_UI_MODULES, ReactiveFormsModule, RouterModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })

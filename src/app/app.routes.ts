@@ -10,6 +10,7 @@ import { AssetsFormComponent } from './features/assets/assets-form/assets-form.c
 export const routes: Routes = [
   // Unprotected Auth Route
   { path: 'login', component: LoginComponent },
+  { path: 'register', loadComponent: () => import('./features/auth/registration/registration.component').then(m => m.RegistrationComponent) },
 
   // Protected Main Layout
   {
@@ -19,6 +20,11 @@ export const routes: Routes = [
     children: [
       // Default Dashboard
       { path: 'dashboard', component: DashboardComponent },
+      {
+        path: 'platform-admin',
+        canActivate: [permissionGuard('Platform.Tenants')],
+        loadComponent: () => import('./features/platform-admin/platform-admin.component').then(m => m.PlatformAdminComponent)
+      },
       {
         path: 'access-management',
         canActivate: [permissionGuard('Users.Manage')],

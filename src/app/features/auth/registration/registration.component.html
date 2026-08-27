@@ -1,0 +1,36 @@
+<main class="registration-shell">
+  <section class="registration-card">
+    <div class="brand"><span class="brand-mark">hub</span><strong>PeopleOS</strong></div>
+    <ng-container *ngIf="!result; else success">
+      <p class="eyebrow">Start your workspace</p>
+      <h1>Create your PeopleOS tenant</h1>
+      <p class="intro">Register your company and receive a ready-to-configure HR workspace.</p>
+      <div class="alert error" *ngIf="error">{{ error }}</div>
+      <form [formGroup]="form" (ngSubmit)="submit()">
+        <h2>Company details</h2>
+        <div class="grid">
+          <label>Legal name<input formControlName="legalName"></label><label>Trade name<input formControlName="tradeName"></label>
+          <label>Commercial registration number<input formControlName="commercialRegistrationNumber"></label><label>Industry<input formControlName="industry"></label>
+          <label>Employee count<input type="number" formControlName="employeeCount"></label><label>Country code<input formControlName="country"></label>
+          <label>Company email<input type="email" formControlName="email"></label><label>Company phone<input formControlName="phone"></label>
+          <label class="wide">Address<input formControlName="address"></label><label>Website<input formControlName="website"></label>
+          <label>Contact person<input formControlName="contactPerson"></label><label>Contact phone<input formControlName="contactPhone"></label>
+        </div>
+        <h2>Administrator</h2>
+        <div class="grid">
+          <label>Name<input formControlName="administratorName"></label><label>Username<input formControlName="administratorUsername"></label>
+          <label>Email<input type="email" formControlName="administratorEmail"></label><label>Phone<input formControlName="administratorPhone"></label>
+          <label>Password<input type="password" formControlName="administratorPassword"></label>
+        </div>
+        <button type="submit" [disabled]="loading">{{ loading ? 'Creating workspace...' : 'Create workspace' }}</button>
+      </form>
+      <p class="login-link">Already registered? <a routerLink="/login">Sign in</a></p>
+    </ng-container>
+    <ng-template #success>
+      <div class="success"><span class="brand-mark">check</span><h1>Workspace created</h1>
+        <p>Your tenant is ready. Sign in with <strong>{{ result?.administratorUsername }}</strong> to continue setup.</p>
+        <p class="code">Tenant code: {{ result?.tenantCode }}</p><button type="button" (click)="goToLogin()">Go to sign in</button>
+      </div>
+    </ng-template>
+  </section>
+</main>

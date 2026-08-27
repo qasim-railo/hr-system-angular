@@ -1,0 +1,45 @@
+<section class="platform-page">
+  <header class="page-heading">
+    <div>
+      <p class="eyebrow">PeopleOS platform</p>
+      <h1>Super Admin</h1>
+      <p class="subtitle">Manage customer tenants without exposing unrestricted employee data.</p>
+    </div>
+    <span class="material-symbols-rounded heading-icon">admin_panel_settings</span>
+  </header>
+
+  <div class="alert success" *ngIf="message">{{ message }}</div>
+  <div class="alert error" *ngIf="error">{{ error }}</div>
+
+  <div class="stats-grid" *ngIf="statistics">
+    <article><strong>{{ statistics.totalTenants }}</strong><span>Total tenants</span></article>
+    <article><strong>{{ statistics.activeTenants }}</strong><span>Active</span></article>
+    <article><strong>{{ statistics.trialTenants }}</strong><span>Trial</span></article>
+    <article><strong>{{ statistics.suspendedTenants }}</strong><span>Suspended</span></article>
+    <article><strong>{{ statistics.totalEmployees }}</strong><span>Employees</span></article>
+    <article><strong>{{ formatStorage(statistics.totalStorageUsedBytes) }}</strong><span>Storage used</span></article>
+  </div>
+
+  <div class="toolbar">
+    <input [(ngModel)]="search" (keyup.enter)="load()" placeholder="Search tenant name or code">
+    <button type="button" (click)="load()">Search</button>
+  </div>
+
+  <div class="tenant-table" *ngIf="!loading; else loadingState">
+    <div class="tenant-row header"><span>Tenant</span><span>Status</span><span>Plan / billing</span><span>Usage</span><span>Actions</span></div>
+    <div class="tenant-row" *ngFor="let tenant of tenants">
+      <div><strong>{{ tenant.name }}</strong><small>{{ tenant.code }}</small></div>
+      <span class="status" [class.suspended]="tenant.status === 'Suspended'">{{ tenant.status }}</span>
+      <div><span>{{ tenant.planName }}</span><small>{{ tenant.billingStatus }}</small></div>
+      <div><span>{{ tenant.userCount }} users · {{ tenant.employeeCount }} employees</span><small>{{ formatStorage(tenant.storageUsedBytes) }}</small></div>
+      <div class="actions">
+        <button *ngIf="tenant.status === 'Suspended'" (click)="setStatus(tenant, 'resume')">Resume</button>
+        <button *ngIf="tenant.status !== 'Suspended' && tenant.status !== 'Archived'" (click)="setStatus(tenant, 'suspend')">Suspend</button>
+        <button *ngIf="tenant.status !== 'Archived'" (click)="setStatus(tenant, 'archive')">Archive</button>
+        <button *ngIf="tenant.status === 'Archived'" (click)="setStatus(tenant, 'activate')">Activate</button>
+      </div>
+    </div>
+    <p *ngIf="!tenants.length">No tenants found.</p>
+  </div>
+  <ng-template #loadingState><p>Loading platform tenants...</p></ng-template>
+</section>
