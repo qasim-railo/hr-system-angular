@@ -7,6 +7,18 @@ import {
 } from '../models/employee-document.model'; // adjust path as needed
 import { environment } from '../../../environments/environment';
 
+export interface FileRecord {
+  fileId: number;
+  entityType: string;
+  entityId: string;
+  documentType: string;
+  originalFileName: string;
+  mimeType: string;
+  size: number;
+  uploadedAt: string;
+  status: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -48,5 +60,21 @@ export class EmployeeDocumentService {
    */
   delete(documentId: number): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/${documentId}`);
+  }
+
+  searchFiles(filters: { entityType?: string; entityId?: number; search?: string; documentType?: string; status?: string }): Observable<FileRecord[]> {
+    const params: Record<string, string> = {};
+    Object.entries(filters).forEach(([key, value]) => {
+      if (value !== undefined && value !== '') params[key] = String(value);
+    });
+    return this.http.get<FileRecord[]>(`${environment.apiUrl}/files`, { params });
+  }
+
+  downloadFile(fileId: number): Observable<Blob> {
+    return this.http.get(`${environment.apiUrl}/files/${fileId}/download`, { responseType: 'blob' });
+  }
+
+  deleteFile(fileId: number): Observable<void> {
+    return this.http.delete<void>(`${environment.apiUrl}/files/${fileId}`);
   }
 }

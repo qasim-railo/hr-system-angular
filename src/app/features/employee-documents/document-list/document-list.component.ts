@@ -1,7 +1,8 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { EmployeeDocument } from '../../../core/models/employee-document.model';
-import { EmployeeDocumentService } from '../../../core/services/employee-document.service';
+import { EmployeeDocumentService, FileRecord } from '../../../core/services/employee-document.service';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTableModule } from '@angular/material/table';
@@ -11,9 +12,7 @@ import { MATERIAL_UI_MODULES } from '../../../shared/material-ui.imports';
 @Component({
   selector: 'app-document-list',
   standalone: true,
-  imports: [ 
-   MATERIAL_UI_MODULES
-  ],
+  imports: [CommonModule, FormsModule, ...MATERIAL_UI_MODULES],
   templateUrl: './document-list.component.html'
 })
 export class DocumentListComponent implements OnInit,OnChanges  {
@@ -22,7 +21,9 @@ export class DocumentListComponent implements OnInit,OnChanges  {
 
   @Input() employeeId!: number;
 
-  documents: EmployeeDocument[] = [];
+  documents: FileRecord[] = [];
+  search = '';
+  documentType = '';
   displayedColumns: string[] = ['fileName', 'fileType', 'uploadedAt', 'actions'];
 
   ngOnInit(): void {
@@ -44,13 +45,15 @@ export class DocumentListComponent implements OnInit,OnChanges  {
 
 
   loadDocuments() {
-    this.documentService.getByEmployeeId(this.employeeId).subscribe((docs) => {
+    this.documentService.searchFiles({ entityType: 'Employee', entityId: this.employeeId, search: this.search, documentType: this.documentType, status: 'Active' }).subscribe((docs) => {
       this.documents = docs;
     });
   }
 
+  applySearch(): void { this.loadDocuments(); }
+
   download(id: number) {
-    this.documentService.download(id).subscribe((blob) => {
+    this.documentService.downloadFile(id).subscribe((blob) => {
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
@@ -62,7 +65,7 @@ export class DocumentListComponent implements OnInit,OnChanges  {
 
   delete(id: number) {
     if (confirm('Are you sure you want to delete this document?')) {
-      this.documentService.delete(id).subscribe(() => {
+      this.documentService.deleteFile(id).subscribe(() => {
         this.loadDocuments();
       });
     }
