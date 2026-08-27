@@ -24,6 +24,9 @@ export class DocumentUploadComponent {
 
   form: FormGroup;
   selectedFile!: File;
+  fileError = '';
+  readonly maxFileSize = 25 * 1024 * 1024;
+  readonly allowedExtensions = ['pdf', 'png', 'jpg', 'jpeg', 'doc', 'docx', 'xls', 'xlsx', 'txt'];
   documentTypes: string[] = ['Passport', 'Visa', 'Contract', 'QID', 'Other'];
 
   constructor(
@@ -37,13 +40,21 @@ export class DocumentUploadComponent {
 
   onFileChange(event: any): void {
     const file = event.target.files?.[0];
-    if (file) {
-      this.selectedFile = file;
+    this.fileError = '';
+    this.selectedFile = undefined!;
+    if (!file) return;
+    const extension = file.name.split('.').pop()?.toLowerCase();
+    if (!extension || !this.allowedExtensions.includes(extension)) {
+      this.fileError = 'This file type is not allowed.';
+      return;
     }
+    if (file.size === 0) { this.fileError = 'The selected file is empty.'; return; }
+    if (file.size > this.maxFileSize) { this.fileError = 'Files must be 25 MB or smaller.'; return; }
+    this.selectedFile = file;
   }
 
   onSubmit(): void {
-    if (this.form.invalid || !this.selectedFile) return;
+    if (this.form.invalid || !this.selectedFile || this.fileError) return;
 
     const uploadModel: EmployeeDocumentUpload = {
       employeeId: this.employeeId,

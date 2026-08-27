@@ -15,6 +15,7 @@
          <div class="file-input-wrapper">
   <label for="fileUpload">File</label>
   <input id="fileUpload" type="file" (change)="onFileChange($event)" required />
+  <small class="text-danger" *ngIf="fileError">{{ fileError }}</small>
 </div>
 
             <!-- <mat-form-field appearance="outline" class="w-100">
