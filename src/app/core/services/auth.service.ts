@@ -17,18 +17,47 @@ export class AuthService {
   }
 
   setToken(token: string) {
-    localStorage.setItem('jwt', token);
+    if (typeof localStorage !== 'undefined') {
+      localStorage.setItem('jwt', token);
+    }
   }
 
   getToken(): string | null {
-    return localStorage.getItem('jwt');
+    return typeof localStorage !== 'undefined' ? localStorage.getItem('jwt') : null;
   }
 
   logout() {
-    localStorage.removeItem('jwt');
+    if (typeof localStorage !== 'undefined') {
+      localStorage.removeItem('jwt');
+    }
   }
 
   isLoggedIn(): boolean {
     return !!this.getToken();
+  }
+
+  getTokenPayload(): any {
+    const token = this.getToken();
+    if (!token) return null;
+    try {
+      const payload = token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
+      return JSON.parse(atob(payload + '='.repeat((4 - payload.length % 4) % 4)));
+    } catch {
+      return null;
+    }
+  }
+
+  getTenantId(): number | null {
+    const tenantId = this.getTokenPayload()?.tenant_id;
+    return typeof tenantId === 'string' && Number.isInteger(Number(tenantId))
+      ? Number(tenantId)
+      : typeof tenantId === 'number' && Number.isInteger(tenantId)
+        ? tenantId
+        : null;
+  }
+
+  hasPermission(permission: string): boolean {
+    const permissions = this.getTokenPayload()?.permission;
+    return Array.isArray(permissions) ? permissions.includes(permission) : permissions === permission;
   }
 }

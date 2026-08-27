@@ -2,19 +2,19 @@
     <!-- Top Stat Cards -->
     <div class="stat-cards mb-4 d-flex flex-wrap gap-3">
         <mat-card class="stat-card bg-primary text-white flex-fill">
-            <h5>👥 Employees</h5>
+            <h5><span class="material-symbols-rounded">badge</span> Employees</h5>
             <h3>{{ employeesCount }}</h3>
         </mat-card>
         <mat-card class="stat-card bg-success text-white flex-fill">
-            <h5>🏢 Departments</h5>
+            <h5><span class="material-symbols-rounded">account_tree</span> Departments</h5>
             <h3>{{ departmentsCount }}</h3>
         </mat-card>
         <mat-card class="stat-card bg-warning text-white flex-fill">
-            <h5>🕒 Pending Leaves</h5>
+            <h5><span class="material-symbols-rounded">pending_actions</span> Pending Leaves</h5>
             <h3>{{ pendingLeaves }}</h3>
         </mat-card>
         <mat-card class="stat-card bg-danger text-white flex-fill">
-            <h5>📄 Approved Payrolls</h5>
+            <h5><span class="material-symbols-rounded">payments</span> Approved Payrolls</h5>
             <h3>{{ payrollsCount }}</h3>
         </mat-card>
     </div>
@@ -23,7 +23,7 @@
     <div class="row">
         <div class="col-md-6 mb-4">
             <mat-card>
-                <h5>📌 Upcoming Leaves</h5>
+                <h5><span class="material-symbols-rounded">event</span> Upcoming Leaves</h5>
                 <p *ngIf="!upcomingLeaves.length">No upcoming leaves</p>
                 <ul *ngIf="upcomingLeaves.length">
                     <li *ngFor="let leave of upcomingLeaves">
@@ -35,7 +35,7 @@
 
         <div class="col-md-6 mb-4">
             <mat-card>
-                <h5>📈 Recent Increments</h5>
+                <h5><span class="material-symbols-rounded">trending_up</span> Recent Increments</h5>
                 <ul *ngIf="recentIncrements.length">
                     <li *ngFor="let inc of recentIncrements">
                         {{ inc.employee.firstName }} - {{ inc.newSalary }} on {{ inc.incrementDate | date }}
@@ -49,7 +49,7 @@
     <!-- Chart -->
     <div class="chart-container mb-4">
         <mat-card>
-            <h5>👨‍💼 Department-wise Employees</h5>
+            <h5><span class="material-symbols-rounded">donut_small</span> Department-wise Employees</h5>
             <div style="height: 300px;">
                 <canvas baseChart [data]="departmentChartData" [options]="chartOptions" [type]="'doughnut'">
                 </canvas>

@@ -1,48 +1,51 @@
-<nav class="bg-dark text-white p-3" style="width: 250px;">
-  <h4 class="text-center mb-4">HR System</h4>
+<nav class="sidebar-nav text-white p-3">
+  <div class="brand-lockup">
+    <span class="brand-mark"><span class="material-symbols-rounded">hub</span></span>
+    <div><strong>PeopleOS</strong><small>HR operations</small></div>
+  </div>
   <ul class="nav flex-column">
-    <li class="nav-item">
+    <li class="nav-item" *ngIf="auth.hasPermission('Employees.View')">
       <a class="nav-link text-white" routerLink="/dashboard" routerLinkActive="active"
-        [routerLinkActiveOptions]="{ exact: true }">Dashboard</a>
+        [routerLinkActiveOptions]="{ exact: true }"><span class="material-symbols-rounded">space_dashboard</span>Dashboard</a>
     </li>
 
     <li class="nav-item">
       <a class="nav-link text-white" routerLink="/employees" routerLinkActive="active"
-        [routerLinkActiveOptions]="{ exact: true }">Employees</a>
+        [routerLinkActiveOptions]="{ exact: true }"><span class="material-symbols-rounded">badge</span>Employees</a>
     </li>
 
     <li class="nav-item">
       <a class="nav-link text-white" routerLink="/companies" routerLinkActive="active"
-        [routerLinkActiveOptions]="{ exact: true }">Companies</a>
+        [routerLinkActiveOptions]="{ exact: true }"><span class="material-symbols-rounded">business</span>Companies</a>
     </li>
 
     <li class="nav-item">
       <a class="nav-link text-white" routerLink="/departments" routerLinkActive="active"
-        [routerLinkActiveOptions]="{ exact: true }">Departments</a>
+        [routerLinkActiveOptions]="{ exact: true }"><span class="material-symbols-rounded">account_tree</span>Departments</a>
     </li>
 
     <li class="nav-item">
       <a class="nav-link text-white" routerLink="/documents" routerLinkActive="active"
-        [routerLinkActiveOptions]="{ exact: true }">Documents</a>
+        [routerLinkActiveOptions]="{ exact: true }"><span class="material-symbols-rounded">description</span>Documents</a>
     </li>
 
     <li class="nav-item">
       <a class="nav-link text-white" routerLink="/assets" routerLinkActive="active"
-        [routerLinkActiveOptions]="{ exact: true }">Assets</a>
+        [routerLinkActiveOptions]="{ exact: true }"><span class="material-symbols-rounded">inventory_2</span>Assets</a>
     </li>
   
 <li class="nav-item">
       <a class="nav-link text-white" routerLink="/employee-assets" routerLinkActive="active"
-        [routerLinkActiveOptions]="{ exact: true }">Employee Assets</a>
+        [routerLinkActiveOptions]="{ exact: true }"><span class="material-symbols-rounded">assignment_ind</span>Employee Assets</a>
     </li>
     <li class="nav-item">
       <a class="nav-link text-white" routerLink="/shifts" routerLinkActive="active"
-        [routerLinkActiveOptions]="{ exact: true }">Shift</a>
+        [routerLinkActiveOptions]="{ exact: true }"><span class="material-symbols-rounded">schedule</span>Shift</a>
     </li>
 
     <li class="nav-item">
       <a class="nav-link text-white" routerLink="/employee-shift" routerLinkActive="active"
-        [routerLinkActiveOptions]="{ exact: true }">Employee Shift</a>
+        [routerLinkActiveOptions]="{ exact: true }"><span class="material-symbols-rounded">event_available</span>Employee Shift</a>
     </li>
     <!-- <li class="nav-item">
   <a class="nav-link text-white" routerLink="/employee-shifts" routerLinkActive="active">Employee Shifts</a>
@@ -50,7 +53,7 @@
 
     <li class="nav-item">
       <a class="nav-link text-white" routerLink="/attendance" routerLinkActive="active"
-        [routerLinkActiveOptions]="{ exact: true }">Attendance</a>
+        [routerLinkActiveOptions]="{ exact: true }"><span class="material-symbols-rounded">fact_check</span>Attendance</a>
     </li>
 
     <!-- <li class="nav-item">
@@ -60,27 +63,31 @@
 
     <li class="nav-item">
       <a class="nav-link text-white" routerLink="/payroll" routerLinkActive="active"
-        [routerLinkActiveOptions]="{ exact: true }">Payroll</a>
+        [routerLinkActiveOptions]="{ exact: true }"><span class="material-symbols-rounded">payments</span>Payroll</a>
     </li>
 
     <li class="nav-item">
       <a class="nav-link text-white" routerLink="/leaves" routerLinkActive="active"
-        [routerLinkActiveOptions]="{ exact: true }">Leaves</a>
+        [routerLinkActiveOptions]="{ exact: true }"><span class="material-symbols-rounded">beach_access</span>Leaves</a>
     </li>
 
     <li class="nav-item">
       <a class="nav-link text-white" routerLink="/final-settlement" routerLinkActive="active"
-        [routerLinkActiveOptions]="{ exact: true }">Final Settlement</a>
+        [routerLinkActiveOptions]="{ exact: true }"><span class="material-symbols-rounded">task_alt</span>Final Settlement</a>
     </li>
 
     <li class="nav-item">
       <a class="nav-link text-white" routerLink="/gratuity-report" routerLinkActive="active"
-        [routerLinkActiveOptions]="{ exact: true }">Gratuity Report</a>
+        [routerLinkActiveOptions]="{ exact: true }"><span class="material-symbols-rounded">bar_chart</span>Gratuity Report</a>
     </li>
 
     <li class="nav-item">
       <a class="nav-link text-white" routerLink="/increment-history" routerLinkActive="active"
-        [routerLinkActiveOptions]="{ exact: true }">Increments</a>
+        [routerLinkActiveOptions]="{ exact: true }"><span class="material-symbols-rounded">trending_up</span>Increments</a>
+    </li>
+    <li class="nav-item" *ngIf="auth.hasPermission('Users.Manage')">
+      <a class="nav-link text-white" routerLink="/access-management" routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"><span class="material-symbols-rounded">admin_panel_settings</span>Access Management</a>
     </li>
 
     <!-- <li class="nav-item">

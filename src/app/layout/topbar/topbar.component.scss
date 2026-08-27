@@ -1,8 +1,16 @@
-.navbar {
+.topbar {
+  background: rgba(255, 255, 255, .88);
+  border-bottom: 1px solid #dce6e2;
   height: 70px;
-  border-bottom: 1px solid #ccc;
+  justify-content: space-between;
+  margin-left: 258px;
+  backdrop-filter: blur(12px);
 }
-.navbar-expand {
-    flex-wrap: nowrap;
-    justify-content: flex-end;
+.topbar-context { align-items: center; color: #71817d; display: flex; font-size: 12px; gap: 8px; }
+.topbar-context .material-symbols-rounded { color: #087f70; font-size: 18px; }
+.logout-button { align-items: center; background: transparent; border: 1px solid #d6e1dd; border-radius: 7px; color: #52635e; display: flex; font-size: 12px; gap: 7px; padding: 8px 12px; }
+.logout-button:hover { background: #fff1ee; border-color: #edb0a8; color: #b34e43; }
+@media (max-width: 768px) {
+  .topbar { margin-left: 76px; padding: 0 14px !important; }
+  .topbar-context span:last-child { display: none; }
 }

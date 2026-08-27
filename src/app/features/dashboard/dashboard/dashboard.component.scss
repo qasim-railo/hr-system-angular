@@ -1,5 +1,5 @@
 .dashboard-container {
-  max-width: 1200px;
+  max-width: 1280px;
   margin: auto;
 }
 
@@ -13,11 +13,24 @@
   flex: 1 1 22%;
   padding: 1rem;
   color: #fff;
+  border: 0 !important;
   border-radius: 10px;
-  text-align: center;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  text-align: left;
+  box-shadow: 0 10px 24px rgba(24,45,40,.10) !important;
   min-width: 200px;
 }
+.stat-card h5 { align-items: center; color: inherit; display: flex; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 600; gap: 7px; opacity: .9; }
+.stat-card h5 .material-symbols-rounded { font-size: 19px; }
+.stat-card h3 { color: inherit; font-size: 34px; margin: 18px 0 2px; }
+.stat-card:nth-child(1) { background: #087f70 !important; }
+.stat-card:nth-child(2) { background: #285c64 !important; }
+.stat-card:nth-child(3) { background: #d28a32 !important; }
+.stat-card:nth-child(4) { background: #b6534a !important; }
+.dashboard-container mat-card { padding: 22px; }
+.dashboard-container mat-card h5 { align-items: center; display: flex; font-size: 16px; gap: 8px; margin-bottom: 18px; }
+.dashboard-container mat-card h5 .material-symbols-rounded { color: #087f70; font-size: 20px; }
+.dashboard-container ul { color: #52635e; line-height: 2; padding-left: 18px; }
+.dashboard-container p { color: #8a9894; font-size: 13px; }
 
 .chart-container {
   width: 100%;

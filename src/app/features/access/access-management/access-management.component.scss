@@ -1,0 +1,32 @@
+.access-page { max-width: 1280px; margin: 0 auto; }
+.page-heading { align-items: flex-start; display: flex; justify-content: space-between; margin-bottom: 28px; }
+.eyebrow { color: #087f70; font-size: 11px; font-weight: 700; letter-spacing: .1em; margin: 0 0 7px; text-transform: uppercase; }
+.page-heading h1 { font-size: 32px; margin: 0 0 6px; }
+.subtitle, .card-heading p { color: #71817d; font-size: 13px; margin: 0; }
+.heading-icon { color: #087f70; font-size: 40px; }
+.management-grid { display: grid; gap: 20px; grid-template-columns: repeat(2, minmax(0, 1fr)); margin-bottom: 20px; }
+.form-card, .directory-card { padding: 24px !important; }
+.card-heading { align-items: center; display: flex; gap: 12px; margin-bottom: 24px; }
+.card-heading h2 { font-size: 18px; margin: 0 0 4px; }
+.icon-tile { align-items: center; border-radius: 8px; display: flex; height: 42px; justify-content: center; width: 42px; }
+.icon-tile.teal { background: #d8f1e9; color: #087f70; }
+.icon-tile.amber { background: #fff0d6; color: #b8741e; }
+.icon-tile.coral { background: #ffe3df; color: #b6534a; }
+.field-label { color: #52635e; font-size: 12px; font-weight: 700; margin: 2px 0 10px; }
+.permission-grid { display: grid; gap: 3px 12px; grid-template-columns: repeat(2, minmax(0, 1fr)); margin-bottom: 23px; }
+.permission-grid ::ng-deep .mdc-form-field { color: #52635e; font-size: 12px; }
+button { align-items: center; display: inline-flex; gap: 7px; }
+.user-list { border-top: 1px solid #edf1ef; }
+.user-row { align-items: center; border-bottom: 1px solid #edf1ef; display: flex; gap: 13px; padding: 14px 0; }
+.avatar { align-items: center; background: #d8f1e9; border-radius: 50%; color: #087f70; display: flex; font-family: 'Space Grotesk', sans-serif; font-weight: 700; height: 36px; justify-content: center; width: 36px; }
+.user-info { display: grid; gap: 3px; min-width: 120px; }
+.user-info strong { color: #263b36; font-size: 13px; }
+.user-info span { color: #8a9894; font-size: 11px; }
+.role-list { display: flex; flex-wrap: wrap; gap: 6px; margin-left: auto; }
+.role-chip { background: #eef6f3; border-radius: 5px; color: #31756c; font-size: 11px; font-weight: 600; padding: 5px 8px; }
+.empty-state { color: #8a9894; font-size: 13px; padding: 12px 0; }
+@media (max-width: 800px) {
+  .management-grid { grid-template-columns: 1fr; }
+  .page-heading h1 { font-size: 27px; }
+  .form-card, .directory-card { padding: 18px !important; }
+}

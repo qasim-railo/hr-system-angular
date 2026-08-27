@@ -1,0 +1,44 @@
+<section class="access-page">
+  <header class="page-heading">
+    <div>
+      <p class="eyebrow">Administration</p>
+      <h1>Access management</h1>
+      <p class="subtitle">Design roles once, then give each user exactly the access they need.</p>
+    </div>
+    <span class="material-symbols-rounded heading-icon">admin_panel_settings</span>
+  </header>
+
+  <div class="alert success" *ngIf="message"><span class="material-symbols-rounded">check_circle</span>{{ message }}</div>
+  <div class="alert error" *ngIf="error"><span class="material-symbols-rounded">error</span>{{ error }}</div>
+
+  <div class="management-grid">
+    <mat-card class="form-card">
+      <div class="card-heading"><span class="icon-tile teal"><span class="material-symbols-rounded">shield_person</span></span><div><h2>Create a role</h2><p>Bundle permissions into a reusable access profile.</p></div></div>
+      <form [formGroup]="roleForm" (ngSubmit)="createRole()">
+        <mat-form-field appearance="outline"><mat-label>Role name</mat-label><input matInput formControlName="name" placeholder="e.g. Payroll Manager"></mat-form-field>
+        <p class="field-label">Permissions</p>
+        <div class="permission-grid"><mat-checkbox *ngFor="let permission of permissions" [checked]="roleForm.value.permissions?.includes(permission.name)" (change)="togglePermission(permission.name, $event.checked)">{{ permission.name }}</mat-checkbox></div>
+        <button mat-flat-button color="primary" type="submit" [disabled]="roleForm.invalid"><span class="material-symbols-rounded">add</span>Create role</button>
+      </form>
+    </mat-card>
+
+    <mat-card class="form-card">
+      <div class="card-heading"><span class="icon-tile amber"><span class="material-symbols-rounded">person_add</span></span><div><h2>Add a user</h2><p>Assign one or more roles to a team member.</p></div></div>
+      <form [formGroup]="userForm" (ngSubmit)="createUser()">
+        <mat-form-field appearance="outline"><mat-label>Username</mat-label><input matInput formControlName="username" autocomplete="username"></mat-form-field>
+        <mat-form-field appearance="outline"><mat-label>Temporary password</mat-label><input matInput type="password" formControlName="password" autocomplete="new-password"></mat-form-field>
+        <mat-form-field appearance="outline"><mat-label>Assign roles</mat-label><mat-select formControlName="roles" multiple><mat-option *ngFor="let role of roles" [value]="role.name">{{ role.name }}</mat-option></mat-select></mat-form-field>
+        <mat-checkbox formControlName="isActive">Active user</mat-checkbox>
+        <button mat-flat-button color="primary" type="submit" [disabled]="userForm.invalid"><span class="material-symbols-rounded">person_add</span>Create user</button>
+      </form>
+    </mat-card>
+  </div>
+
+  <mat-card class="directory-card">
+    <div class="card-heading"><span class="icon-tile coral"><span class="material-symbols-rounded">manage_accounts</span></span><div><h2>Directory</h2><p>Current users and their effective permissions.</p></div></div>
+    <div class="empty-state" *ngIf="!loading && !users.length">No users found.</div>
+    <div class="user-list" *ngIf="users.length">
+      <div class="user-row" *ngFor="let user of users"><div class="avatar">{{ user.username.charAt(0).toUpperCase() }}</div><div class="user-info"><strong>{{ user.username }}</strong><span>{{ user.permissions.length }} permissions</span></div><div class="role-list"><span class="role-chip" *ngFor="let role of user.roles">{{ role }}</span></div></div>
+    </div>
+  </mat-card>
+</section>

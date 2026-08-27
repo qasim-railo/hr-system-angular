@@ -1,6 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
 
 
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,400,0,0');
+
 html,
 body {
     height: 100%;
@@ -8,7 +10,9 @@ body {
 
 body {
     margin: 0;
-    font-family: Roboto, "Helvetica Neue", sans-serif;
+    color: #18232b;
+    font-family: 'DM Sans', sans-serif;
+    background: #f3f6f5;
 }
 
 /* Global base styles */
@@ -17,8 +21,8 @@ body {
     height: 100%;
     margin: 0;
     padding: 0;
-    font-family: Roboto, "Helvetica Neue", sans-serif;
-    background-color: #f5f6fa;
+    font-family: 'DM Sans', sans-serif;
+    background: #f3f6f5;
     /* Light background for better contrast */
 }
 
@@ -30,14 +34,15 @@ body {
 
 /* mat-card styling */
 mat-card {
-    border-radius: 16px !important;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06) !important;
+    border: 1px solid #dce6e2 !important;
+    border-radius: 10px !important;
+    background: #fff !important;
+    box-shadow: 0 10px 30px rgba(24, 45, 40, .06) !important;
 }
 
 /* Buttons spacing */
-button {
-    margin-right: 0.5rem;
-}
+button { transition: transform 160ms ease, box-shadow 160ms ease; }
+button:hover:not(:disabled) { transform: translateY(-1px); }
 
 /* Form field full width */
 mat-form-field {
@@ -45,9 +50,32 @@ mat-form-field {
 }
 
 /* Optional: Table row striping */
-table tr:nth-child(even) {
-    background-color: #f9f9f9;
+table tr:nth-child(even) { background-color: #f8fbfa; }
+th.mat-mdc-header-cell {
+    color: #61716d;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .08em;
+    text-transform: uppercase;
 }
+td.mat-mdc-cell { color: #30413d; border-bottom-color: #edf1ef !important; }
+tr.mat-mdc-row:hover { background: #f3faf7 !important; }
+
+.material-symbols-rounded {
+    font-size: 21px;
+    line-height: 1;
+    vertical-align: middle;
+    font-variation-settings: 'FILL' 0, 'wght' 500, 'GRAD' 0, 'opsz' 24;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: #18232b;
+    font-family: 'Space Grotesk', sans-serif;
+    letter-spacing: 0;
+}
+
+.btn-primary { background: #087f70 !important; border-color: #087f70 !important; }
+.btn-primary:hover { background: #066b5f !important; border-color: #066b5f !important; }
 
 /* Headings spacing */
 h1,
