@@ -8,6 +8,8 @@ import { MATERIAL_UI_MODULES } from '../../../shared/material-ui.imports';
 
 import { NgChartsModule } from 'ng2-charts';
 import { PayrollService } from '../../../core/services/payroll.service';
+import { DashboardWidget } from '../../../core/models/dashboard-widget.model';
+import { DashboardWidgetService } from '../../../core/services/dashboard-widget.service';
 @Component({
   selector: 'app-dashboard',
   standalone: true,
@@ -21,6 +23,7 @@ export class DashboardComponent implements OnInit {
   departmentsCount = 0;
   pendingLeaves = 0;
   payrollsCount = 0;
+  widgets: DashboardWidget[] = [];
 
   recentIncrements: any[] = [];
   upcomingLeaves: any[] = [];
@@ -36,7 +39,8 @@ export class DashboardComponent implements OnInit {
     private departmentService: DepartmentService,
     private leaveRequestService: LeaveRequestService,
     private payrollService: PayrollService,
-    private incrementService: IncrementHistoryService
+    private incrementService: IncrementHistoryService,
+    private dashboardWidgetService: DashboardWidgetService
   ) { }
 
   ngOnInit(): void {
@@ -44,6 +48,14 @@ export class DashboardComponent implements OnInit {
     this.loadDepartmentWiseChart();
     this.loadRecentIncrements();
     this.loadUpcomingLeaves();
+    this.loadWidgets();
+  }
+
+  loadWidgets() {
+    this.dashboardWidgetService.getWidgets().subscribe({
+      next: result => this.widgets = result.widgets,
+      error: () => this.widgets = []
+    });
   }
 
   loadStats() {
