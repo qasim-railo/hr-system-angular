@@ -71,6 +71,11 @@ export const routes: Routes = [
         loadComponent: () => import('./features/leave/leave-policies.component').then(m => m.LeavePoliciesComponent)
       },
       {
+        path: 'attendance-configuration',
+        canActivate: [permissionGuard('Users.Manage')],
+        loadComponent: () => import('./features/attendance/attendance-configuration.component').then(m => m.AttendanceConfigurationComponent)
+      },
+      {
         path: 'access-management',
         canActivate: [permissionGuard('Users.Manage')],
         loadComponent: () => import('./features/access/access-management/access-management.component').then(m => m.AccessManagementComponent)

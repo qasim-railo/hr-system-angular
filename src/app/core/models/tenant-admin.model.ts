@@ -97,3 +97,10 @@ export interface LeavePolicy {
   carryForwardLimit: number; allowEncashment: boolean; minimumServiceDays: number; documentRequired: boolean; approvalRequired: boolean;
   employeeCategory: string; effectiveFrom: string; effectiveTo?: string; isActive: boolean;
 }
+export interface AttendanceConfiguration {
+  allowedSources: string; graceInMinutes: number; graceOutMinutes: number; missingPunchPolicy: 'Flag' | 'Ignore' | 'AutoAbsent';
+  lateEarlyRule: 'Track' | 'Ignore' | 'Flag'; approvalRequired: boolean; defaultWorkingHours: number;
+}
+export interface AttendanceImportLog {
+  id: number; importedAt: string; source: string; fileName: string; totalRows: number; importedRows: number; errorRows: number; errors: string;
+}

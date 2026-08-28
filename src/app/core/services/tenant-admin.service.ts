@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { ApprovalWorkflow, LeavePolicy, NumberingPattern, OvertimePolicy, PayrollComponent, TenantAdminDashboard, TenantProfile, TenantSetting, TenantSettingItem, TenantSettingsCenter } from '../models/tenant-admin.model';
+import { ApprovalWorkflow, AttendanceConfiguration, AttendanceImportLog, LeavePolicy, NumberingPattern, OvertimePolicy, PayrollComponent, TenantAdminDashboard, TenantProfile, TenantSetting, TenantSettingItem, TenantSettingsCenter } from '../models/tenant-admin.model';
 
 @Injectable({ providedIn: 'root' })
 export class TenantAdminService {
@@ -32,4 +32,7 @@ export class TenantAdminService {
   }
   getLeavePolicies(): Observable<LeavePolicy[]> { return this.http.get<LeavePolicy[]>(`${environment.apiUrl}/leave-policies`); }
   saveLeavePolicy(policy: LeavePolicy): Observable<LeavePolicy> { return policy.id ? this.http.put<LeavePolicy>(`${environment.apiUrl}/leave-policies/${policy.id}`, policy) : this.http.post<LeavePolicy>(`${environment.apiUrl}/leave-policies`, policy); }
+  getAttendanceConfiguration(): Observable<AttendanceConfiguration> { return this.http.get<AttendanceConfiguration>(`${environment.apiUrl}/attendance-configuration`); }
+  saveAttendanceConfiguration(config: AttendanceConfiguration): Observable<AttendanceConfiguration> { return this.http.put<AttendanceConfiguration>(`${environment.apiUrl}/attendance-configuration`, config); }
+  getAttendanceImports(): Observable<AttendanceImportLog[]> { return this.http.get<AttendanceImportLog[]>(`${environment.apiUrl}/attendance-configuration/imports`); }
 }
