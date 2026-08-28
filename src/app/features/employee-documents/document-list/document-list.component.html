@@ -39,9 +39,14 @@
                 <!-- <button mat-icon-button color="primary" (click)="download(doc.id)">
                     <mat-icon>download</mat-icon>
                 </button> -->
-                <button mat-icon-button color="primary" (click)="download(doc.id)" aria-label="Download document">
+                <button mat-icon-button color="primary" (click)="download(doc.fileId)" aria-label="Download document">
                     <mat-icon>download</mat-icon>
                 </button>
+                <label mat-icon-button aria-label="Replace document" title="Replace document">
+                    <mat-icon>upload</mat-icon>
+                    <input type="file" hidden (change)="replace(doc.fileId, $event)">
+                </label>
+                <button mat-button type="button" (click)="showVersions(doc.fileId)">History</button>
 
                 <button mat-icon-button color="warn" (click)="delete(doc.fileId)">
                     <mat-icon>delete</mat-icon>
@@ -52,6 +57,14 @@
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
+    <div class="mt-3" *ngFor="let doc of documents">
+        <div *ngIf="versions[doc.fileId]">
+            <strong>{{ doc.originalFileName }} version history</strong>
+            <span class="ms-2" *ngFor="let version of versions[doc.fileId]">
+                v{{ version.version }} ({{ version.isCurrent ? 'Current' : 'Previous' }}) · {{ version.uploadedAt | date:'short' }}
+            </span>
+        </div>
+    </div>
 
     <div *ngIf="documents.length === 0" class="text-center text-muted mt-5">
         No documents uploaded yet.

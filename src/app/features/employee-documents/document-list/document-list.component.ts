@@ -22,6 +22,7 @@ export class DocumentListComponent implements OnInit,OnChanges  {
   @Input() employeeId!: number;
 
   documents: FileRecord[] = [];
+  versions: Record<number, FileRecord[]> = {};
   search = '';
   documentType = '';
   displayedColumns: string[] = ['fileName', 'fileType', 'uploadedAt', 'actions'];
@@ -51,6 +52,16 @@ export class DocumentListComponent implements OnInit,OnChanges  {
   }
 
   applySearch(): void { this.loadDocuments(); }
+
+  replace(fileId: number, event: Event): void {
+    const file = (event.target as HTMLInputElement).files?.[0];
+    if (!file) return;
+    this.documentService.replaceFile(fileId, file).subscribe(() => this.loadDocuments());
+  }
+
+  showVersions(fileId: number): void {
+    this.documentService.getVersions(fileId).subscribe(history => this.versions[fileId] = history);
+  }
 
   download(id: number) {
     this.documentService.downloadFile(id).subscribe((blob) => {

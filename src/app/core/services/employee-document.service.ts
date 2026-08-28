@@ -16,7 +16,14 @@ export interface FileRecord {
   mimeType: string;
   size: number;
   uploadedAt: string;
+  updatedAt: string;
+  uploadedBy: string;
+  version: number;
   status: string;
+  isCurrent: boolean;
+  isDeleted: boolean;
+  deletedAt?: string;
+  deletedBy?: string;
 }
 
 @Injectable({
@@ -76,5 +83,27 @@ export class EmployeeDocumentService {
 
   deleteFile(fileId: number): Observable<void> {
     return this.http.delete<void>(`${environment.apiUrl}/files/${fileId}`);
+  }
+
+  replaceFile(fileId: number, file: File): Observable<FileRecord> {
+    const formData = new FormData();
+    formData.append('file', file);
+    return this.http.post<FileRecord>(`${environment.apiUrl}/files/${fileId}/replace`, formData);
+  }
+
+  getVersions(fileId: number): Observable<FileRecord[]> {
+    return this.http.get<FileRecord[]>(`${environment.apiUrl}/files/${fileId}/versions`);
+  }
+
+  getRecycleBin(): Observable<FileRecord[]> {
+    return this.http.get<FileRecord[]>(`${environment.apiUrl}/files/recycle-bin`);
+  }
+
+  restoreFile(fileId: number): Observable<FileRecord> {
+    return this.http.post<FileRecord>(`${environment.apiUrl}/files/${fileId}/restore`, {});
+  }
+
+  purgeFile(fileId: number): Observable<void> {
+    return this.http.delete<void>(`${environment.apiUrl}/files/${fileId}/purge`);
   }
 }

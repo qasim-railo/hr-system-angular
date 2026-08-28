@@ -29,3 +29,13 @@
 <app-document-list [employeeId]="selectedEmployeeId"></app-document-list>
 
 </div>
+
+<mat-card class="mt-4">
+  <h2>Recycle Bin</h2>
+  <p *ngIf="recycleBin.length === 0" class="text-muted">No deleted files.</p>
+  <div *ngFor="let file of recycleBin" class="d-flex align-items-center gap-2 mb-2">
+    <span class="flex-grow-1">{{ file.originalFileName }} · v{{ file.version }} · {{ file.deletedAt | date:'short' }}</span>
+    <button mat-button color="primary" type="button" (click)="restore(file.fileId)">Restore</button>
+    <button mat-button color="warn" type="button" (click)="purge(file.fileId)">Permanently delete</button>
+  </div>
+</mat-card>
