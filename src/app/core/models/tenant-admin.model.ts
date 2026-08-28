@@ -47,3 +47,10 @@ export interface TenantSettingsSection {
 export interface TenantSettingsCenter {
   sections: TenantSettingsSection[];
 }
+
+export interface NumberingPattern {
+  key: string;
+  label: string;
+  pattern: string;
+  preview: string;
+}

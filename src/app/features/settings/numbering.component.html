@@ -1,0 +1,17 @@
+<section class="settings-page">
+  <header class="page-heading">
+    <div><p class="eyebrow">Tenant configuration</p><h1>Configurable numbering</h1><p class="subtitle">Use {{ '{YEAR}' }}, {{ '{MONTH}' }}, and {{ '{NUMBER}' }}. The sequence is tenant-scoped and concurrency-safe.</p></div>
+    <span class="material-symbols-rounded heading-icon">tag</span>
+  </header>
+  <div class="alert success" *ngIf="message">{{ message }}</div>
+  <div class="alert error" *ngIf="error">{{ error }}</div>
+  <p *ngIf="loading">Loading numbering formats...</p>
+  <div class="settings-grid" *ngIf="!loading">
+    <article class="card settings-card" *ngFor="let item of patterns">
+      <div class="card-heading"><div><p class="eyebrow">Reference format</p><h2>{{ item.label }}</h2></div><span class="material-symbols-rounded">format_list_numbered</span></div>
+      <label>Pattern<input [(ngModel)]="item.pattern"></label>
+      <p class="preview">Next example: <strong>{{ item.preview }}</strong></p>
+      <button type="button" (click)="save(item)">Save format</button>
+    </article>
+  </div>
+</section>
