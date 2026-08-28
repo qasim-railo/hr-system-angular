@@ -92,3 +92,8 @@ export interface OvertimePolicy {
   rateMultiplier: number; dailyThresholdMinutes: number; maximumApprovedMinutes: number;
   approvalRequired: boolean; effectiveFrom: string; effectiveTo?: string; isActive: boolean;
 }
+export interface LeavePolicy {
+  id?: number; name: string; entitlementDays: number; accrualMethod: 'Annual' | 'Monthly' | 'Daily' | 'OnJoining';
+  carryForwardLimit: number; allowEncashment: boolean; minimumServiceDays: number; documentRequired: boolean; approvalRequired: boolean;
+  employeeCategory: string; effectiveFrom: string; effectiveTo?: string; isActive: boolean;
+}

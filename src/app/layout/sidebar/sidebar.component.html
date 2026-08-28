@@ -117,6 +117,10 @@
       <a class="nav-link text-white" routerLink="/overtime-policies" routerLinkActive="active"
         [routerLinkActiveOptions]="{ exact: true }"><span class="material-symbols-rounded">schedule</span>Overtime Policies</a>
     </li>
+    <li class="nav-item" *ngIf="auth.hasPermission('Users.Manage')">
+      <a class="nav-link text-white" routerLink="/leave-policies" routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"><span class="material-symbols-rounded">beach_access</span>Leave Policies</a>
+    </li>
     <li class="nav-item" *ngIf="auth.hasPermission('Platform.Tenants')">
       <a class="nav-link text-white" routerLink="/platform-admin" routerLinkActive="active"
         [routerLinkActiveOptions]="{ exact: true }"><span class="material-symbols-rounded">domain</span>PeopleOS Super Admin</a>

@@ -66,6 +66,11 @@ export const routes: Routes = [
         loadComponent: () => import('./features/attendance/overtime-policies.component').then(m => m.OvertimePoliciesComponent)
       },
       {
+        path: 'leave-policies',
+        canActivate: [permissionGuard('Users.Manage')],
+        loadComponent: () => import('./features/leave/leave-policies.component').then(m => m.LeavePoliciesComponent)
+      },
+      {
         path: 'access-management',
         canActivate: [permissionGuard('Users.Manage')],
         loadComponent: () => import('./features/access/access-management/access-management.component').then(m => m.AccessManagementComponent)

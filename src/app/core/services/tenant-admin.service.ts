@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { ApprovalWorkflow, NumberingPattern, OvertimePolicy, PayrollComponent, TenantAdminDashboard, TenantProfile, TenantSetting, TenantSettingItem, TenantSettingsCenter } from '../models/tenant-admin.model';
+import { ApprovalWorkflow, LeavePolicy, NumberingPattern, OvertimePolicy, PayrollComponent, TenantAdminDashboard, TenantProfile, TenantSetting, TenantSettingItem, TenantSettingsCenter } from '../models/tenant-admin.model';
 
 @Injectable({ providedIn: 'root' })
 export class TenantAdminService {
@@ -30,4 +30,6 @@ export class TenantAdminService {
   saveOvertimePolicy(policy: OvertimePolicy): Observable<OvertimePolicy> {
     return policy.id ? this.http.put<OvertimePolicy>(`${environment.apiUrl}/overtime-policies/${policy.id}`, policy) : this.http.post<OvertimePolicy>(`${environment.apiUrl}/overtime-policies`, policy);
   }
+  getLeavePolicies(): Observable<LeavePolicy[]> { return this.http.get<LeavePolicy[]>(`${environment.apiUrl}/leave-policies`); }
+  saveLeavePolicy(policy: LeavePolicy): Observable<LeavePolicy> { return policy.id ? this.http.put<LeavePolicy>(`${environment.apiUrl}/leave-policies/${policy.id}`, policy) : this.http.post<LeavePolicy>(`${environment.apiUrl}/leave-policies`, policy); }
 }
