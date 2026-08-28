@@ -31,6 +31,10 @@ export const routes: Routes = [
         loadComponent: () => import('./features/self-service/self-service.component').then(m => m.SelfServiceComponent)
       },
       {
+        path: 'manager-portal',
+        loadComponent: () => import('./features/manager-portal/manager-portal.component').then(m => m.ManagerPortalComponent)
+      },
+      {
         path: 'platform-admin',
         canActivate: [permissionGuard('Platform.Tenants')],
         loadComponent: () => import('./features/platform-admin/platform-admin.component').then(m => m.PlatformAdminComponent)
