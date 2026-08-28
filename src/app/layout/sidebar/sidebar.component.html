@@ -105,6 +105,10 @@
       <a class="nav-link text-white" routerLink="/numbering" routerLinkActive="active"
         [routerLinkActiveOptions]="{ exact: true }"><span class="material-symbols-rounded">tag</span>Numbering</a>
     </li>
+    <li class="nav-item" *ngIf="auth.hasPermission('Workflows.Manage')">
+      <a class="nav-link text-white" routerLink="/workflows" routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"><span class="material-symbols-rounded">account_tree</span>Approval Workflows</a>
+    </li>
     <li class="nav-item" *ngIf="auth.hasPermission('Platform.Tenants')">
       <a class="nav-link text-white" routerLink="/platform-admin" routerLinkActive="active"
         [routerLinkActiveOptions]="{ exact: true }"><span class="material-symbols-rounded">domain</span>PeopleOS Super Admin</a>

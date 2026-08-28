@@ -51,6 +51,11 @@ export const routes: Routes = [
         loadComponent: () => import('./features/settings/numbering.component').then(m => m.NumberingComponent)
       },
       {
+        path: 'workflows',
+        canActivate: [permissionGuard('Workflows.Manage')],
+        loadComponent: () => import('./features/settings/workflows.component').then(m => m.WorkflowsComponent)
+      },
+      {
         path: 'access-management',
         canActivate: [permissionGuard('Users.Manage')],
         loadComponent: () => import('./features/access/access-management/access-management.component').then(m => m.AccessManagementComponent)

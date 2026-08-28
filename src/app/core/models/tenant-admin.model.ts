@@ -54,3 +54,21 @@ export interface NumberingPattern {
   pattern: string;
   preview: string;
 }
+
+export interface ApprovalStep {
+  id?: number;
+  stepOrder: number;
+  name: string;
+  approverRole: string;
+  approvalMode: string;
+  escalationAfterHours?: number;
+}
+
+export interface ApprovalWorkflow {
+  id?: number;
+  name: string;
+  module: string;
+  requestType: string;
+  isActive: boolean;
+  steps: ApprovalStep[];
+}

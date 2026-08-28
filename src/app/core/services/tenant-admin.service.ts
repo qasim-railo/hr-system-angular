@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { NumberingPattern, TenantAdminDashboard, TenantProfile, TenantSetting, TenantSettingItem, TenantSettingsCenter } from '../models/tenant-admin.model';
+import { ApprovalWorkflow, NumberingPattern, TenantAdminDashboard, TenantProfile, TenantSetting, TenantSettingItem, TenantSettingsCenter } from '../models/tenant-admin.model';
 
 @Injectable({ providedIn: 'root' })
 export class TenantAdminService {
@@ -17,4 +17,9 @@ export class TenantAdminService {
   updateTypedSetting(key: string, value: string): Observable<TenantSettingItem> { return this.http.put<TenantSettingItem>(`${this.url}/settings-center/${encodeURIComponent(key)}`, { value }); }
   getNumberingPatterns(): Observable<NumberingPattern[]> { return this.http.get<NumberingPattern[]>(`${environment.apiUrl}/numbering`); }
   updateNumberingPattern(key: string, pattern: string): Observable<NumberingPattern> { return this.http.put<NumberingPattern>(`${environment.apiUrl}/numbering/${encodeURIComponent(key)}`, { pattern }); }
+  getApprovalWorkflows(): Observable<ApprovalWorkflow[]> { return this.http.get<ApprovalWorkflow[]>(`${environment.apiUrl}/approval-workflows`); }
+  saveApprovalWorkflow(workflow: ApprovalWorkflow): Observable<ApprovalWorkflow> {
+    const request = { name: workflow.name, module: workflow.module, requestType: workflow.requestType, isActive: workflow.isActive, steps: workflow.steps };
+    return workflow.id ? this.http.put<ApprovalWorkflow>(`${environment.apiUrl}/approval-workflows/${workflow.id}`, request) : this.http.post<ApprovalWorkflow>(`${environment.apiUrl}/approval-workflows`, request);
+  }
 }

@@ -1,0 +1,24 @@
+<section class="workflow-page">
+  <header><div><p class="eyebrow">Tenant configuration</p><h1>Approval workflows</h1><p class="subtitle">Build reusable approval flows for HR requests. Sequential approval is supported now; parallel steps are ready for future execution.</p></div><span class="material-symbols-rounded">account_tree</span></header>
+  <div class="alert success" *ngIf="message">{{ message }}</div><div class="alert error" *ngIf="error">{{ error }}</div>
+  <div class="grid">
+    <mat-card class="form-card">
+      <h2>{{ editing ? 'Edit workflow' : 'New workflow' }}</h2>
+      <mat-form-field appearance="outline"><mat-label>Name</mat-label><input matInput [(ngModel)]="form.name"></mat-form-field>
+      <mat-form-field appearance="outline"><mat-label>Module</mat-label><mat-select [(ngModel)]="form.module"><mat-option *ngFor="let module of ['Leave','Overtime','Loan','Salary Change','Attendance Correction','Payroll','Asset Request','Final Settlement']" [value]="module">{{ module }}</mat-option></mat-select></mat-form-field>
+      <mat-form-field appearance="outline"><mat-label>Request type</mat-label><input matInput [(ngModel)]="form.requestType"></mat-form-field>
+      <mat-checkbox [(ngModel)]="form.isActive">Active</mat-checkbox>
+      <div class="step" *ngFor="let step of form.steps; let i = index">
+        <strong>Step {{ i + 1 }}</strong>
+        <mat-form-field appearance="outline"><mat-label>Name</mat-label><input matInput [(ngModel)]="step.name"></mat-form-field>
+        <mat-form-field appearance="outline"><mat-label>Approver role</mat-label><input matInput [(ngModel)]="step.approverRole"></mat-form-field>
+        <mat-form-field appearance="outline"><mat-label>Mode</mat-label><mat-select [(ngModel)]="step.approvalMode"><mat-option value="Sequential">Sequential</mat-option><mat-option value="Parallel">Parallel-ready</mat-option></mat-select></mat-form-field>
+        <button mat-button color="warn" (click)="removeStep(i)" *ngIf="form.steps.length > 1">Remove</button>
+      </div>
+      <div class="actions"><button mat-button (click)="addStep()">Add step</button><button mat-flat-button color="primary" (click)="save()">Save workflow</button><button mat-button *ngIf="editing" (click)="reset()">Cancel</button></div>
+    </mat-card>
+    <mat-card><h2>Configured workflows</h2><div class="empty" *ngIf="!workflows.length">No approval workflows configured.</div>
+      <div class="workflow" *ngFor="let workflow of workflows"><div><strong>{{ workflow.name }}</strong><small>{{ workflow.module }} · {{ workflow.requestType }} · {{ workflow.steps.length }} steps · {{ workflow.isActive ? 'Active' : 'Inactive' }}</small></div><button mat-button (click)="edit(workflow)">Edit</button></div>
+    </mat-card>
+  </div>
+</section>
