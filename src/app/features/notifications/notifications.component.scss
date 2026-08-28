@@ -1,0 +1,7 @@
+.notifications-page { padding: 2rem; max-width: 800px; }
+.eyebrow { color: #1b6b57; text-transform: uppercase; letter-spacing: .1em; font-size: .7rem; }
+.muted, small { color: #78818a; } .error { color: #b42318; }
+.notification-list article { padding: 1rem; border: 1px solid #e5e8eb; border-radius: 10px; margin: .75rem 0; }
+.notification-list article.unread { border-left: 4px solid #1b6b57; background: #f5faf7; }
+article div { display: flex; justify-content: space-between; gap: 1rem; } article p { margin-bottom: .6rem; }
+button { border: 0; border-radius: 6px; padding: .5rem .75rem; background: #e8eeeb; color: #174d40; cursor: pointer; }

@@ -27,6 +27,10 @@ export const routes: Routes = [
       // Default Dashboard
       { path: 'dashboard', component: DashboardComponent },
       {
+        path: 'notifications',
+        loadComponent: () => import('./features/notifications/notifications.component').then(m => m.NotificationsComponent)
+      },
+      {
         path: 'my-workspace',
         loadComponent: () => import('./features/self-service/self-service.component').then(m => m.SelfServiceComponent)
       },

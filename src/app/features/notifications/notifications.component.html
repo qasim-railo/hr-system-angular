@@ -1,0 +1,14 @@
+<section class="notifications-page">
+  <p class="eyebrow">Inbox</p>
+  <h1>Notifications</h1>
+  <p class="muted">Updates from your PeopleOS workspace.</p>
+  <p class="error" *ngIf="error">{{ error }}</p>
+  <div class="notification-list">
+    <article *ngFor="let item of items" [class.unread]="!item.isRead">
+      <div><strong>{{ item.subject }}</strong><small>{{ item.createdAt | date:'medium' }}</small></div>
+      <p>{{ item.body }}</p>
+      <button *ngIf="!item.isRead" (click)="markRead(item)">Mark as read</button>
+    </article>
+    <p class="muted" *ngIf="!items.length && !error">No notifications yet.</p>
+  </div>
+</section>
