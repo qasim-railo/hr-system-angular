@@ -1,0 +1,5 @@
+<section class="page-shell">
+  <header class="page-heading"><div><p class="eyebrow">Data recovery</p><h1>Recycle bin</h1><p class="subtitle">Restore archived employees, departments, assets, and users.</p></div><span class="material-symbols-rounded heading-icon">delete_sweep</span></header>
+  <div class="alert error" *ngIf="error">{{ error }}</div>
+  <div class="card table-responsive"><table class="table"><thead><tr><th>Type</th><th>Record</th><th>Archived</th><th>Actions</th></tr></thead><tbody><tr *ngFor="let item of items"><td>{{ item.entityType }}</td><td>{{ item.displayName }}</td><td>{{ item.archivedAt | date:'medium' }}</td><td><button type="button" (click)="restore(item)">Restore</button><button type="button" *ngIf="item.entityType !== 'Employee'" (click)="purge(item)">Purge</button></td></tr></tbody></table><p *ngIf="!items.length && !error">Recycle bin is empty.</p></div>
+</section>
