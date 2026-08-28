@@ -1,0 +1,1 @@
+export interface ImportJob { importJobId: number; entityType: string; fileName: string; status: string; totalRows: number; validRows: number; importedRows: number; errorRows: number; errors: string[]; }

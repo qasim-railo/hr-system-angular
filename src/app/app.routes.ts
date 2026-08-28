@@ -8,6 +8,7 @@ import { MainLayoutComponent } from './layout/main-layout/main-layout.component'
 import { DashboardComponent } from './features/dashboard/dashboard/dashboard.component';
 import { AssetsListComponent } from './features/assets/assets-list/assets-list.component';
 import { AssetsFormComponent } from './features/assets/assets-form/assets-form.component';
+import { ImportsComponent } from './features/imports/imports.component';
 
 export const routes: Routes = [
   // Unprotected Auth Route
@@ -30,6 +31,7 @@ export const routes: Routes = [
       { path: 'dashboard', component: DashboardComponent },
       { path: 'audit', component: AuditComponent, canActivate: [permissionGuard('Users.Manage')] },
       { path: 'recycle-bin', component: RecycleBinComponent, canActivate: [permissionGuard('Users.Manage')] },
+      { path: 'imports', component: ImportsComponent, canActivate: [permissionGuard('Employees.Create')] },
       {
         path: 'notifications',
         loadComponent: () => import('./features/notifications/notifications.component').then(m => m.NotificationsComponent)

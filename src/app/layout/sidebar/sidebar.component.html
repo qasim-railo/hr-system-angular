@@ -16,6 +16,9 @@
       <a class="nav-link text-white" routerLink="/audit" routerLinkActive="active"
         [routerLinkActiveOptions]="{ exact: true }"><span class="material-symbols-rounded">history</span>Audit log</a>
     </li>
+    <li class="nav-item" *ngIf="auth.hasPermission('Employees.Create')">
+      <a class="nav-link text-white" routerLink="/imports" routerLinkActive="active"><span class="material-symbols-rounded">upload_file</span>Import center</a>
+    </li>
     <li class="nav-item" *ngIf="auth.hasPermission('Users.Manage')">
       <a class="nav-link text-white" routerLink="/recycle-bin" routerLinkActive="active"
         [routerLinkActiveOptions]="{ exact: true }"><span class="material-symbols-rounded">delete_sweep</span>Recycle bin</a>
