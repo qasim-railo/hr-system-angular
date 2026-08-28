@@ -27,6 +27,10 @@ export const routes: Routes = [
       // Default Dashboard
       { path: 'dashboard', component: DashboardComponent },
       {
+        path: 'my-workspace',
+        loadComponent: () => import('./features/self-service/self-service.component').then(m => m.SelfServiceComponent)
+      },
+      {
         path: 'platform-admin',
         canActivate: [permissionGuard('Platform.Tenants')],
         loadComponent: () => import('./features/platform-admin/platform-admin.component').then(m => m.PlatformAdminComponent)
