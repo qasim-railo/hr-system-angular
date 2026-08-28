@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { AuditComponent } from './features/audit/audit.component';
 import { LoginComponent } from './features/auth/login/login.component';
 import { authGuard } from './core/guards/auth.guard';
 import { permissionGuard } from './core/guards/permission.guard';
@@ -26,6 +27,7 @@ export const routes: Routes = [
     children: [
       // Default Dashboard
       { path: 'dashboard', component: DashboardComponent },
+      { path: 'audit', component: AuditComponent, canActivate: [permissionGuard('Users.Manage')] },
       {
         path: 'notifications',
         loadComponent: () => import('./features/notifications/notifications.component').then(m => m.NotificationsComponent)

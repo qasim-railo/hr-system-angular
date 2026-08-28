@@ -1,0 +1,11 @@
+<section class="page-shell">
+  <header class="page-heading"><div><p class="eyebrow">Security and compliance</p><h1>Audit log</h1><p class="subtitle">Tenant-scoped record of important actions.</p></div><span class="material-symbols-rounded heading-icon">history</span></header>
+  <div class="alert error" *ngIf="error">{{ error }}</div>
+  <div class="card table-responsive">
+    <table class="table">
+      <thead><tr><th>When</th><th>Action</th><th>Entity</th><th>User</th><th>Details</th></tr></thead>
+      <tbody><tr *ngFor="let log of logs"><td>{{ log.createdAt | date:'medium' }}</td><td>{{ log.action }}</td><td>{{ log.entity }} {{ log.entityId }}</td><td>{{ log.userId }}</td><td><code>{{ log.details }}</code></td></tr></tbody>
+    </table>
+    <p *ngIf="!logs.length && !error">No audit events recorded.</p>
+  </div>
+</section>
