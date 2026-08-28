@@ -2,3 +2,6 @@
     <div class="topbar-context"><span class="material-symbols-rounded">verified_user</span><span>Workspace / Overview</span></div>
     <button class="logout-button" (click)="logout()"><span class="material-symbols-rounded">logout</span>Logout</button>
 </nav>
+<button type="button" class="language-toggle" (click)="toggleLanguage()">
+  {{ localization.language() === 'en' ? 'العربية' : 'English' }}
+</button>

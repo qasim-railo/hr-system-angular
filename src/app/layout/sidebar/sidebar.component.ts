@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../core/services/auth.service';
+import { LocalizationService } from '../../core/services/localization.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -11,7 +12,7 @@ import { AuthService } from '../../core/services/auth.service';
   styleUrl: './sidebar.component.scss'
 })
 export class SidebarComponent {
-constructor(private router: Router, public auth: AuthService) {}
+constructor(private router: Router, public auth: AuthService, public localization: LocalizationService) {}
 
   logout() {
     localStorage.removeItem('jwt');
