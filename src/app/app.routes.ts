@@ -349,6 +349,11 @@ export const routes: Routes = [
           import('./features/gratuity-report/gratuity-report/gratuity-report.component').then(m => m.GratuityReportComponent)
       },
       {
+        path: 'reports',
+        loadComponent: () =>
+          import('./features/reports/reports.component').then(m => m.ReportsComponent)
+      },
+      {
         path: 'increment-history',
         loadComponent: () =>
           import('./features/increment-history/increment-history-page/increment-history-page.component').then(

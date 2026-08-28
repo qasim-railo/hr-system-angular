@@ -1,0 +1,36 @@
+<section class="reports-page">
+  <div class="page-heading">
+    <div>
+      <p class="eyebrow">Reporting engine</p>
+      <h1>Employee report</h1>
+      <p class="muted">Apply tenant-safe filters and export the resulting standard report.</p>
+    </div>
+    <div class="actions">
+      <button class="secondary" (click)="run()">Run report</button>
+      <button class="primary" [disabled]="!rows.length" (click)="export()">Export Excel</button>
+    </div>
+  </div>
+  <div class="filters">
+    <label>Company ID <input type="number" [(ngModel)]="filters.companyId"></label>
+    <label>Branch ID <input type="number" [(ngModel)]="filters.branchId"></label>
+    <label>Department ID <input type="number" [(ngModel)]="filters.departmentId"></label>
+    <label>Employee ID <input type="number" [(ngModel)]="filters.employeeId"></label>
+    <label>Status <input [(ngModel)]="filters.status" placeholder="Active"></label>
+    <label>From date <input type="date" [(ngModel)]="filters.fromDate"></label>
+    <label>To date <input type="date" [(ngModel)]="filters.toDate"></label>
+  </div>
+  <p class="error" *ngIf="error">{{ error }}</p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Code</th><th>Employee</th><th>Company</th><th>Department</th><th>Branch</th><th>Status</th><th>Joining date</th></tr></thead>
+      <tbody>
+        <tr *ngFor="let row of rows">
+          <td>{{ row.employeeCode }}</td><td>{{ row.employeeName }}</td><td>{{ row.companyName }}</td>
+          <td>{{ row.departmentName }}</td><td>{{ row.branchName || '—' }}</td><td>{{ row.status }}</td>
+          <td>{{ row.dateOfJoining ? (row.dateOfJoining | date) : '—' }}</td>
+        </tr>
+        <tr *ngIf="!loading && !rows.length"><td colspan="7" class="empty">Run a report to see employees.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
