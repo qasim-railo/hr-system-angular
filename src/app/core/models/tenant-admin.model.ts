@@ -27,3 +27,23 @@ export interface TenantSetting {
   key: string;
   value: string;
 }
+
+export interface TenantSettingItem {
+  key: string;
+  label: string;
+  valueType: 'text' | 'number' | 'boolean' | 'select';
+  value: string;
+  defaultValue: string;
+  isOverridden: boolean;
+  options: string[];
+}
+
+export interface TenantSettingsSection {
+  key: string;
+  name: string;
+  settings: TenantSettingItem[];
+}
+
+export interface TenantSettingsCenter {
+  sections: TenantSettingsSection[];
+}

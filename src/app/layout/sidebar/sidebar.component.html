@@ -97,6 +97,10 @@
       <a class="nav-link text-white" routerLink="/organization" routerLinkActive="active"
         [routerLinkActiveOptions]="{ exact: true }"><span class="material-symbols-rounded">account_tree</span>Organization Setup</a>
     </li>
+    <li class="nav-item" *ngIf="auth.hasPermission('Users.Manage')">
+      <a class="nav-link text-white" routerLink="/settings" routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"><span class="material-symbols-rounded">settings</span>Settings Center</a>
+    </li>
     <li class="nav-item" *ngIf="auth.hasPermission('Platform.Tenants')">
       <a class="nav-link text-white" routerLink="/platform-admin" routerLinkActive="active"
         [routerLinkActiveOptions]="{ exact: true }"><span class="material-symbols-rounded">domain</span>PeopleOS Super Admin</a>

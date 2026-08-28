@@ -1,0 +1,8 @@
+.settings-page { padding: 1.5rem; }
+.settings-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem; }
+.settings-card { min-height: 12rem; }
+.setting-row { border-top: 1px solid rgba(148, 163, 184, .2); padding: .9rem 0; }
+.setting-row label { display: flex; flex-direction: column; gap: .35rem; font-weight: 600; }
+.setting-row input[type="checkbox"] { width: 1.1rem; height: 1.1rem; }
+.setting-row small { display: block; color: #64748b; margin: .35rem 0 .55rem; }
+.setting-row button { padding: .45rem .8rem; }
