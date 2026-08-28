@@ -107,6 +107,10 @@
       <a class="nav-link text-white" routerLink="/reports" routerLinkActive="active"
         [routerLinkActiveOptions]="{ exact: true }"><span class="material-symbols-rounded">summarize</span>Reports</a>
     </li>
+    <li class="nav-item" *ngIf="auth.hasPermission('Employees.Export') || auth.hasPermission('Users.Manage')">
+      <a class="nav-link text-white" routerLink="/exports" routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"><span class="material-symbols-rounded">download</span>Export Center</a>
+    </li>
 
     <li class="nav-item">
       <a class="nav-link text-white" routerLink="/increment-history" routerLinkActive="active"

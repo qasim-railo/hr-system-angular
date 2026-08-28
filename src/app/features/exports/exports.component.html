@@ -1,0 +1,26 @@
+<section class="page-shell">
+  <header class="page-heading">
+    <div>
+      <p class="eyebrow">Data access</p>
+      <h1>Export center</h1>
+      <p class="subtitle">Download tenant-safe exports for the data you are authorized to access.</p>
+    </div>
+  </header>
+
+  <div class="alert error" *ngIf="error">{{ error }}</div>
+
+  <div class="row g-3">
+    <div class="col-md-6 col-xl-4" *ngFor="let option of exports">
+      <div class="card h-100">
+        <div class="d-flex justify-content-between align-items-start mb-3">
+          <h3>{{ option.name }}</h3>
+          <span class="badge" [ngClass]="option.sensitive ? 'bg-warning text-dark' : 'bg-secondary'">{{ option.sensitive ? 'Sensitive' : 'Standard' }}</span>
+        </div>
+        <p class="text-muted mb-3">{{ option.description }}</p>
+        <button type="button" class="btn btn-primary" [disabled]="!option.available" (click)="download(option)">
+          {{ option.available ? 'Download Excel' : 'Unavailable' }}
+        </button>
+      </div>
+    </div>
+  </div>
+</section>

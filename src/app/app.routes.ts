@@ -8,6 +8,7 @@ import { MainLayoutComponent } from './layout/main-layout/main-layout.component'
 import { DashboardComponent } from './features/dashboard/dashboard/dashboard.component';
 import { AssetsListComponent } from './features/assets/assets-list/assets-list.component';
 import { AssetsFormComponent } from './features/assets/assets-form/assets-form.component';
+import { ExportsComponent } from './features/exports/exports.component';
 import { ImportsComponent } from './features/imports/imports.component';
 
 export const routes: Routes = [
@@ -362,6 +363,11 @@ export const routes: Routes = [
         path: 'reports',
         loadComponent: () =>
           import('./features/reports/reports.component').then(m => m.ReportsComponent)
+      },
+      {
+        path: 'exports',
+        component: ExportsComponent,
+        canActivate: [permissionGuard('Employees.Export')]
       },
       {
         path: 'increment-history',
