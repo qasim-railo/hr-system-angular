@@ -61,6 +61,11 @@ export const routes: Routes = [
         loadComponent: () => import('./features/payroll/payroll-components.component').then(m => m.PayrollComponentsComponent)
       },
       {
+        path: 'overtime-policies',
+        canActivate: [permissionGuard('Users.Manage')],
+        loadComponent: () => import('./features/attendance/overtime-policies.component').then(m => m.OvertimePoliciesComponent)
+      },
+      {
         path: 'access-management',
         canActivate: [permissionGuard('Users.Manage')],
         loadComponent: () => import('./features/access/access-management/access-management.component').then(m => m.AccessManagementComponent)

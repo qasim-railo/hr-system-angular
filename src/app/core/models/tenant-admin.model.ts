@@ -87,3 +87,8 @@ export interface PayrollComponent {
   isWpsIncluded: boolean;
   isActive: boolean;
 }
+export interface OvertimePolicy {
+  id?: number; name: string; employeeCategory: string; dayType: string; classification: 'OT1' | 'OT2';
+  rateMultiplier: number; dailyThresholdMinutes: number; maximumApprovedMinutes: number;
+  approvalRequired: boolean; effectiveFrom: string; effectiveTo?: string; isActive: boolean;
+}

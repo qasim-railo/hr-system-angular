@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { ApprovalWorkflow, NumberingPattern, PayrollComponent, TenantAdminDashboard, TenantProfile, TenantSetting, TenantSettingItem, TenantSettingsCenter } from '../models/tenant-admin.model';
+import { ApprovalWorkflow, NumberingPattern, OvertimePolicy, PayrollComponent, TenantAdminDashboard, TenantProfile, TenantSetting, TenantSettingItem, TenantSettingsCenter } from '../models/tenant-admin.model';
 
 @Injectable({ providedIn: 'root' })
 export class TenantAdminService {
@@ -25,5 +25,9 @@ export class TenantAdminService {
   getPayrollComponents(): Observable<PayrollComponent[]> { return this.http.get<PayrollComponent[]>(`${environment.apiUrl}/payroll-components`); }
   savePayrollComponent(component: PayrollComponent): Observable<PayrollComponent> {
     return component.id ? this.http.put<PayrollComponent>(`${environment.apiUrl}/payroll-components/${component.id}`, component) : this.http.post<PayrollComponent>(`${environment.apiUrl}/payroll-components`, component);
+  }
+  getOvertimePolicies(): Observable<OvertimePolicy[]> { return this.http.get<OvertimePolicy[]>(`${environment.apiUrl}/overtime-policies`); }
+  saveOvertimePolicy(policy: OvertimePolicy): Observable<OvertimePolicy> {
+    return policy.id ? this.http.put<OvertimePolicy>(`${environment.apiUrl}/overtime-policies/${policy.id}`, policy) : this.http.post<OvertimePolicy>(`${environment.apiUrl}/overtime-policies`, policy);
   }
 }
