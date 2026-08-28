@@ -6,7 +6,7 @@ export interface TenantAdminDashboard {
   departments: number;
   branches: number;
   employees: number;
-  usage: { storageUsedBytes: number };
+  usage: { storageUsedBytes: number; storageLimitBytes: number; remainingBytes: number };
   subscription?: { plan: string; status: string | number; renewalDate?: string };
 }
 

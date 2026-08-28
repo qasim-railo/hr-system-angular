@@ -9,6 +9,7 @@ export interface PlatformTenant {
   trialEndDate?: string;
   billingStatus: string;
   storageUsedBytes: number;
+  storageLimitBytes: number;
   userCount: number;
   employeeCount: number;
   companyCount: number;

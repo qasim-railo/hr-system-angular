@@ -31,7 +31,7 @@
       <div><strong>{{ tenant.name }}</strong><small>{{ tenant.code }}</small></div>
       <span class="status" [class.suspended]="tenant.status === 'Suspended'">{{ tenant.status }}</span>
       <div><span>{{ tenant.planName }}</span><small>{{ tenant.billingStatus }}</small></div>
-      <div><span>{{ tenant.userCount }} users · {{ tenant.employeeCount }} employees</span><small>{{ formatStorage(tenant.storageUsedBytes) }}</small></div>
+      <div><span>{{ tenant.userCount }} users · {{ tenant.employeeCount }} employees</span><small>{{ formatStorage(tenant.storageUsedBytes) }} / {{ formatStorage(tenant.storageLimitBytes) }}</small></div>
       <div class="actions">
         <button *ngIf="tenant.status === 'Suspended'" (click)="setStatus(tenant, 'resume')">Resume</button>
         <button *ngIf="tenant.status !== 'Suspended' && tenant.status !== 'Archived'" (click)="setStatus(tenant, 'suspend')">Suspend</button>

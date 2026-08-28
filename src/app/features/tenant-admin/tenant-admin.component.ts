@@ -50,7 +50,7 @@ export class TenantAdminComponent implements OnInit {
       error: err => this.showError(err)
     });
   }
-  formatStorage(bytes: number): string { return bytes ? `${(bytes / 1024 / 1024).toFixed(1)} MB` : '0 MB'; }
+  formatStorage(bytes: number, unlimited = false): string { return unlimited ? 'Unlimited' : bytes ? `${(bytes / 1024 / 1024).toFixed(1)} MB` : '0 MB'; }
   emptyField(): CustomFieldDefinition { return { key: '', label: '', entityType: 'Employee', fieldType: 0, isRequired: false, options: [], displayOrder: 0, isActive: true }; }
   fieldTypeName(type: number): string { return this.fieldTypes[type] || 'Text'; }
   updateOptions(value: string): void { this.optionsText = value; this.newField.options = value.split(',').map(item => item.trim()).filter(Boolean); }
