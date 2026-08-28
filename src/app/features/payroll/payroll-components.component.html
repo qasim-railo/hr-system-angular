@@ -1,0 +1,19 @@
+<section class="components-page">
+  <header><div><p class="eyebrow">Tenant configuration</p><h1>Payroll components</h1><p class="subtitle">Configure reusable earnings and deductions without changing payroll code. Approved payrolls keep their component snapshots.</p></div><span class="material-symbols-rounded">payments</span></header>
+  <div class="alert success" *ngIf="message">{{ message }}</div><div class="alert error" *ngIf="error">{{ error }}</div>
+  <div class="grid">
+    <mat-card class="form-card"><h2>{{ editing ? 'Edit component' : 'New component' }}</h2>
+      <mat-form-field appearance="outline"><mat-label>Code</mat-label><input matInput [(ngModel)]="form.code"></mat-form-field>
+      <mat-form-field appearance="outline"><mat-label>Name</mat-label><input matInput [(ngModel)]="form.name"></mat-form-field>
+      <mat-form-field appearance="outline"><mat-label>Type</mat-label><mat-select [(ngModel)]="form.componentType"><mat-option value="Earning">Earning</mat-option><mat-option value="Deduction">Deduction</mat-option></mat-select></mat-form-field>
+      <mat-form-field appearance="outline"><mat-label>Calculation</mat-label><mat-select [(ngModel)]="form.calculationType"><mat-option value="Fixed">Fixed amount</mat-option><mat-option value="Percentage">Percentage of salary field</mat-option></mat-select></mat-form-field>
+      <mat-form-field appearance="outline"><mat-label>Value</mat-label><input matInput type="number" [(ngModel)]="form.value"></mat-form-field>
+      <mat-form-field appearance="outline"><mat-label>Salary field</mat-label><input matInput [(ngModel)]="form.salaryField" placeholder="BasicSalary, Accommodation, Overtime"></mat-form-field>
+      <mat-checkbox [(ngModel)]="form.isTaxable">Taxable</mat-checkbox><mat-checkbox [(ngModel)]="form.isPensionable">Pensionable</mat-checkbox><mat-checkbox [(ngModel)]="form.isWpsIncluded">WPS included</mat-checkbox><mat-checkbox [(ngModel)]="form.isActive">Active</mat-checkbox>
+      <div class="actions"><button mat-flat-button color="primary" (click)="save()">Save component</button><button mat-button *ngIf="editing" (click)="reset()">New</button></div>
+    </mat-card>
+    <mat-card><h2>Configured components</h2><div class="empty" *ngIf="!components.length">No payroll components configured.</div>
+      <div class="component" *ngFor="let component of components"><div><strong>{{ component.name }}</strong><small>{{ component.code }} · {{ component.componentType }} · {{ component.calculationType }} {{ component.value }} · {{ component.isActive ? 'Active' : 'Inactive' }}</small></div><button mat-button (click)="edit(component)">Edit</button></div>
+    </mat-card>
+  </div>
+</section>

@@ -72,3 +72,18 @@ export interface ApprovalWorkflow {
   isActive: boolean;
   steps: ApprovalStep[];
 }
+
+export interface PayrollComponent {
+  id?: number;
+  code: string;
+  name: string;
+  componentType: 'Earning' | 'Deduction';
+  calculationType: 'Fixed' | 'Percentage';
+  value: number;
+  salaryField: string;
+  baseComponentCode: string;
+  isTaxable: boolean;
+  isPensionable: boolean;
+  isWpsIncluded: boolean;
+  isActive: boolean;
+}

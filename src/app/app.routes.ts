@@ -56,6 +56,11 @@ export const routes: Routes = [
         loadComponent: () => import('./features/settings/workflows.component').then(m => m.WorkflowsComponent)
       },
       {
+        path: 'payroll-components',
+        canActivate: [permissionGuard('Users.Manage')],
+        loadComponent: () => import('./features/payroll/payroll-components.component').then(m => m.PayrollComponentsComponent)
+      },
+      {
         path: 'access-management',
         canActivate: [permissionGuard('Users.Manage')],
         loadComponent: () => import('./features/access/access-management/access-management.component').then(m => m.AccessManagementComponent)

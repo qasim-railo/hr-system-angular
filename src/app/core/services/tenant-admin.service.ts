@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { ApprovalWorkflow, NumberingPattern, TenantAdminDashboard, TenantProfile, TenantSetting, TenantSettingItem, TenantSettingsCenter } from '../models/tenant-admin.model';
+import { ApprovalWorkflow, NumberingPattern, PayrollComponent, TenantAdminDashboard, TenantProfile, TenantSetting, TenantSettingItem, TenantSettingsCenter } from '../models/tenant-admin.model';
 
 @Injectable({ providedIn: 'root' })
 export class TenantAdminService {
@@ -21,5 +21,9 @@ export class TenantAdminService {
   saveApprovalWorkflow(workflow: ApprovalWorkflow): Observable<ApprovalWorkflow> {
     const request = { name: workflow.name, module: workflow.module, requestType: workflow.requestType, isActive: workflow.isActive, steps: workflow.steps };
     return workflow.id ? this.http.put<ApprovalWorkflow>(`${environment.apiUrl}/approval-workflows/${workflow.id}`, request) : this.http.post<ApprovalWorkflow>(`${environment.apiUrl}/approval-workflows`, request);
+  }
+  getPayrollComponents(): Observable<PayrollComponent[]> { return this.http.get<PayrollComponent[]>(`${environment.apiUrl}/payroll-components`); }
+  savePayrollComponent(component: PayrollComponent): Observable<PayrollComponent> {
+    return component.id ? this.http.put<PayrollComponent>(`${environment.apiUrl}/payroll-components/${component.id}`, component) : this.http.post<PayrollComponent>(`${environment.apiUrl}/payroll-components`, component);
   }
 }
