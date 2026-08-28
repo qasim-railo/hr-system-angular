@@ -133,6 +133,10 @@
         [routerLinkActiveOptions]="{ exact: true }"><span class="material-symbols-rounded">settings</span>Settings Center</a>
     </li>
     <li class="nav-item" *ngIf="auth.hasPermission('Users.Manage')">
+      <a class="nav-link text-white" routerLink="/integrations" routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"><span class="material-symbols-rounded">hub</span>Integrations</a>
+    </li>
+    <li class="nav-item" *ngIf="auth.hasPermission('Users.Manage')">
       <a class="nav-link text-white" routerLink="/numbering" routerLinkActive="active"
         [routerLinkActiveOptions]="{ exact: true }"><span class="material-symbols-rounded">tag</span>Numbering</a>
     </li>

@@ -1,0 +1,60 @@
+<section class="integrations-page">
+  <header class="page-heading">
+    <div>
+      <p class="eyebrow">Tenant integrations</p>
+      <h1>Integrations</h1>
+      <p class="subtitle">Configure the external provider connections available to this tenant without storing raw secrets in the application database.</p>
+    </div>
+    <span class="material-symbols-rounded heading-icon">hub</span>
+  </header>
+
+  <p *ngIf="loading" class="status">Loading integrations…</p>
+  <p *ngIf="error" class="error">{{ error }}</p>
+
+  <div class="integration-grid" *ngIf="!loading">
+    <article class="card integration-card" *ngFor="let provider of providers">
+      <div class="card-header">
+        <div>
+          <p class="eyebrow">{{ provider.category }}</p>
+          <h2>{{ provider.name }}</h2>
+        </div>
+        <label class="switch">
+          <input type="checkbox" [(ngModel)]="provider.isEnabled" (change)="toggleStatus(provider)" />
+          <span class="slider"></span>
+        </label>
+      </div>
+
+      <p class="description">{{ provider.description }}</p>
+
+      <div class="field-group">
+        <label>
+          Secret reference
+          <input type="text" [(ngModel)]="provider.secretReference" placeholder="e.g. appsettings:integrations:email" />
+        </label>
+      </div>
+
+      <div class="field-group">
+        <label>
+          API base URL
+          <input type="text" [(ngModel)]="provider.baseUrl" placeholder="Optional base URL" />
+        </label>
+      </div>
+
+      <div class="field-group">
+        <label>
+          Additional config
+          <textarea [(ngModel)]="provider.configurationJson" rows="3" placeholder="Optional JSON configuration"></textarea>
+        </label>
+      </div>
+
+      <div class="status-row">
+        <span class="pill" [class.active]="provider.isEnabled">{{ provider.isEnabled ? 'Enabled' : 'Disabled' }}</span>
+        <span class="pill" [class.ready]="provider.isConfigured">{{ provider.isConfigured ? 'Configured' : 'Needs config' }}</span>
+      </div>
+
+      <button type="button" class="primary-button" (click)="save(provider)" [disabled]="savingKeys[provider.key]">
+        {{ savingKeys[provider.key] ? 'Saving...' : 'Save configuration' }}
+      </button>
+    </article>
+  </div>
+</section>

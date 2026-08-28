@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { ApprovalWorkflow, AttendanceConfiguration, AttendanceImportLog, LeavePolicy, NumberingPattern, OvertimePolicy, PayrollComponent, TenantAdminDashboard, TenantProfile, TenantSetting, TenantSettingItem, TenantSettingsCenter } from '../models/tenant-admin.model';
+import { ApprovalWorkflow, AttendanceConfiguration, AttendanceImportLog, IntegrationConnection, IntegrationSummary, LeavePolicy, NumberingPattern, OvertimePolicy, PayrollComponent, TenantAdminDashboard, TenantProfile, TenantSetting, TenantSettingItem, TenantSettingsCenter } from '../models/tenant-admin.model';
 
 @Injectable({ providedIn: 'root' })
 export class TenantAdminService {
@@ -15,6 +15,10 @@ export class TenantAdminService {
   updateSetting(key: string, value: string): Observable<TenantSetting> { return this.http.put<TenantSetting>(`${this.url}/settings/${encodeURIComponent(key)}`, { value }); }
   getSettingsCenter(): Observable<TenantSettingsCenter> { return this.http.get<TenantSettingsCenter>(`${this.url}/settings-center`); }
   updateTypedSetting(key: string, value: string): Observable<TenantSettingItem> { return this.http.put<TenantSettingItem>(`${this.url}/settings-center/${encodeURIComponent(key)}`, { value }); }
+  getIntegrations(): Observable<IntegrationSummary> { return this.http.get<IntegrationSummary>(`${this.url}/integrations`); }
+  saveIntegration(providerKey: string, payload: { isEnabled: boolean; secretReference?: string; baseUrl?: string; configurationJson?: string }): Observable<IntegrationConnection> {
+    return this.http.put<IntegrationConnection>(`${this.url}/integrations/${encodeURIComponent(providerKey)}`, payload);
+  }
   getNumberingPatterns(): Observable<NumberingPattern[]> { return this.http.get<NumberingPattern[]>(`${environment.apiUrl}/numbering`); }
   updateNumberingPattern(key: string, pattern: string): Observable<NumberingPattern> { return this.http.put<NumberingPattern>(`${environment.apiUrl}/numbering/${encodeURIComponent(key)}`, { pattern }); }
   getApprovalWorkflows(): Observable<ApprovalWorkflow[]> { return this.http.get<ApprovalWorkflow[]>(`${environment.apiUrl}/approval-workflows`); }

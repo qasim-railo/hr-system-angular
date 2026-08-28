@@ -65,6 +65,11 @@ export const routes: Routes = [
         loadComponent: () => import('./features/settings/settings-center.component').then(m => m.SettingsCenterComponent)
       },
       {
+        path: 'integrations',
+        canActivate: [permissionGuard('Users.Manage')],
+        loadComponent: () => import('./features/integrations/integrations.component').then(m => m.IntegrationsComponent)
+      },
+      {
         path: 'numbering',
         canActivate: [permissionGuard('Users.Manage')],
         loadComponent: () => import('./features/settings/numbering.component').then(m => m.NumberingComponent)

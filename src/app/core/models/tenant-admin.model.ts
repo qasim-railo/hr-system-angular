@@ -53,6 +53,40 @@ export interface TenantSettingsCenter {
   sections: TenantSettingsSection[];
 }
 
+export interface IntegrationConnection {
+  id?: number;
+  tenantId: number;
+  providerKey: string;
+  providerName: string;
+  category: string;
+  isEnabled: boolean;
+  secretReference: string;
+  baseUrl?: string;
+  configurationJson?: string;
+  lastTestedAt?: string;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export interface IntegrationProvider {
+  key: string;
+  name: string;
+  description: string;
+  category: string;
+  providerType: string;
+  isEnabled: boolean;
+  isConfigured: boolean;
+  secretReference?: string;
+  baseUrl?: string;
+  configurationJson?: string;
+  lastTestedAt?: string;
+}
+
+export interface IntegrationSummary {
+  providers: IntegrationProvider[];
+  connectedCount: number;
+}
+
 export interface NumberingPattern {
   key: string;
   label: string;
