@@ -17,6 +17,11 @@ export interface TenantProfile {
   country: string;
   currency: string;
   timeZone: string;
+  countryCode: string;
+  currencyCode: string;
+  timeZoneId: string;
+  dateFormat: string;
+  numberFormat: string;
   status?: string;
   lifecycleStatus?: string;
 }

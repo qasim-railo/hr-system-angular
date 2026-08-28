@@ -20,6 +20,7 @@ import { Company } from '../../../core/models/company.model';
 import { Department } from '../../../core/models/department.model';
 import { CompanyService } from '../../../core/services/company.service';
 import { DepartmentService } from '../../departments/services/department.service';
+import { LocalizationService } from '../../../core/services/localization.service';
 
 @Component({
   standalone: true,
@@ -100,7 +101,8 @@ export class EmployeeListComponent implements OnInit {
     private fb: FormBuilder,
     private employeeService: EmployeeService,
     private companyService: CompanyService,
-    private departmentService: DepartmentService
+    private departmentService: DepartmentService,
+    public localization: LocalizationService
   ) {}
 
   ngOnInit(): void {

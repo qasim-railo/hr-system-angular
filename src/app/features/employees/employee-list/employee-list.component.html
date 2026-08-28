@@ -2,23 +2,23 @@
   <mat-card class="p-4">
     <div class="row align-items-center mb-4">
       <div class="col-md-6">
-        <h2 class="mb-0">👥 Employee List</h2>
+        <h2 class="mb-0">👥 {{ localization.t('employee.list') }}</h2>
       </div>
       <div class="col-md-6 text-end">
-        <button mat-raised-button color="primary" [routerLink]="['/employees/add']">+ Add Employee</button>
+        <button mat-raised-button color="primary" [routerLink]="['/employees/add']">+ {{ localization.t('employee.add') }}</button>
       </div>
     </div>
 
     <form [formGroup]="filterForm" class="row g-3 mb-4">
       <div class="col-md-4">
         <mat-form-field appearance="outline" class="w-100">
-          <mat-label>Search employees</mat-label>
-          <input matInput formControlName="search" placeholder="Search by name, email, passport" />
+          <mat-label>{{ localization.t('employee.search') }}</mat-label>
+          <input matInput formControlName="search" [placeholder]="localization.t('employee.search')" />
         </mat-form-field>
       </div>
       <div class="col-md-4">
         <mat-form-field appearance="outline" class="w-100">
-          <mat-label>Status</mat-label>
+          <mat-label>{{ localization.t('employee.status') }}</mat-label>
           <mat-select formControlName="statuses" multiple>
             <mat-option *ngFor="let status of statusOptions" [value]="status.value">{{ status.label }}</mat-option>
           </mat-select>
@@ -26,16 +26,16 @@
       </div>
       <div class="col-md-4">
         <mat-form-field appearance="outline" class="w-100">
-          <mat-label>Category</mat-label>
+          <mat-label>{{ localization.t('employee.category') }}</mat-label>
           <mat-select formControlName="category">
-            <mat-option value="">All</mat-option>
+            <mat-option value="">{{ localization.t('employee.all') }}</mat-option>
             <mat-option *ngFor="let item of categories" [value]="item.value">{{ item.label }}</mat-option>
           </mat-select>
         </mat-form-field>
       </div>
       <div class="col-md-4">
         <mat-form-field appearance="outline" class="w-100">
-          <mat-label>Companies</mat-label>
+          <mat-label>{{ localization.t('employee.company') }}</mat-label>
           <mat-select formControlName="companyIds" multiple>
             <mat-option *ngFor="let company of companies" [value]="company.companyId">{{ company.name }}</mat-option>
           </mat-select>
@@ -43,7 +43,7 @@
       </div>
       <div class="col-md-4">
         <mat-form-field appearance="outline" class="w-100">
-          <mat-label>Departments</mat-label>
+          <mat-label>{{ localization.t('employee.department') }}</mat-label>
           <mat-select formControlName="departmentIds" multiple>
             <mat-option *ngFor="let dept of departments" [value]="dept.departmentId">{{ dept.name }}</mat-option>
           </mat-select>
@@ -53,7 +53,7 @@
         <div class="row g-2">
           <div class="col-6">
             <mat-form-field appearance="outline" class="w-100">
-              <mat-label>Joining from</mat-label>
+              <mat-label>{{ localization.t('employee.joiningFrom') }}</mat-label>
               <input matInput [matDatepicker]="fromPicker" formControlName="joiningDateFrom" />
               <mat-datepicker-toggle matSuffix [for]="fromPicker"></mat-datepicker-toggle>
               <mat-datepicker #fromPicker></mat-datepicker>
@@ -61,7 +61,7 @@
           </div>
           <div class="col-6">
             <mat-form-field appearance="outline" class="w-100">
-              <mat-label>Joining to</mat-label>
+              <mat-label>{{ localization.t('employee.joiningTo') }}</mat-label>
               <input matInput [matDatepicker]="toPicker" formControlName="joiningDateTo" />
               <mat-datepicker-toggle matSuffix [for]="toPicker"></mat-datepicker-toggle>
               <mat-datepicker #toPicker></mat-datepicker>
@@ -70,8 +70,8 @@
         </div>
       </div>
       <div class="col-md-12 text-end">
-        <button mat-stroked-button color="primary" type="button" (click)="applyFilter()">Apply filters</button>
-        <button mat-button color="warn" type="button" (click)="clearFilters()">Clear filters</button>
+        <button mat-stroked-button color="primary" type="button" (click)="applyFilter()">{{ localization.t('employee.apply') }}</button>
+        <button mat-button color="warn" type="button" (click)="clearFilters()">{{ localization.t('employee.clear') }}</button>
       </div>
     </form>
 
@@ -79,7 +79,7 @@
       <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 w-100" matSort (matSortChange)="onSortChange($event)">
 
         <ng-container matColumnDef="photo">
-          <th mat-header-cell *matHeaderCellDef>Photo</th>
+          <th mat-header-cell *matHeaderCellDef>{{ localization.t('employee.photo') }}</th>
           <td mat-cell *matCellDef="let emp">
             <img *ngIf="emp.photoPath" [src]="emp.photoPath" width="40" height="40" alt="Photo" />
             <span *ngIf="!emp.photoPath">—</span>
@@ -87,50 +87,50 @@
         </ng-container>
 
         <ng-container matColumnDef="employeeId">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Employee ID</th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ localization.t('employee.id') }}</th>
           <td mat-cell *matCellDef="let emp">{{ emp.employeeId }}</td>
         </ng-container>
 
         <ng-container matColumnDef="fullName">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Full Name</th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ localization.t('employee.fullName') }}</th>
           <td mat-cell *matCellDef="let emp">{{ emp.firstName }} {{ emp.lastName }}</td>
         </ng-container>
 
         <ng-container matColumnDef="companyName">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Company</th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ localization.t('employee.company') }}</th>
           <td mat-cell *matCellDef="let emp">{{ emp.companyName }}</td>
         </ng-container>
 
         <ng-container matColumnDef="departmentName">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Department</th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ localization.t('employee.department') }}</th>
           <td mat-cell *matCellDef="let emp">{{ emp.departmentName }}</td>
         </ng-container>
 
         <ng-container matColumnDef="designation">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Designation</th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ localization.t('employee.designation') }}</th>
           <td mat-cell *matCellDef="let emp">{{ emp.designation }}</td>
         </ng-container>
 
         <ng-container matColumnDef="category">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Category</th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ localization.t('employee.category') }}</th>
           <td mat-cell *matCellDef="let emp">{{ emp.category }}</td>
         </ng-container>
 
         <ng-container matColumnDef="joiningDate">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Joining Date</th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ localization.t('employee.joiningDate') }}</th>
           <td mat-cell *matCellDef="let emp">{{ emp.joiningDate | date:'mediumDate' }}</td>
         </ng-container>
 
         <ng-container matColumnDef="status">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ localization.t('employee.status') }}</th>
           <td mat-cell *matCellDef="let emp">{{ getStatusLabel(emp.status) }}</td>
         </ng-container>
 
         <ng-container matColumnDef="actions">
-          <th mat-header-cell *matHeaderCellDef>Actions</th>
+          <th mat-header-cell *matHeaderCellDef>{{ localization.t('employee.actions') }}</th>
           <td mat-cell *matCellDef="let emp">
-            <button mat-button color="accent" [routerLink]="['/employees/edit', emp.employeeId]">Edit</button>
-            <button mat-button color="primary" [routerLink]="['/employees/profile', emp.employeeId]">View profile</button>
+            <button mat-button color="accent" [routerLink]="['/employees/edit', emp.employeeId]">{{ localization.t('employee.edit') }}</button>
+            <button mat-button color="primary" [routerLink]="['/employees/profile', emp.employeeId]">{{ localization.t('employee.profile') }}</button>
           </td>
         </ng-container>
 
@@ -142,7 +142,7 @@
     <mat-paginator [length]="totalCount" [pageSize]="pageSize" [pageSizeOptions]="[5, 10, 20]" (page)="onPageChange($event)"></mat-paginator>
 
     <div class="text-center mt-3 text-muted" *ngIf="dataSource.data.length === 0">
-      No employees found.
+      {{ localization.t('employee.none') }}
     </div>
   </mat-card>
 </div>

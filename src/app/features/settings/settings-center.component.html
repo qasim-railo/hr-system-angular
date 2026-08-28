@@ -1,11 +1,11 @@
 <section class="settings-page">
   <header class="page-heading">
-    <div><p class="eyebrow">Tenant configuration</p><h1>Settings center</h1><p class="subtitle">Configure PeopleOS modules for this tenant. Defaults remain active until you save an override.</p></div>
+    <div><p class="eyebrow">Tenant configuration</p><h1>{{ localization.t('settings.title') }}</h1><p class="subtitle">Configure PeopleOS modules for this tenant. Defaults remain active until you save an override.</p></div>
     <span class="material-symbols-rounded heading-icon">settings</span>
   </header>
   <div class="alert success" *ngIf="message">{{ message }}</div>
   <div class="alert error" *ngIf="error">{{ error }}</div>
-  <p *ngIf="loading">Loading settings...</p>
+  <p *ngIf="loading">{{ localization.t('settings.loading') }}</p>
   <div class="settings-grid" *ngIf="!loading">
     <article class="card settings-card" *ngFor="let section of sections">
       <div class="card-heading"><div><p class="eyebrow">Module</p><h2>{{ section.name }}</h2></div><span class="material-symbols-rounded">tune</span></div>
@@ -18,9 +18,9 @@
           <input *ngIf="setting.valueType === 'number'" type="number" min="0" [(ngModel)]="setting.value">
           <input *ngIf="setting.valueType === 'text'" type="text" [(ngModel)]="setting.value">
         </label>
-        <small *ngIf="!setting.isOverridden">Default: {{ setting.defaultValue }}</small>
-        <small *ngIf="setting.isOverridden">Tenant override</small>
-        <button type="button" (click)="save(setting)">Save</button>
+        <small *ngIf="!setting.isOverridden">{{ localization.t('settings.default') }}: {{ setting.defaultValue }}</small>
+        <small *ngIf="setting.isOverridden">{{ localization.t('settings.override') }}</small>
+        <button type="button" (click)="save(setting)">{{ localization.t('settings.save') }}</button>
       </div>
     </article>
   </div>

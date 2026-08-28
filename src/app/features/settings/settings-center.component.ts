@@ -3,6 +3,7 @@ import { Component, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { TenantAdminService } from '../../core/services/tenant-admin.service';
 import { TenantSettingItem, TenantSettingsSection } from '../../core/models/tenant-admin.model';
+import { LocalizationService } from '../../core/services/localization.service';
 
 @Component({
   standalone: true,
@@ -12,6 +13,7 @@ import { TenantSettingItem, TenantSettingsSection } from '../../core/models/tena
   styleUrl: './settings-center.component.scss'
 })
 export class SettingsCenterComponent implements OnInit {
+  readonly localization = inject(LocalizationService);
   private readonly admin = inject(TenantAdminService);
   sections: TenantSettingsSection[] = [];
   loading = true;
