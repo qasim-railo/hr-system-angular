@@ -1,0 +1,137 @@
+<section class="support-page">
+  <header class="page-heading">
+    <div>
+      <p class="eyebrow">Help & support</p>
+      <h1>Support center</h1>
+      <p class="subtitle">Get help quickly and track requests for your tenant.</p>
+    </div>
+    <span class="material-symbols-rounded heading-icon">support_agent</span>
+  </header>
+
+  <div class="alert success" *ngIf="successMessage">{{ successMessage }}</div>
+  <div class="alert error" *ngIf="submissionError">{{ submissionError }}</div>
+
+  <div class="content-grid">
+    <section class="support-panel">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Knowledge base</p>
+          <h2>Help articles</h2>
+        </div>
+        <span class="material-symbols-rounded">menu_book</span>
+      </div>
+
+      <div class="article-list" *ngIf="helpCenter?.articles?.length; else noArticles">
+        <article class="article-card" *ngFor="let article of helpCenter!.articles">
+          <span class="pill">{{ article.category }}</span>
+          <h3>{{ article.title }}</h3>
+          <p>{{ article.summary }}</p>
+          <div class="article-content" *ngIf="article.content">
+            {{ article.content }}
+          </div>
+          <small *ngIf="article.tags">Tags: {{ article.tags }}</small>
+        </article>
+      </div>
+      <ng-template #noArticles>
+        <p class="empty-state">No help articles are available yet.</p>
+      </ng-template>
+
+      <div class="contact-card" *ngIf="helpCenter">
+        <h3>Contact support</h3>
+        <p>Email: <a [href]="'mailto:' + helpCenter.contactEmail">{{ helpCenter.contactEmail }}</a></p>
+        <p>Phone: <a [href]="'tel:' + helpCenter.contactPhone">{{ helpCenter.contactPhone }}</a></p>
+        <p>Hours: {{ helpCenter.supportHours }}</p>
+      </div>
+    </section>
+
+    <section class="support-panel">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Submit request</p>
+          <h2>Create a ticket</h2>
+        </div>
+        <span class="material-symbols-rounded">contact_support</span>
+      </div>
+
+      <form class="ticket-form" (ngSubmit)="submit()">
+        <label>Category
+          <select [(ngModel)]="form.category" name="category">
+            <option value="General">General</option>
+            <option value="Account">Account</option>
+            <option value="Payroll">Payroll</option>
+            <option value="Attendance">Attendance</option>
+            <option value="Leave">Leave</option>
+            <option value="Technical">Technical</option>
+          </select>
+        </label>
+
+        <label>Priority
+          <select [(ngModel)]="form.priority" name="priority">
+            <option value="Low">Low</option>
+            <option value="Medium">Medium</option>
+            <option value="High">High</option>
+            <option value="Urgent">Urgent</option>
+          </select>
+        </label>
+
+        <label>Subject
+          <input type="text" [(ngModel)]="form.subject" name="subject" placeholder="Describe the issue" />
+        </label>
+
+        <label>Message
+          <textarea rows="5" [(ngModel)]="form.description" name="description" placeholder="Tell us what happened, what you expected, and any relevant details."></textarea>
+        </label>
+
+        <button type="submit" [disabled]="submitting">
+          {{ submitting ? 'Submitting…' : 'Create ticket' }}
+        </button>
+      </form>
+    </section>
+  </div>
+
+  <section class="support-panel tickets-panel">
+    <div class="section-heading">
+      <div>
+        <p class="eyebrow">My requests</p>
+        <h2>Recent tickets</h2>
+      </div>
+      <span class="material-symbols-rounded">receipt_long</span>
+    </div>
+
+    <div class="ticket-list" *ngIf="tickets.length; else noTickets">
+      <article class="ticket-card" *ngFor="let ticket of tickets">
+        <div class="ticket-header">
+          <div>
+            <strong>{{ ticket.subject }}</strong>
+            <small>{{ ticket.category }} · {{ ticket.priority }}</small>
+          </div>
+          <span class="status-badge" [ngClass]="ticket.status.toLowerCase()">{{ ticket.status }}</span>
+        </div>
+
+        <p class="ticket-description">{{ ticket.description }}</p>
+
+        <div class="ticket-meta">
+          <span>Opened {{ ticket.createdAt | date:'medium' }}</span>
+          <span>Updated {{ ticket.updatedAt | date:'medium' }}</span>
+        </div>
+
+        <div class="message-list" *ngIf="ticket.messages?.length">
+          <div class="message-item" *ngFor="let message of ticket.messages">
+            <strong>{{ message.senderName }}</strong>
+            <small>{{ message.senderRole }} · {{ message.createdAt | date:'medium' }}</small>
+            <p>{{ message.message }}</p>
+          </div>
+        </div>
+
+        <div class="ticket-actions" *ngIf="ticket.status !== 'Resolved' && ticket.status !== 'Closed'">
+          <button type="button" (click)="updateStatus(ticket, 'InProgress')">Mark in progress</button>
+          <button type="button" (click)="updateStatus(ticket, 'Resolved')">Resolve</button>
+        </div>
+      </article>
+    </div>
+
+    <ng-template #noTickets>
+      <p class="empty-state">You have not created any support tickets yet.</p>
+    </ng-template>
+  </section>
+</section>

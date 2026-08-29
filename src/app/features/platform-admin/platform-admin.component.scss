@@ -59,3 +59,12 @@ button { border: 0; border-radius: 7px; padding: .55rem .8rem; cursor: pointer; 
 @media (max-width: 1000px) { .subscription-row { grid-template-columns: 1fr 1fr; } }
 @media (max-width: 700px) { .plans-grid { grid-template-columns: 1fr; } .billing-grid { grid-template-columns: 1fr; } .invoice-form { grid-template-columns: 1fr; } }
 @media (max-width: 1000px) { .stats-grid { grid-template-columns: repeat(3, 1fr); } .tenant-row { grid-template-columns: 1fr 1fr; } .tenant-row.header { display: none; } }
+
+.support-queue-section { margin-top: 2rem; }
+.support-queue-list { display: grid; gap: 1rem; }
+.support-ticket-item { background: #fff; border-radius: 14px; padding: 1rem; box-shadow: 0 8px 24px #183b4d12; display: grid; gap: .75rem; }
+.support-ticket-header { display: flex; justify-content: space-between; gap: .75rem; align-items: center; }
+.support-ticket-header strong { display: block; }
+.support-ticket-header small { color: #6b7e87; }
+.support-ticket-meta { display: flex; justify-content: space-between; gap: .75rem; color: #6b7e87; font-size: .8rem; }
+.support-ticket-item p { margin: 0; }

@@ -6,6 +6,8 @@ import { BillingHistory, BillingInvoice } from '../../core/models/billing.model'
 import { Plan, PlatformStatistics, PlatformTenant } from '../../core/models/platform-tenant.model';
 import { Subscription } from '../../core/models/subscription.model';
 import { SubscriptionService } from '../../core/services/subscription.service';
+import { SupportService } from '../../core/services/support.service';
+import { SupportTicket } from '../../core/models/support.model';
 
 @Component({
   standalone: true,
@@ -24,12 +26,13 @@ export class PlatformAdminComponent implements OnInit {
   selectedPlan: Record<number, number> = {};
   billingHistory: Record<number, BillingHistory> = {};
   invoiceDrafts: Record<number, { amount: string; dueDate: string; notes: string; currency: string; periodStart: string; periodEnd: string }> = {};
+  supportQueue: SupportTicket[] = [];
   search = '';
   loading = true;
   error = '';
   message = '';
 
-  constructor(private platform: PlatformAdminService, private subscriptionService: SubscriptionService) {}
+  constructor(private platform: PlatformAdminService, private subscriptionService: SubscriptionService, private support: SupportService) {}
 
   ngOnInit(): void {
     this.load();
@@ -66,6 +69,10 @@ export class PlatformAdminComponent implements OnInit {
           this.selectedPlan[subscription.tenantId] = subscription.planId;
         });
       },
+      error: err => this.showError(err)
+    });
+    this.support.getTickets().subscribe({
+      next: tickets => this.supportQueue = tickets,
       error: err => this.showError(err)
     });
   }
@@ -186,6 +193,19 @@ export class PlatformAdminComponent implements OnInit {
       next: () => {
         this.message = `Invoice ${invoice.invoiceNumber} marked ${status.toLowerCase()}.`;
         this.loadBillingHistoryForTenants();
+      },
+      error: err => this.showError(err)
+    });
+  }
+
+  updateSupportStatus(ticket: SupportTicket, status: string): void {
+    this.support.updateTicketStatus(ticket.id, { status }).subscribe({
+      next: updated => {
+        const index = this.supportQueue.findIndex(item => item.id === ticket.id);
+        if (index >= 0) {
+          this.supportQueue[index] = updated;
+        }
+        this.message = `Support ticket ${ticket.id} marked ${status}.`;
       },
       error: err => this.showError(err)
     });

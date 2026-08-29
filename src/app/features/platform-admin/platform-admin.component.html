@@ -127,5 +127,29 @@
       </article>
     </div>
   </section>
+
+  <section class="support-queue-section" *ngIf="supportQueue.length">
+    <div class="section-heading"><div><p class="eyebrow">Support queue</p><h2>Tenant support tickets</h2></div><span class="material-symbols-rounded">support_agent</span></div>
+    <div class="support-queue-list">
+      <article class="support-ticket-item" *ngFor="let ticket of supportQueue">
+        <div class="support-ticket-header">
+          <div>
+            <strong>{{ ticket.subject }}</strong>
+            <small>{{ ticket.requesterName }} · Tenant {{ ticket.tenantId }}</small>
+          </div>
+          <span class="status" [class.suspended]="ticket.status === 'Closed' || ticket.status === 'Resolved'">{{ ticket.status }}</span>
+        </div>
+        <p>{{ ticket.description }}</p>
+        <div class="support-ticket-meta">
+          <span>{{ ticket.category }} · {{ ticket.priority }}</span>
+          <span>{{ ticket.createdAt | date:'medium' }}</span>
+        </div>
+        <div class="actions">
+          <button type="button" (click)="updateSupportStatus(ticket, 'InProgress')">In progress</button>
+          <button type="button" (click)="updateSupportStatus(ticket, 'Resolved')">Resolved</button>
+        </div>
+      </article>
+    </div>
+  </section>
   <ng-template #loadingState><p>Loading platform tenants...</p></ng-template>
 </section>
