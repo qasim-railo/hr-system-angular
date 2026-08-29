@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { TenantAdminDashboard, TenantProfile, TenantSetting } from '../../core/models/tenant-admin.model';
+import { TenantAdminDashboard, TenantBranding, TenantProfile, TenantSetting } from '../../core/models/tenant-admin.model';
 import { TenantAdminService } from '../../core/services/tenant-admin.service';
 import { CustomFieldDefinition, CustomFieldService } from '../../core/services/custom-field.service';
 
@@ -17,6 +17,7 @@ export class TenantAdminComponent implements OnInit {
   dashboard?: TenantAdminDashboard;
   profile?: TenantProfile;
   settings: TenantSetting[] = [];
+  branding: TenantBranding = this.emptyBranding();
   loading = true;
   message = '';
   error = '';
@@ -34,6 +35,7 @@ export class TenantAdminComponent implements OnInit {
     this.admin.getDashboard().subscribe({ next: value => { this.dashboard = value; this.loading = false; }, error: err => this.showError(err) });
     this.admin.getProfile().subscribe({ next: value => this.profile = value, error: err => this.showError(err) });
     this.admin.getSettings().subscribe({ next: value => this.settings = value, error: err => this.showError(err) });
+    this.admin.getBranding().subscribe({ next: value => { this.branding = { ...this.emptyBranding(), ...value }; this.applyBranding(this.branding); }, error: err => this.showError(err) });
     this.customFieldService.getDefinitions().subscribe({ next: value => this.customFields = value, error: err => this.showError(err) });
   }
   saveProfile(): void {
@@ -50,7 +52,18 @@ export class TenantAdminComponent implements OnInit {
       error: err => this.showError(err)
     });
   }
+  saveBranding(): void {
+    this.admin.updateBranding(this.branding).subscribe({
+      next: value => {
+        this.branding = { ...this.emptyBranding(), ...value };
+        this.applyBranding(this.branding);
+        this.message = 'Tenant branding updated.';
+      },
+      error: err => this.showError(err)
+    });
+  }
   formatStorage(bytes: number, unlimited = false): string { return unlimited ? 'Unlimited' : bytes ? `${(bytes / 1024 / 1024).toFixed(1)} MB` : '0 MB'; }
+  emptyBranding(): TenantBranding { return { displayName: '', primaryColor: '#1f5c9c', companyLogoUrl: '', payslipLogoUrl: '', reportHeader: '', emailFooter: '' }; }
   emptyField(): CustomFieldDefinition { return { key: '', label: '', entityType: 'Employee', fieldType: 0, isRequired: false, options: [], displayOrder: 0, isActive: true }; }
   fieldTypeName(type: number): string { return this.fieldTypes[type] || 'Text'; }
   updateOptions(value: string): void { this.optionsText = value; this.newField.options = value.split(',').map(item => item.trim()).filter(Boolean); }
@@ -64,6 +77,10 @@ export class TenantAdminComponent implements OnInit {
   archiveCustomField(field: CustomFieldDefinition): void {
     if (!field.customFieldDefinitionId) return;
     this.customFieldService.archive(field.customFieldDefinitionId).subscribe({ next: () => { field.isActive = false; this.message = 'Custom field archived.'; }, error: err => this.showError(err) });
+  }
+  private applyBranding(branding: TenantBranding): void {
+    document.documentElement.style.setProperty('--tenant-primary-color', branding.primaryColor || '#1f5c9c');
+    document.documentElement.style.setProperty('--tenant-display-name', JSON.stringify(branding.displayName || 'PeopleOS'));
   }
   private showError(error: any): void { this.error = error?.error?.message || error?.error || 'Unable to complete the administration request.'; }
 }

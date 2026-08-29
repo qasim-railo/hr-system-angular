@@ -8,6 +8,28 @@
   <div class="admin-grid">
     <article class="card" *ngIf="profile"><div class="card-heading"><div><p class="eyebrow">Company profile</p><h2>{{ profile.name }}</h2></div><span class="material-symbols-rounded">business</span></div><label>Company name<input [(ngModel)]="profile.name"></label><label>Country code<input maxlength="2" [(ngModel)]="profile.countryCode"></label><label>Currency code<input maxlength="3" [(ngModel)]="profile.currencyCode"></label><label>Time zone ID<input [(ngModel)]="profile.timeZoneId" placeholder="Asia/Qatar"></label><label>Date format<input [(ngModel)]="profile.dateFormat" placeholder="dd/MM/yyyy"></label><label>Number format<input [(ngModel)]="profile.numberFormat" placeholder="en-QA"></label><button type="button" (click)="saveProfile()">Save profile</button></article>
     <article class="card"><div class="card-heading"><div><p class="eyebrow">Tenant settings</p><h2>Module configuration</h2></div><span class="material-symbols-rounded">tune</span></div><div class="setting" *ngFor="let setting of settings"><label>{{ setting.key }}<input [(ngModel)]="setting.value"></label><button type="button" (click)="saveSetting(setting)">Save</button></div><p *ngIf="!settings.length">No settings configured yet.</p><div class="setting new-setting"><label>New setting key<input [(ngModel)]="newSettingKey" placeholder="e.g. payroll.currency"></label><label>Value<input [(ngModel)]="newSettingValue"></label><button type="button" (click)="addSetting()">Add setting</button></div></article>
+    <article class="card branding-card">
+      <div class="card-heading"><div><p class="eyebrow">Branding</p><h2>Tenant experience</h2><p class="subtitle">Brand the authenticated portal and generated payroll documents.</p></div><span class="material-symbols-rounded">palette</span></div>
+      <div class="branding-editor">
+        <label>Display name<input [(ngModel)]="branding.displayName" placeholder="Qatar Horizon HR"></label>
+        <label>Primary color<input type="color" [(ngModel)]="branding.primaryColor"></label>
+        <label>Company logo URL<input [(ngModel)]="branding.companyLogoUrl" placeholder="https://example.com/logo.png"></label>
+        <label>Payslip logo URL<input [(ngModel)]="branding.payslipLogoUrl" placeholder="https://example.com/payslip-logo.png"></label>
+        <label>Report header<textarea [(ngModel)]="branding.reportHeader" rows="3" placeholder="Qatar Horizon Holdings"></textarea></label>
+        <label>Email footer<textarea [(ngModel)]="branding.emailFooter" rows="3" placeholder="Thanks for choosing Qatar Horizon."></textarea></label>
+        <button type="button" (click)="saveBranding()">Save branding</button>
+      </div>
+      <div class="branding-preview" [style.borderColor]="branding.primaryColor || '#1f5c9c'">
+        <div class="preview-header" [style.background]="branding.primaryColor || '#1f5c9c'">
+          <img *ngIf="branding.companyLogoUrl" [src]="branding.companyLogoUrl" alt="Company logo" />
+          <span>{{ branding.displayName || 'Company Name' }}</span>
+        </div>
+        <div class="preview-body">
+          <p><strong>Report header:</strong> {{ branding.reportHeader || 'Quarterly payroll report' }}</p>
+          <p><strong>Email footer:</strong> {{ branding.emailFooter || 'Thank you for choosing us.' }}</p>
+        </div>
+      </div>
+    </article>
   </div>
   <article class="card subscription-card" *ngIf="dashboard?.subscription"><div><p class="eyebrow">Subscription and usage</p><h2>{{ dashboard?.subscription?.plan }}</h2><p>Status: <strong>{{ dashboard?.subscription?.status }}</strong></p><p>Storage used: <strong>{{ formatStorage(dashboard?.usage?.storageUsedBytes || 0) }}</strong> of <strong>{{ formatStorage(dashboard?.usage?.storageLimitBytes || 0, !dashboard?.usage?.storageLimitBytes) }}</strong></p><p>Remaining: <strong>{{ formatStorage(dashboard?.usage?.remainingBytes || 0, !dashboard?.usage?.storageLimitBytes) }}</strong></p></div><a routerLink="/plan">View plan details</a></article>
   <article class="card custom-fields-card">

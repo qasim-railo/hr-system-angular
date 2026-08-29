@@ -1,7 +1,10 @@
 <nav class="sidebar-nav text-white p-3">
   <div class="brand-lockup">
-    <span class="brand-mark"><span class="material-symbols-rounded">hub</span></span>
-    <div><strong>PeopleOS</strong><small>HR operations</small></div>
+    <span class="brand-mark" [style.background]="brandColor">
+      <img *ngIf="brandLogoUrl" [src]="brandLogoUrl" alt="Company logo" />
+      <span *ngIf="!brandLogoUrl" class="material-symbols-rounded">hub</span>
+    </span>
+    <div><strong>{{ brandName }}</strong><small>HR operations</small></div>
   </div>
   <ul class="nav flex-column">
     <li class="nav-item" *ngIf="auth.hasPermission('Employees.View')">

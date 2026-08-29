@@ -10,6 +10,13 @@ h1 { margin: 0; font-size: 2.1rem; } h2 { margin: 0; } .subtitle { color: #6b7e8
 .card label { display: grid; gap: .3rem; color: #6b7e87; font-size: .8rem; margin-bottom: .75rem; }.card input { border: 1px solid #d7e1e5; border-radius: 7px; padding: .6rem; color: #123d50; }
 button { background: #158f91; color: #fff; border: 0; border-radius: 7px; padding: .6rem .9rem; cursor: pointer; }.setting { display: grid; grid-template-columns: 1fr auto; gap: .5rem; align-items: end; }.setting button { margin-bottom: .75rem; }
 .subscription-card { margin-top: 1rem; display: flex; justify-content: space-between; align-items: center; }.subscription-card a { color: #158f91; font-weight: 700; }
+.branding-editor { display: grid; gap: .75rem; }
+.branding-card textarea { width: 100%; border: 1px solid #d7e1e5; border-radius: 7px; padding: .6rem; color: #123d50; resize: vertical; }
+.branding-preview { margin-top: 1.25rem; border: 2px solid #1f5c9c; border-radius: 12px; overflow: hidden; background: #f7fbff; }
+.preview-header { display: flex; align-items: center; gap: .75rem; padding: .9rem 1rem; color: #fff; font-weight: 700; }
+.preview-header img { width: 42px; height: 42px; border-radius: 8px; object-fit: contain; background: rgba(255,255,255,.18); }
+.preview-body { padding: 1rem; color: #123d50; }
+.preview-body p { margin: 0 0 .5rem; }
 .alert { padding: .75rem; margin: 1rem 0; border-radius: 8px; }.success { background: #e7f6ee; color: #1b7c56; }.error { background: #fdeceb; color: #b44b42; }
 @media (max-width: 1000px) { .stats-grid { grid-template-columns: repeat(3, 1fr); } }
 @media (max-width: 700px) { .admin-grid { grid-template-columns: 1fr; }.stats-grid { grid-template-columns: repeat(2, 1fr); } }

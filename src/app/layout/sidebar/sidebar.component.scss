@@ -17,7 +17,8 @@
 .brand-lockup strong, .brand-lockup small { display: block; }
 .brand-lockup strong { font-size: 20px; letter-spacing: -.03em; }
 .brand-lockup small { color: #91aaa4; font-family: 'DM Sans', sans-serif; font-size: 11px; }
-.brand-mark { align-items: center; background: #f0b35b; border-radius: 9px; color: #172b2b; display: flex; height: 37px; justify-content: center; width: 37px; }
+.brand-mark { align-items: center; background: #f0b35b; border-radius: 9px; color: #172b2b; display: flex; height: 37px; justify-content: center; overflow: hidden; width: 37px; }
+.brand-mark img { max-height: 100%; max-width: 100%; object-fit: contain; }
 .nav { gap: 4px; }
 .nav-link { align-items: center; border-radius: 8px; color: #b7c9c5 !important; display: flex; font-size: 13px; gap: 12px; padding: 10px 12px; }
 .nav-link .material-symbols-rounded { color: #7f9a94; font-size: 20px; }

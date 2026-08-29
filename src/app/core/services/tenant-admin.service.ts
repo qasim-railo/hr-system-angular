@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { ApprovalWorkflow, AttendanceConfiguration, AttendanceImportLog, IntegrationConnection, IntegrationSummary, LeavePolicy, NumberingPattern, OvertimePolicy, PayrollComponent, TenantAdminDashboard, TenantProfile, TenantSetting, TenantSettingItem, TenantSettingsCenter } from '../models/tenant-admin.model';
+import { ApprovalWorkflow, AttendanceConfiguration, AttendanceImportLog, IntegrationConnection, IntegrationSummary, LeavePolicy, NumberingPattern, OvertimePolicy, PayrollComponent, TenantAdminDashboard, TenantBranding, TenantProfile, TenantSetting, TenantSettingItem, TenantSettingsCenter } from '../models/tenant-admin.model';
 
 @Injectable({ providedIn: 'root' })
 export class TenantAdminService {
@@ -13,6 +13,8 @@ export class TenantAdminService {
   updateProfile(profile: Partial<TenantProfile>): Observable<TenantProfile> { return this.http.put<TenantProfile>(`${this.url}/profile`, profile); }
   getSettings(): Observable<TenantSetting[]> { return this.http.get<TenantSetting[]>(`${this.url}/settings`); }
   updateSetting(key: string, value: string): Observable<TenantSetting> { return this.http.put<TenantSetting>(`${this.url}/settings/${encodeURIComponent(key)}`, { value }); }
+  getBranding(): Observable<TenantBranding> { return this.http.get<TenantBranding>(`${this.url}/branding`); }
+  updateBranding(branding: TenantBranding): Observable<TenantBranding> { return this.http.put<TenantBranding>(`${this.url}/branding`, branding); }
   getSettingsCenter(): Observable<TenantSettingsCenter> { return this.http.get<TenantSettingsCenter>(`${this.url}/settings-center`); }
   updateTypedSetting(key: string, value: string): Observable<TenantSettingItem> { return this.http.put<TenantSettingItem>(`${this.url}/settings-center/${encodeURIComponent(key)}`, { value }); }
   getIntegrations(): Observable<IntegrationSummary> { return this.http.get<IntegrationSummary>(`${this.url}/integrations`); }

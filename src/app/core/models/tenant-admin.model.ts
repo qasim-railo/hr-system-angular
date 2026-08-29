@@ -33,6 +33,15 @@ export interface TenantSetting {
   value: string;
 }
 
+export interface TenantBranding {
+  displayName: string;
+  primaryColor: string;
+  companyLogoUrl: string;
+  payslipLogoUrl: string;
+  reportHeader: string;
+  emailFooter: string;
+}
+
 export interface TenantSettingItem {
   key: string;
   label: string;
