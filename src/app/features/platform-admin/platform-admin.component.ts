@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { PlatformAdminService } from '../../core/services/platform-admin.service';
+import { BillingHistory, BillingInvoice } from '../../core/models/billing.model';
 import { Plan, PlatformStatistics, PlatformTenant } from '../../core/models/platform-tenant.model';
 import { Subscription } from '../../core/models/subscription.model';
 import { SubscriptionService } from '../../core/services/subscription.service';
@@ -21,6 +22,8 @@ export class PlatformAdminComponent implements OnInit {
   subscriptions: Subscription[] = [];
   subscriptionRenewal: Record<number, string> = {};
   selectedPlan: Record<number, number> = {};
+  billingHistory: Record<number, BillingHistory> = {};
+  invoiceDrafts: Record<number, { amount: string; dueDate: string; notes: string; currency: string; periodStart: string; periodEnd: string }> = {};
   search = '';
   loading = true;
   error = '';
@@ -40,7 +43,12 @@ export class PlatformAdminComponent implements OnInit {
       error: err => this.showError(err)
     });
     this.platform.getTenants(this.search).subscribe({
-      next: tenants => { this.tenants = tenants; this.loading = false; },
+      next: tenants => {
+        this.tenants = tenants;
+        this.ensureBillingDrafts();
+        this.loadBillingHistoryForTenants();
+        this.loading = false;
+      },
       error: err => { this.loading = false; this.showError(err); }
     });
     this.platform.getPlans().subscribe({
@@ -120,6 +128,69 @@ export class PlatformAdminComponent implements OnInit {
       .subscribe({ next: () => { this.message = `${subscription.tenantName} ${action}ed.`; this.load(); }, error: err => this.showError(err) });
   }
 
+  createInvoice(tenant: PlatformTenant): void {
+    const draft = this.invoiceDrafts[tenant.tenantId];
+    const amount = Number(draft?.amount ?? 0);
+    if (!draft || !amount || amount <= 0) {
+      this.error = 'Enter a valid invoice amount before creating a billing invoice.';
+      return;
+    }
+
+    this.platform.createInvoice(tenant.tenantId, {
+      amount,
+      currency: draft.currency || 'USD',
+      dueDate: draft.dueDate || undefined,
+      periodStart: draft.periodStart || undefined,
+      periodEnd: draft.periodEnd || undefined,
+      notes: draft.notes || undefined
+    }).subscribe({
+      next: () => {
+        this.message = `Invoice created for ${tenant.name}.`;
+        this.loadBillingHistoryForTenants();
+      },
+      error: err => this.showError(err)
+    });
+  }
+
+  recordPayment(tenantId: number, invoiceId: number): void {
+    const invoice = this.billingHistory[tenantId]?.invoices.find(item => item.billingInvoiceId === invoiceId);
+    if (!invoice) {
+      this.error = 'Unable to find the selected invoice.';
+      return;
+    }
+
+    const amountRemaining = Math.max(invoice.amount - invoice.amountPaid, 0);
+    if (amountRemaining <= 0) {
+      this.error = 'This invoice is already fully paid.';
+      return;
+    }
+
+    this.platform.recordPayment(tenantId, invoiceId, {
+      amount: amountRemaining,
+      paymentMethod: 'Manual',
+      reference: `MANUAL-${Date.now()}`,
+      applyToSubscription: true,
+      notes: 'Manual SaaS payment recorded by PeopleOS admin.'
+    }).subscribe({
+      next: () => {
+        this.message = `Payment recorded for invoice ${invoice.invoiceNumber}.`;
+        this.loadBillingHistoryForTenants();
+      },
+      error: err => this.showError(err)
+    });
+  }
+
+  toggleInvoiceStatus(tenantId: number, invoice: BillingInvoice): void {
+    const status = invoice.status === 'Paid' ? 'Open' : 'Paid';
+    this.platform.updateInvoiceStatus(tenantId, invoice.billingInvoiceId, { status }).subscribe({
+      next: () => {
+        this.message = `Invoice ${invoice.invoiceNumber} marked ${status.toLowerCase()}.`;
+        this.loadBillingHistoryForTenants();
+      },
+      error: err => this.showError(err)
+    });
+  }
+
   savePlan(plan: Plan): void {
     plan.featureCodes = this.featureCodesText[plan.planId]
       .split(',')
@@ -139,6 +210,30 @@ export class PlatformAdminComponent implements OnInit {
     this.platform.changeStatus(tenant.tenantId, action).subscribe({
       next: () => { this.message = `Tenant ${action}d successfully.`; this.load(); },
       error: err => this.showError(err)
+    });
+  }
+
+  private ensureBillingDrafts(): void {
+    this.tenants.forEach(tenant => {
+      if (!this.invoiceDrafts[tenant.tenantId]) {
+        this.invoiceDrafts[tenant.tenantId] = {
+          amount: '',
+          dueDate: '',
+          notes: '',
+          currency: 'USD',
+          periodStart: '',
+          periodEnd: ''
+        };
+      }
+    });
+  }
+
+  private loadBillingHistoryForTenants(): void {
+    this.tenants.forEach(tenant => {
+      this.platform.getBillingHistory(tenant.tenantId).subscribe({
+        next: history => this.billingHistory[tenant.tenantId] = history,
+        error: err => this.showError(err)
+      });
     });
   }
 

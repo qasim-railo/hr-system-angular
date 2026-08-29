@@ -2,6 +2,35 @@
   <header class="page-heading"><div><p class="eyebrow">Company administration</p><h1>Administrator workspace</h1><p class="subtitle">Manage your tenant configuration, users, and operating settings.</p></div><span class="material-symbols-rounded heading-icon">settings_account_box</span></header>
   <div class="alert success" *ngIf="message">{{ message }}</div><div class="alert error" *ngIf="error">{{ error }}</div>
   <p *ngIf="loading">Loading administration workspace...</p>
+  <article class="card setup-progress-card" *ngIf="setupProgress">
+    <div class="card-heading">
+      <div>
+        <p class="eyebrow">Setup wizard</p>
+        <h2>First-login onboarding</h2>
+      </div>
+      <span class="material-symbols-rounded">rocket_launch</span>
+    </div>
+    <div class="setup-summary">
+      <div>
+        <strong>{{ setupProgress.percentComplete }}%</strong>
+        <span>{{ setupProgress.status }}</span>
+      </div>
+      <div class="progress-bar"><span [style.width.%]="setupProgress.percentComplete"></span></div>
+    </div>
+    <div class="setup-steps">
+      <button *ngFor="let step of setupProgress.steps" type="button" class="setup-step" [class.completed]="step.isCompleted" (click)="markSetupStepComplete(step.stepNumber)">
+        <span class="step-badge">{{ step.stepNumber }}</span>
+        <span class="step-text">
+          <strong>{{ step.title }}</strong>
+          <small>{{ step.description }}</small>
+        </span>
+        <span class="step-action" *ngIf="step.isSkippable">Skip</span>
+      </button>
+    </div>
+    <div class="setup-actions">
+      <a routerLink="/setup-wizard" class="route-link">Open full setup wizard</a>
+    </div>
+  </article>
   <div class="stats-grid" *ngIf="dashboard">
     <article><strong>{{ dashboard.users }}</strong><span>Users</span></article><article><strong>{{ dashboard.activeUsers }}</strong><span>Active users</span></article><article><strong>{{ dashboard.roles }}</strong><span>Roles</span></article><article><strong>{{ dashboard.departments }}</strong><span>Departments</span></article><article><strong>{{ dashboard.branches }}</strong><span>Branches</span></article><article><strong>{{ dashboard.employees }}</strong><span>Employees</span></article>
   </div>

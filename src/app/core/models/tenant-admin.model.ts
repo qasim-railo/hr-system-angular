@@ -42,6 +42,23 @@ export interface TenantBranding {
   emailFooter: string;
 }
 
+export interface TenantSetupStep {
+  stepNumber: number;
+  title: string;
+  description: string;
+  isCompleted: boolean;
+  isSkippable: boolean;
+}
+
+export interface TenantSetupProgress {
+  completedStep: number;
+  totalSteps: number;
+  percentComplete: number;
+  status: string;
+  updatedAt: string;
+  steps: TenantSetupStep[];
+}
+
 export interface TenantSettingItem {
   key: string;
   label: string;

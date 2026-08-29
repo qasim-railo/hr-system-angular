@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
+import { BillingHistory, BillingInvoice, CreateBillingInvoiceRequest, RecordPaymentRequest, UpdateBillingInvoiceStatusRequest } from '../models/billing.model';
 import { Plan, PlatformStatistics, PlatformTenant } from '../models/platform-tenant.model';
 
 @Injectable({ providedIn: 'root' })
@@ -29,5 +30,21 @@ export class PlatformAdminService {
 
   updatePlan(plan: Plan): Observable<Plan> {
     return this.http.put<Plan>(`${this.apiUrl}/plans/${plan.planId}`, plan);
+  }
+
+  getBillingHistory(tenantId: number): Observable<BillingHistory> {
+    return this.http.get<BillingHistory>(`${this.apiUrl}/tenants/${tenantId}/billing`);
+  }
+
+  createInvoice(tenantId: number, request: CreateBillingInvoiceRequest): Observable<BillingInvoice> {
+    return this.http.post<BillingInvoice>(`${this.apiUrl}/tenants/${tenantId}/billing/invoices`, request);
+  }
+
+  recordPayment(tenantId: number, invoiceId: number, request: RecordPaymentRequest): Observable<BillingInvoice> {
+    return this.http.post<BillingInvoice>(`${this.apiUrl}/tenants/${tenantId}/billing/invoices/${invoiceId}/payments`, request);
+  }
+
+  updateInvoiceStatus(tenantId: number, invoiceId: number, request: UpdateBillingInvoiceStatusRequest): Observable<BillingInvoice> {
+    return this.http.put<BillingInvoice>(`${this.apiUrl}/tenants/${tenantId}/billing/invoices/${invoiceId}/status`, request);
   }
 }

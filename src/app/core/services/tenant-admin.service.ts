@@ -2,13 +2,15 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { ApprovalWorkflow, AttendanceConfiguration, AttendanceImportLog, IntegrationConnection, IntegrationSummary, LeavePolicy, NumberingPattern, OvertimePolicy, PayrollComponent, TenantAdminDashboard, TenantBranding, TenantProfile, TenantSetting, TenantSettingItem, TenantSettingsCenter } from '../models/tenant-admin.model';
+import { ApprovalWorkflow, AttendanceConfiguration, AttendanceImportLog, IntegrationConnection, IntegrationSummary, LeavePolicy, NumberingPattern, OvertimePolicy, PayrollComponent, TenantAdminDashboard, TenantBranding, TenantProfile, TenantSetting, TenantSettingItem, TenantSettingsCenter, TenantSetupProgress } from '../models/tenant-admin.model';
 
 @Injectable({ providedIn: 'root' })
 export class TenantAdminService {
   private readonly url = `${environment.apiUrl}/tenant`;
   constructor(private http: HttpClient) {}
   getDashboard(): Observable<TenantAdminDashboard> { return this.http.get<TenantAdminDashboard>(`${this.url}/dashboard`); }
+  getSetupProgress(): Observable<TenantSetupProgress> { return this.http.get<TenantSetupProgress>(`${this.url}/setup-wizard`); }
+  updateSetupProgress(completedStep: number): Observable<TenantSetupProgress> { return this.http.put<TenantSetupProgress>(`${this.url}/setup-wizard`, { completedStep }); }
   getProfile(): Observable<TenantProfile> { return this.http.get<TenantProfile>(`${this.url}/profile`); }
   updateProfile(profile: Partial<TenantProfile>): Observable<TenantProfile> { return this.http.put<TenantProfile>(`${this.url}/profile`, profile); }
   getSettings(): Observable<TenantSetting[]> { return this.http.get<TenantSetting[]>(`${this.url}/settings`); }

@@ -40,6 +40,22 @@ button { border: 0; border-radius: 7px; padding: .55rem .8rem; cursor: pointer; 
 .subscription-fields { display: flex !important; gap: .5rem; }
 .subscription-fields label { display: grid; gap: .25rem; color: #6b7e87; font-size: .75rem; }
 .subscription-fields select, .subscription-fields input { border: 1px solid #d7e1e5; border-radius: 7px; padding: .45rem; color: #123d50; }
+.billing-section { margin-top: 2rem; }
+.billing-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+.billing-card { background: #fff; border-radius: 14px; padding: 1rem; box-shadow: 0 8px 24px #183b4d12; display: grid; gap: .85rem; }
+.billing-header { display: flex; justify-content: space-between; gap: .75rem; align-items: center; }
+.billing-header strong { display: block; color: #123d50; }
+.billing-header small { color: #6b7e87; }
+.invoice-form { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .75rem; }
+.invoice-form label { display: grid; gap: .35rem; color: #6b7e87; font-size: .75rem; }
+.invoice-form input, .invoice-form textarea { border: 1px solid #d7e1e5; border-radius: 7px; padding: .55rem; font: inherit; color: #123d50; }
+.invoice-form textarea { resize: vertical; }
+.invoice-list { display: grid; gap: .5rem; }
+.invoice-item { border: 1px solid #edf1f2; border-radius: 10px; padding: .75rem; display: grid; gap: .35rem; }
+.invoice-summary, .invoice-meta { display: flex; justify-content: space-between; gap: .5rem; align-items: center; }
+.invoice-summary strong, .invoice-summary small { display: block; }
+.invoice-summary small, .invoice-meta { color: #6b7e87; font-size: .75rem; }
+.empty-state { margin: 0; color: #6b7e87; }
 @media (max-width: 1000px) { .subscription-row { grid-template-columns: 1fr 1fr; } }
-@media (max-width: 700px) { .plans-grid { grid-template-columns: 1fr; } }
+@media (max-width: 700px) { .plans-grid { grid-template-columns: 1fr; } .billing-grid { grid-template-columns: 1fr; } .invoice-form { grid-template-columns: 1fr; } }
 @media (max-width: 1000px) { .stats-grid { grid-template-columns: repeat(3, 1fr); } .tenant-row { grid-template-columns: 1fr 1fr; } .tenant-row.header { display: none; } }

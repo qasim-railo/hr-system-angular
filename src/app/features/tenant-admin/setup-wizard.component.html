@@ -1,0 +1,45 @@
+<section class="setup-wizard-page">
+  <header class="page-heading">
+    <div>
+      <p class="eyebrow">Tenant setup</p>
+      <h1>First-login onboarding wizard</h1>
+      <p class="subtitle">Complete the core setup for your PeopleOS tenant and resume at any time.</p>
+    </div>
+    <a routerLink="/tenant-admin" class="back-link">Back to admin</a>
+  </header>
+
+  <div class="alert error" *ngIf="error">{{ error }}</div>
+  <p *ngIf="loading">Loading setup wizard...</p>
+
+  <article class="card summary-card" *ngIf="setupProgress">
+    <div class="summary-row">
+      <div>
+        <p class="eyebrow">Progress</p>
+        <h2>{{ setupProgress.percentComplete }}% complete</h2>
+      </div>
+      <span class="status-pill">{{ setupProgress.status }}</span>
+    </div>
+    <div class="progress-bar"><span [style.width.%]="setupProgress.percentComplete"></span></div>
+    <p class="hint">Completed step {{ setupProgress.completedStep }} of {{ setupProgress.totalSteps }}.</p>
+  </article>
+
+  <div class="wizard-list" *ngIf="setupProgress">
+    <article *ngFor="let step of setupProgress.steps" class="card wizard-card" [class.completed]="step.isCompleted">
+      <div class="step-index">{{ step.stepNumber }}</div>
+      <div class="step-content">
+        <div class="step-header">
+          <div>
+            <p class="eyebrow">{{ step.isSkippable ? 'Optional' : 'Required' }}</p>
+            <h3>{{ step.title }}</h3>
+          </div>
+          <span class="step-state" *ngIf="step.isCompleted">Complete</span>
+        </div>
+        <p>{{ step.description }}</p>
+      </div>
+      <div class="step-actions">
+        <button type="button" (click)="completeStep(step.stepNumber)">Mark complete</button>
+        <button type="button" class="secondary" *ngIf="step.isSkippable" (click)="skipStep(step.stepNumber)">Skip</button>
+      </div>
+    </article>
+  </div>
+</section>

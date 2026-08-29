@@ -17,6 +17,22 @@ button { background: #158f91; color: #fff; border: 0; border-radius: 7px; paddin
 .preview-header img { width: 42px; height: 42px; border-radius: 8px; object-fit: contain; background: rgba(255,255,255,.18); }
 .preview-body { padding: 1rem; color: #123d50; }
 .preview-body p { margin: 0 0 .5rem; }
+.setup-progress-card { margin-bottom: 1.5rem; }
+.setup-summary { display: grid; gap: .75rem; margin-bottom: 1rem; }
+.setup-summary > div:first-child { display: flex; justify-content: space-between; align-items: center; font-weight: 700; }
+.setup-summary strong { font-size: 1.7rem; }
+.progress-bar { height: 10px; width: 100%; background: #e6eef1; border-radius: 999px; overflow: hidden; }
+.progress-bar > span { display: block; height: 100%; background: linear-gradient(90deg, #158f91, #42b7a8); border-radius: inherit; }
+.setup-steps { display: grid; gap: .75rem; }
+.setup-step { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: .75rem; width: 100%; text-align: left; border: 1px solid #dfe9ee; background: #f8fbfc; border-radius: 10px; padding: .8rem 1rem; color: inherit; }
+.setup-step.completed { background: #ebfaf4; border-color: #a5d9be; }
+.step-badge { width: 2rem; height: 2rem; display: inline-flex; align-items: center; justify-content: center; border-radius: 50%; background: #dff6f3; color: #0b6d72; font-weight: 700; }
+.setup-step.completed .step-badge { background: #1c9b73; color: #fff; }
+.step-text { display: flex; flex-direction: column; gap: .15rem; }
+.step-text small { color: #677d88; }
+.step-action { color: #158f91; font-weight: 700; }
+.setup-actions { display: flex; justify-content: flex-end; margin-top: 1rem; }
+.route-link { color: #158f91; font-weight: 700; text-decoration: none; }
 .alert { padding: .75rem; margin: 1rem 0; border-radius: 8px; }.success { background: #e7f6ee; color: #1b7c56; }.error { background: #fdeceb; color: #b44b42; }
 @media (max-width: 1000px) { .stats-grid { grid-template-columns: repeat(3, 1fr); } }
 @media (max-width: 700px) { .admin-grid { grid-template-columns: 1fr; }.stats-grid { grid-template-columns: repeat(2, 1fr); } }

@@ -84,5 +84,48 @@
       </article>
     </div>
   </section>
+
+  <section class="billing-section">
+    <div class="section-heading"><div><p class="eyebrow">Billing ledger</p><h2>SaaS billing</h2></div><span class="material-symbols-rounded">receipt_long</span></div>
+    <div class="billing-grid">
+      <article class="billing-card" *ngFor="let tenant of tenants">
+        <div class="billing-header">
+          <div>
+            <strong>{{ tenant.name }}</strong>
+            <small>{{ tenant.code }}</small>
+          </div>
+          <span class="status" [class.suspended]="tenant.status === 'Suspended'">{{ tenant.billingStatus || tenant.status }}</span>
+        </div>
+
+        <div class="invoice-form">
+          <label>Amount<input type="number" min="1" step="0.01" [(ngModel)]="invoiceDrafts[tenant.tenantId].amount"></label>
+          <label>Due date<input type="date" [(ngModel)]="invoiceDrafts[tenant.tenantId].dueDate"></label>
+          <label>Currency<input type="text" maxlength="3" [(ngModel)]="invoiceDrafts[tenant.tenantId].currency"></label>
+          <label>Period start<input type="date" [(ngModel)]="invoiceDrafts[tenant.tenantId].periodStart"></label>
+          <label>Period end<input type="date" [(ngModel)]="invoiceDrafts[tenant.tenantId].periodEnd"></label>
+          <label>Notes<textarea rows="2" [(ngModel)]="invoiceDrafts[tenant.tenantId].notes"></textarea></label>
+          <button type="button" class="save-plan" (click)="createInvoice(tenant)">Create invoice</button>
+        </div>
+
+        <div class="invoice-list" *ngIf="billingHistory[tenant.tenantId]?.invoices?.length; else noInvoices">
+          <div class="invoice-item" *ngFor="let invoice of billingHistory[tenant.tenantId].invoices">
+            <div class="invoice-summary">
+              <strong>{{ invoice.invoiceNumber }}</strong>
+              <small>{{ invoice.status }} · {{ invoice.amountPaid | currency: invoice.currency : 'symbol' : '1.2-2' }} paid</small>
+            </div>
+            <div class="invoice-meta">
+              <span>Due {{ invoice.dueDate | date:'mediumDate' }}</span>
+              <span>{{ invoice.amount | currency: invoice.currency : 'symbol' : '1.2-2' }}</span>
+            </div>
+            <div class="actions">
+              <button type="button" (click)="recordPayment(tenant.tenantId, invoice.billingInvoiceId)">Record payment</button>
+              <button type="button" (click)="toggleInvoiceStatus(tenant.tenantId, invoice)">{{ invoice.status === 'Paid' ? 'Mark unpaid' : 'Mark paid' }}</button>
+            </div>
+          </div>
+        </div>
+        <ng-template #noInvoices><p class="empty-state">No billing records yet.</p></ng-template>
+      </article>
+    </div>
+  </section>
   <ng-template #loadingState><p>Loading platform tenants...</p></ng-template>
 </section>

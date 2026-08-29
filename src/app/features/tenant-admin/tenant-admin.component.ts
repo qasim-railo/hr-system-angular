@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { TenantAdminDashboard, TenantBranding, TenantProfile, TenantSetting } from '../../core/models/tenant-admin.model';
+import { TenantAdminDashboard, TenantBranding, TenantProfile, TenantSetting, TenantSetupProgress } from '../../core/models/tenant-admin.model';
 import { TenantAdminService } from '../../core/services/tenant-admin.service';
 import { CustomFieldDefinition, CustomFieldService } from '../../core/services/custom-field.service';
 
@@ -18,6 +18,7 @@ export class TenantAdminComponent implements OnInit {
   profile?: TenantProfile;
   settings: TenantSetting[] = [];
   branding: TenantBranding = this.emptyBranding();
+  setupProgress?: TenantSetupProgress;
   loading = true;
   message = '';
   error = '';
@@ -33,10 +34,24 @@ export class TenantAdminComponent implements OnInit {
   load(): void {
     this.loading = true;
     this.admin.getDashboard().subscribe({ next: value => { this.dashboard = value; this.loading = false; }, error: err => this.showError(err) });
+    this.admin.getSetupProgress().subscribe({ next: value => this.setupProgress = value, error: err => this.showError(err) });
     this.admin.getProfile().subscribe({ next: value => this.profile = value, error: err => this.showError(err) });
     this.admin.getSettings().subscribe({ next: value => this.settings = value, error: err => this.showError(err) });
     this.admin.getBranding().subscribe({ next: value => { this.branding = { ...this.emptyBranding(), ...value }; this.applyBranding(this.branding); }, error: err => this.showError(err) });
     this.customFieldService.getDefinitions().subscribe({ next: value => this.customFields = value, error: err => this.showError(err) });
+  }
+
+  markSetupStepComplete(stepNumber: number): void {
+    const current = this.setupProgress?.completedStep ?? 0;
+    const next = Math.max(current, stepNumber);
+    this.admin.updateSetupProgress(next).subscribe({
+      next: progress => this.setupProgress = progress,
+      error: err => this.showError(err)
+    });
+  }
+
+  skipSetupStep(stepNumber: number): void {
+    this.markSetupStepComplete(stepNumber);
   }
   saveProfile(): void {
     if (!this.profile) return;
