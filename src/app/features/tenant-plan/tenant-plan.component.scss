@@ -17,6 +17,9 @@ h3 { font-size: 1rem; }
 .feature-list { display: flex; flex-wrap: wrap; gap: .6rem; }
 .feature-list > span { background: #eef3f5; border-radius: 2rem; padding: .5rem .8rem; font-size: .8rem; text-transform: capitalize; }
 .feature-list .material-symbols-rounded { color: #158f91; font-size: 1rem; vertical-align: middle; margin-right: .25rem; }
+.upgrade-card { background: #fffaf0; border: 1px solid #f6d799; border-radius: .9rem; margin-top: 1rem; padding: 1rem 1.25rem; }
+.upgrade-card h3 { margin: 0 0 .75rem; }
+.upgrade-card ul { margin: 0; padding-left: 1.2rem; color: #765d16; }
 .alert.error { color: #a03838; }
 .subscription-summary { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; border-top: 1px solid #dbe7eb; margin-top: 2rem; padding-top: 1.25rem; }
 .subscription-summary span, .subscription-summary strong { display: block; }

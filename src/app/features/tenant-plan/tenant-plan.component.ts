@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { TenantPlan } from '../../core/models/tenant-plan.model';
-import { TenantPlanService } from '../../core/services/tenant-plan.service';
+import { TenantPlanService, FeatureAccessCheck } from '../../core/services/tenant-plan.service';
 import { Subscription } from '../../core/models/subscription.model';
 import { SubscriptionService } from '../../core/services/subscription.service';
 
@@ -18,12 +18,31 @@ export class TenantPlanComponent implements OnInit {
   subscriptionError = '';
   loading = true;
   error = '';
+  featureChecks: Record<string, FeatureAccessCheck> = {};
+  readonly premiumFeatureCodes = ['ADVANCED_REPORTS', 'WORKFLOWS', 'EXPIRY_ALERTS', 'ADVANCED_AUDIT'];
 
   constructor(private tenantPlan: TenantPlanService, private subscriptionService: SubscriptionService) {}
 
   ngOnInit(): void {
     this.tenantPlan.getCurrentPlan().subscribe({
-      next: plan => { this.plan = plan; this.loading = false; },
+      next: plan => {
+        this.plan = plan;
+        this.loading = false;
+        this.premiumFeatureCodes.forEach(code => {
+          this.tenantPlan.checkFeature(code).subscribe({
+            next: result => this.featureChecks[code] = result,
+            error: () => this.featureChecks[code] = {
+              allowed: false,
+              featureCode: code,
+              currentPlanCode: plan.code,
+              currentPlanName: plan.name,
+              upgradeRequired: true,
+              availableFeatures: plan.featureCodes,
+              reason: 'Feature access not available in the current plan.'
+            }
+          });
+        });
+      },
       error: error => { this.error = error?.error?.message || 'Unable to load the current plan.'; this.loading = false; }
     });
     this.subscriptionService.getCurrent().subscribe({
@@ -44,5 +63,11 @@ export class TenantPlanComponent implements OnInit {
   statusLabel(status: string | number): string {
     const labels = ['Trial', 'Active', 'PastDue', 'Suspended', 'Cancelled', 'Expired'];
     return typeof status === 'number' ? labels[status] ?? 'Unknown' : status;
+  }
+
+  get lockedPremiumFeatures(): FeatureAccessCheck[] {
+    return this.premiumFeatureCodes
+      .map(code => this.featureChecks[code])
+      .filter((check): check is FeatureAccessCheck => Boolean(check) && !check.allowed);
   }
 }

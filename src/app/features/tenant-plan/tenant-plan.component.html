@@ -21,6 +21,12 @@
     </div>
     <h3>Included features</h3>
     <div class="feature-list"><span *ngFor="let feature of plan.featureCodes"><span class="material-symbols-rounded">check</span>{{ feature.replace('_', ' ') }}</span></div>
+    <div class="upgrade-card" *ngIf="lockedPremiumFeatures.length">
+      <h3>Available with an upgrade</h3>
+      <ul>
+        <li *ngFor="let feature of lockedPremiumFeatures">{{ feature.featureCode.replace('_', ' ') }} — {{ feature.reason }}</li>
+      </ul>
+    </div>
     <div class="subscription-summary" *ngIf="subscription">
       <div><span>Subscription status</span><strong>{{ statusLabel(subscription.status) }}</strong></div>
       <div><span>Billing cycle</span><strong>{{ subscription.billingCycle }}</strong></div>
