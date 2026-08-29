@@ -13,6 +13,8 @@ button { border: 0; border-radius: 7px; padding: .55rem .8rem; cursor: pointer; 
 .tenant-row.header { color: #6b7e87; font-size: .8rem; text-transform: uppercase; }
 .status { color: #1b7c56; font-weight: 600; }
 .status.suspended { color: #b44b42; }
+.tenant-status-cell { display: grid; gap: .2rem; }
+.trial-warning { color: #a15b00; font-weight: 600; }
 .actions { display: flex; gap: .35rem; flex-wrap: wrap; }
 .actions button { background: #edf4f5; color: #123d50; }
 .alert { padding: .75rem; margin-bottom: 1rem; border-radius: 8px; }

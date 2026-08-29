@@ -29,7 +29,10 @@
     <div class="tenant-row header"><span>Tenant</span><span>Status</span><span>Plan / billing</span><span>Usage</span><span>Actions</span></div>
     <div class="tenant-row" *ngFor="let tenant of tenants">
       <div><strong>{{ tenant.name }}</strong><small>{{ tenant.code }}</small></div>
-      <span class="status" [class.suspended]="tenant.status === 'Suspended'">{{ tenant.status }}</span>
+      <div class="tenant-status-cell">
+        <span class="status" [class.suspended]="tenant.status === 'Suspended'">{{ tenant.status }}</span>
+        <small class="trial-warning" *ngIf="trialWarning(tenant) as trialText">{{ trialText }}</small>
+      </div>
       <div><span>{{ tenant.planName }}</span><small>{{ tenant.billingStatus }}</small></div>
       <div><span>{{ tenant.userCount }} users · {{ tenant.employeeCount }} employees</span><small>{{ formatStorage(tenant.storageUsedBytes) }} / {{ formatStorage(tenant.storageLimitBytes) }}</small></div>
       <div class="actions">
@@ -63,7 +66,10 @@
     <div class="subscription-table">
       <article class="subscription-row" *ngFor="let subscription of subscriptions">
         <div><strong>{{ subscription.tenantName }}</strong><small>{{ subscription.planName }}</small></div>
-        <span class="status" [class.suspended]="subscriptionStatus(subscription.status) === 'Suspended'">{{ subscriptionStatus(subscription.status) }}</span>
+        <div class="tenant-status-cell">
+          <span class="status" [class.suspended]="subscriptionStatus(subscription.status) === 'Suspended'">{{ subscriptionStatus(subscription.status) }}</span>
+          <small class="trial-warning" *ngIf="trialWarning(subscription) as trialText">{{ trialText }}</small>
+        </div>
         <div class="subscription-fields">
           <label>Plan<select [(ngModel)]="selectedPlan[subscription.tenantId]"><option *ngFor="let plan of plans" [ngValue]="plan.planId">{{ plan.name }}</option></select></label>
           <label>Renewal<input type="date" [(ngModel)]="subscriptionRenewal[subscription.tenantId]"></label>

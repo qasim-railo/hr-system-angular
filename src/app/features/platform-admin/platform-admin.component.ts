@@ -67,6 +67,34 @@ export class PlatformAdminComponent implements OnInit {
     return typeof status === 'number' ? labels[status] ?? 'Unknown' : status;
   }
 
+  trialDaysRemaining(target: { trialDaysRemaining?: number; trialEndDate?: string; status?: string | number }): number | null {
+    if (typeof target.trialDaysRemaining === 'number') {
+      return target.trialDaysRemaining;
+    }
+
+    if (!target.trialEndDate) {
+      return null;
+    }
+
+    const msRemaining = new Date(target.trialEndDate).getTime() - Date.now();
+    const daysRemaining = Math.ceil(msRemaining / 86400000);
+    return daysRemaining > 0 ? daysRemaining : 0;
+  }
+
+  trialWarning(target: { trialDaysRemaining?: number; trialEndDate?: string; status?: string | number }): string | null {
+    const status = typeof target.status === 'number' ? ['Trial', 'Active', 'PastDue', 'Suspended', 'Cancelled', 'Expired'][target.status] ?? '' : (target.status ?? '').toLowerCase();
+    if (status !== 'trial') {
+      return null;
+    }
+
+    const days = this.trialDaysRemaining(target);
+    if (days === null) {
+      return null;
+    }
+
+    return days <= 3 ? `Trial expires in ${days} day${days === 1 ? '' : 's'}.` : `Trial active for ${days} more day${days === 1 ? '' : 's'}.`;
+  }
+
   activateSubscription(subscription: Subscription): void {
     this.subscriptionService.activate(subscription.tenantId, {
       planId: this.selectedPlan[subscription.tenantId],

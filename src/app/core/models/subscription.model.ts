@@ -10,6 +10,7 @@ export interface Subscription {
   renewalDate?: string;
   trialStartDate?: string;
   trialEndDate?: string;
+  trialDaysRemaining?: number;
   billingCycle: string;
   notes?: string;
 }
