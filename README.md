@@ -82,4 +82,8 @@ Created by Qasim Ali
 📞 +974 74001784
 🔗 LinkedIn
 
- 
+App Password for gmail.App name;
+HRAPP  Password
+
+
+ xdmt xqgn tznk rlbl
