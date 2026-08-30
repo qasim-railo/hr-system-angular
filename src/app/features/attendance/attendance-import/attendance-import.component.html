@@ -13,16 +13,14 @@
 
     <div class="row">
       <div class="col-md-8">
-        <mat-form-field appearance="outline" class="w-100">
-          <mat-label>Select Excel File</mat-label>
-          <input
-            matInput
-            type="file"
-            accept=".xlsx,.xls"
-            (change)="onFileSelected($event)"
-            [disabled]="isUploading"
-          />
-        </mat-form-field>
+        <label class="form-label d-block">Select Excel File</label>
+        <input
+          type="file"
+          class="form-control"
+          accept=".xlsx,.xls"
+          (change)="onFileSelected($event)"
+          [disabled]="isUploading"
+        />
       </div>
 
       <div class="col-md-4">
