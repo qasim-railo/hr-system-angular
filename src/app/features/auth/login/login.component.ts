@@ -14,7 +14,7 @@ import { AlertService } from '../../../core/services/alert.service';
 })
 export class LoginComponent {
   loginForm = this.fb.group({
-    username: ['', Validators.required],
+    email: ['', [Validators.required, Validators.email]],
     password: ['', Validators.required],
   });
   submitted = false;
@@ -37,20 +37,28 @@ export class LoginComponent {
 
     this.loading = true;
 
-    const { username, password } = this.loginForm.value;
+    const { email, password } = this.loginForm.value;
 
-    this.authService.login(username!, password!).subscribe({
+    this.authService.login(email!.trim(), password!).subscribe({
       next: (response) => {
         this.loading = false;
         this.authService.setToken(response.token);
         this.alertService.success('Login successful'),
-        this.router.navigate(['/dashboard']);  
+        this.router.navigate([this.getLandingRoute()]);
       },
       error: (err) => {
         this.loading = false;
-         this.alertService.error('Error Occured');
+         this.alertService.error(err?.error || 'Unable to sign in with this email and password.');
       
       }
     });
+  }
+
+  private getLandingRoute(): string {
+    if (this.authService.hasPermission('Platform.Tenants')) return '/platform-admin';
+    if (this.authService.hasPermission('Users.Manage')) return '/dashboard';
+    if (this.authService.hasRole('Manager')) return '/manager-portal';
+    if (this.authService.hasRole('Employee')) return '/my-workspace';
+    return this.authService.hasPermission('Employees.View') ? '/dashboard' : '/my-workspace';
   }
 }

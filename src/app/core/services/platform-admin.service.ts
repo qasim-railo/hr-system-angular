@@ -3,7 +3,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { BillingHistory, BillingInvoice, CreateBillingInvoiceRequest, RecordPaymentRequest, UpdateBillingInvoiceStatusRequest } from '../models/billing.model';
-import { Plan, PlatformStatistics, PlatformTenant } from '../models/platform-tenant.model';
+import { CreatePlanRequest, Plan, PlanModule, PlatformAuditLog, PlatformStatistics, PlatformTenant } from '../models/platform-tenant.model';
 
 @Injectable({ providedIn: 'root' })
 export class PlatformAdminService {
@@ -20,12 +20,24 @@ export class PlatformAdminService {
     return this.http.get<PlatformStatistics>(`${this.apiUrl}/statistics`);
   }
 
+  getAuditLogs(limit = 100): Observable<PlatformAuditLog[]> {
+    return this.http.get<PlatformAuditLog[]>(`${this.apiUrl}/audit-logs`, { params: { limit } });
+  }
+
   changeStatus(id: number, action: 'activate' | 'suspend' | 'resume' | 'archive'): Observable<void> {
     return this.http.post<void>(`${this.apiUrl}/tenants/${id}/${action}`, {});
   }
 
   getPlans(): Observable<Plan[]> {
     return this.http.get<Plan[]>(this.apiUrl + '/plans');
+  }
+
+  getAvailablePlanModules(): Observable<PlanModule[]> {
+    return this.http.get<PlanModule[]>(`${this.apiUrl}/plans/modules`);
+  }
+
+  createPlan(request: CreatePlanRequest): Observable<Plan> {
+    return this.http.post<Plan>(this.apiUrl + '/plans', request);
   }
 
   updatePlan(plan: Plan): Observable<Plan> {

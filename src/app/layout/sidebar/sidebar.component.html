@@ -4,14 +4,15 @@
       <img *ngIf="brandLogoUrl" [src]="brandLogoUrl" alt="Company logo" />
       <span *ngIf="!brandLogoUrl" class="material-symbols-rounded">hub</span>
     </span>
-    <div><strong>{{ brandName }}</strong><small>HR operations</small></div>
+    <div><strong>{{ brandName }}</strong><small>{{ isPlatformAdmin ? 'Platform administration' : 'HR operations' }}</small></div>
   </div>
   <ul class="nav flex-column">
+    <ng-container *ngIf="!isPlatformAdmin">
     <li class="nav-item" *ngIf="auth.hasPermission('Employees.View')">
       <a class="nav-link text-white" routerLink="/dashboard" routerLinkActive="active"
         [routerLinkActiveOptions]="{ exact: true }"><span class="material-symbols-rounded">space_dashboard</span>{{ localization.t('nav.dashboard') }}</a>
     </li>
-    <li class="nav-item">
+    <li class="nav-item" *ngIf="auth.hasPermission('Users.Manage')">
       <a class="nav-link text-white" routerLink="/notifications" routerLinkActive="active"
         [routerLinkActiveOptions]="{ exact: true }"><span class="material-symbols-rounded">notifications</span>{{ localization.t('nav.notifications') }}</a>
     </li>
@@ -31,45 +32,45 @@
       <a class="nav-link text-white" routerLink="/my-workspace" routerLinkActive="active"
         [routerLinkActiveOptions]="{ exact: true }"><span class="material-symbols-rounded">person</span>{{ localization.t('nav.myWorkspace') }}</a>
     </li>
-    <li class="nav-item">
+    <li class="nav-item" *ngIf="auth.hasRole('Manager')">
       <a class="nav-link text-white" routerLink="/manager-portal" routerLinkActive="active"
         [routerLinkActiveOptions]="{ exact: true }"><span class="material-symbols-rounded">groups</span>{{ localization.t('nav.managerPortal') }}</a>
     </li>
-    <li class="nav-item">
+    <li class="nav-item" *ngIf="auth.hasPermission('Employees.View')">
       <a class="nav-link text-white" routerLink="/employees" routerLinkActive="active"
         [routerLinkActiveOptions]="{ exact: true }"><span class="material-symbols-rounded">badge</span>{{ localization.t('nav.employees') }}</a>
     </li>
 
-    <li class="nav-item">
+    <li class="nav-item" *ngIf="auth.hasPermission('Users.Manage')">
       <a class="nav-link text-white" routerLink="/companies" routerLinkActive="active"
         [routerLinkActiveOptions]="{ exact: true }"><span class="material-symbols-rounded">business</span>{{ localization.t('nav.companies') }}</a>
     </li>
 
-    <li class="nav-item">
+    <li class="nav-item" *ngIf="auth.hasPermission('Users.Manage')">
       <a class="nav-link text-white" routerLink="/departments" routerLinkActive="active"
         [routerLinkActiveOptions]="{ exact: true }"><span class="material-symbols-rounded">account_tree</span>{{ localization.t('nav.departments') }}</a>
     </li>
 
-    <li class="nav-item">
+    <li class="nav-item" *ngIf="auth.hasPermission('Files.View')">
       <a class="nav-link text-white" routerLink="/documents" routerLinkActive="active"
         [routerLinkActiveOptions]="{ exact: true }"><span class="material-symbols-rounded">description</span>{{ localization.t('nav.documents') }}</a>
     </li>
 
-    <li class="nav-item">
+    <li class="nav-item" *ngIf="auth.hasPermission('Users.Manage')">
       <a class="nav-link text-white" routerLink="/assets" routerLinkActive="active"
         [routerLinkActiveOptions]="{ exact: true }"><span class="material-symbols-rounded">inventory_2</span>{{ localization.t('nav.assets') }}</a>
     </li>
   
-<li class="nav-item">
+<li class="nav-item" *ngIf="auth.hasPermission('Users.Manage')">
       <a class="nav-link text-white" routerLink="/employee-assets" routerLinkActive="active"
         [routerLinkActiveOptions]="{ exact: true }"><span class="material-symbols-rounded">assignment_ind</span>Employee Assets</a>
     </li>
-    <li class="nav-item">
+    <li class="nav-item" *ngIf="auth.hasPermission('Users.Manage')">
       <a class="nav-link text-white" routerLink="/shifts" routerLinkActive="active"
         [routerLinkActiveOptions]="{ exact: true }"><span class="material-symbols-rounded">schedule</span>Shift</a>
     </li>
 
-    <li class="nav-item">
+    <li class="nav-item" *ngIf="auth.hasPermission('Users.Manage')">
       <a class="nav-link text-white" routerLink="/employee-shift" routerLinkActive="active"
         [routerLinkActiveOptions]="{ exact: true }"><span class="material-symbols-rounded">event_available</span>Employee Shift</a>
     </li>
@@ -77,7 +78,7 @@
   <a class="nav-link text-white" routerLink="/employee-shifts" routerLinkActive="active">Employee Shifts</a>
 </li> -->
 
-    <li class="nav-item">
+    <li class="nav-item" *ngIf="auth.hasPermission('Users.Manage')">
       <a class="nav-link text-white" routerLink="/attendance" routerLinkActive="active"
         [routerLinkActiveOptions]="{ exact: true }"><span class="material-symbols-rounded">fact_check</span>Attendance</a>
     </li>
@@ -87,26 +88,26 @@
         [routerLinkActiveOptions]="{ exact: true }">Overtime</a>
     </li> -->
 
-    <li class="nav-item">
+    <li class="nav-item" *ngIf="auth.hasPermission('Users.Manage')">
       <a class="nav-link text-white" routerLink="/payroll" routerLinkActive="active"
         [routerLinkActiveOptions]="{ exact: true }"><span class="material-symbols-rounded">payments</span>Payroll</a>
     </li>
 
-    <li class="nav-item">
+    <li class="nav-item" *ngIf="auth.hasPermission('Users.Manage')">
       <a class="nav-link text-white" routerLink="/leaves" routerLinkActive="active"
         [routerLinkActiveOptions]="{ exact: true }"><span class="material-symbols-rounded">beach_access</span>Leaves</a>
     </li>
 
-    <li class="nav-item">
+    <li class="nav-item" *ngIf="auth.hasPermission('Users.Manage')">
       <a class="nav-link text-white" routerLink="/final-settlement" routerLinkActive="active"
         [routerLinkActiveOptions]="{ exact: true }"><span class="material-symbols-rounded">task_alt</span>Final Settlement</a>
     </li>
 
-    <li class="nav-item">
+    <li class="nav-item" *ngIf="auth.hasPermission('Users.Manage')">
       <a class="nav-link text-white" routerLink="/gratuity-report" routerLinkActive="active"
         [routerLinkActiveOptions]="{ exact: true }"><span class="material-symbols-rounded">bar_chart</span>Gratuity Report</a>
     </li>
-    <li class="nav-item">
+    <li class="nav-item" *ngIf="auth.hasPermission('Users.Manage')">
       <a class="nav-link text-white" routerLink="/reports" routerLinkActive="active"
         [routerLinkActiveOptions]="{ exact: true }"><span class="material-symbols-rounded">summarize</span>Reports</a>
     </li>
@@ -115,7 +116,7 @@
         [routerLinkActiveOptions]="{ exact: true }"><span class="material-symbols-rounded">download</span>Export Center</a>
     </li>
 
-    <li class="nav-item">
+    <li class="nav-item" *ngIf="auth.hasPermission('Users.Manage')">
       <a class="nav-link text-white" routerLink="/increment-history" routerLinkActive="active"
         [routerLinkActiveOptions]="{ exact: true }"><span class="material-symbols-rounded">trending_up</span>Increments</a>
     </li>
@@ -167,14 +168,21 @@
       <a class="nav-link text-white" routerLink="/support" routerLinkActive="active"
         [routerLinkActiveOptions]="{ exact: true }"><span class="material-symbols-rounded">support_agent</span>Help & Support</a>
     </li>
+    </ng-container>
     <li class="nav-item" *ngIf="auth.hasPermission('Platform.Tenants')">
       <a class="nav-link text-white" routerLink="/platform-admin" routerLinkActive="active"
         [routerLinkActiveOptions]="{ exact: true }"><span class="material-symbols-rounded">domain</span>PeopleOS Super Admin</a>
     </li>
+    <li class="nav-item" *ngIf="isPlatformAdmin">
+      <a class="nav-link text-white" routerLink="/support" routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"><span class="material-symbols-rounded">support_agent</span>Platform Support</a>
+    </li>
+    <ng-container *ngIf="!isPlatformAdmin">
     <li class="nav-item">
       <a class="nav-link text-white" routerLink="/plan" routerLinkActive="active"
         [routerLinkActiveOptions]="{ exact: true }"><span class="material-symbols-rounded">workspace_premium</span>Current Plan</a>
     </li>
+    </ng-container>
 
     <!-- <li class="nav-item">
       <a class="nav-link text-white" routerLink="/settings" routerLinkActive="active"

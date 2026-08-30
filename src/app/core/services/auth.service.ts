@@ -12,8 +12,8 @@ export class AuthService {
 
   constructor(private http: HttpClient) { }
 
-  login(username: string, password: string): Observable<any> {
-    return this.http.post(`${this.apiUrl}/login`, { username, password });
+  login(email: string, password: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/login`, { email, password });
   }
 
   setToken(token: string) {
@@ -59,5 +59,11 @@ export class AuthService {
   hasPermission(permission: string): boolean {
     const permissions = this.getTokenPayload()?.permission;
     return Array.isArray(permissions) ? permissions.includes(permission) : permissions === permission;
+  }
+
+  hasRole(role: string): boolean {
+    const payload = this.getTokenPayload();
+    const roles = payload?.role ?? payload?.['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
+    return Array.isArray(roles) ? roles.includes(role) : roles === role;
   }
 }

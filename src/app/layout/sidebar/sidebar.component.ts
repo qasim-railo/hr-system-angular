@@ -17,11 +17,14 @@ export class SidebarComponent implements OnInit {
   brandName = 'PeopleOS';
   brandLogoUrl = '';
   brandColor = '#1f5c9c';
+  readonly isPlatformAdmin = this.auth.hasPermission('Platform.Tenants');
 
   constructor(private router: Router, public auth: AuthService, public localization: LocalizationService, private tenantAdmin: TenantAdminService) {}
 
   ngOnInit(): void {
     if (!this.auth.isLoggedIn()) return;
+    if (this.isPlatformAdmin) return;
+
     this.tenantAdmin.getBranding().subscribe({
       next: branding => this.applyBranding(branding),
       error: () => undefined

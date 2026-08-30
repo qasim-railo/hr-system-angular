@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { PlatformAdminService } from '../../core/services/platform-admin.service';
 import { BillingHistory, BillingInvoice } from '../../core/models/billing.model';
-import { Plan, PlatformStatistics, PlatformTenant } from '../../core/models/platform-tenant.model';
+import { CreatePlanRequest, Plan, PlanModule, PlatformAuditLog, PlatformStatistics, PlatformTenant } from '../../core/models/platform-tenant.model';
 import { Subscription } from '../../core/models/subscription.model';
 import { SubscriptionService } from '../../core/services/subscription.service';
 import { SupportService } from '../../core/services/support.service';
@@ -17,16 +17,19 @@ import { SupportTicket } from '../../core/models/support.model';
   styleUrl: './platform-admin.component.scss'
 })
 export class PlatformAdminComponent implements OnInit {
+  activeSection: 'tenants' | 'plans' | 'subscriptions' | 'billing' | 'support' | 'audit' = 'tenants';
   tenants: PlatformTenant[] = [];
   statistics?: PlatformStatistics;
   plans: Plan[] = [];
-  featureCodesText: Record<number, string> = {};
+  availablePlanModules: PlanModule[] = [];
+  newPlan: CreatePlanRequest = this.emptyPlan();
   subscriptions: Subscription[] = [];
   subscriptionRenewal: Record<number, string> = {};
   selectedPlan: Record<number, number> = {};
   billingHistory: Record<number, BillingHistory> = {};
   invoiceDrafts: Record<number, { amount: string; dueDate: string; notes: string; currency: string; periodStart: string; periodEnd: string }> = {};
   supportQueue: SupportTicket[] = [];
+  auditLogs: PlatformAuditLog[] = [];
   search = '';
   loading = true;
   error = '';
@@ -57,8 +60,11 @@ export class PlatformAdminComponent implements OnInit {
     this.platform.getPlans().subscribe({
       next: plans => {
         this.plans = plans;
-        plans.forEach(plan => this.featureCodesText[plan.planId] = plan.featureCodes.join(', '));
       },
+      error: err => this.showError(err)
+    });
+    this.platform.getAvailablePlanModules().subscribe({
+      next: modules => this.availablePlanModules = modules,
       error: err => this.showError(err)
     });
     this.subscriptionService.getAll().subscribe({
@@ -73,6 +79,10 @@ export class PlatformAdminComponent implements OnInit {
     });
     this.support.getTickets().subscribe({
       next: tickets => this.supportQueue = tickets,
+      error: err => this.showError(err)
+    });
+    this.platform.getAuditLogs().subscribe({
+      next: logs => this.auditLogs = logs,
       error: err => this.showError(err)
     });
   }
@@ -212,10 +222,6 @@ export class PlatformAdminComponent implements OnInit {
   }
 
   savePlan(plan: Plan): void {
-    plan.featureCodes = this.featureCodesText[plan.planId]
-      .split(',')
-      .map(code => code.trim().toUpperCase())
-      .filter(Boolean);
     this.platform.updatePlan(plan).subscribe({
       next: saved => {
         const index = this.plans.findIndex(item => item.planId === saved.planId);
@@ -224,6 +230,35 @@ export class PlatformAdminComponent implements OnInit {
       },
       error: err => this.showError(err)
     });
+  }
+
+  createPlan(): void {
+    this.error = '';
+    this.newPlan.code = this.newPlan.code.trim().toUpperCase();
+    this.newPlan.name = this.newPlan.name.trim();
+    if (!this.newPlan.code || !this.newPlan.name) {
+      this.error = 'Enter a plan code and plan name.';
+      return;
+    }
+
+    this.platform.createPlan(this.newPlan).subscribe({
+      next: plan => {
+        this.plans = [...this.plans, plan];
+        this.newPlan = this.emptyPlan();
+        this.message = `${plan.name} created successfully.`;
+      },
+      error: err => this.showError(err)
+    });
+  }
+
+  toggleNewPlanModule(code: string, enabled: boolean): void {
+    this.togglePlanModule(this.newPlan, code, enabled);
+  }
+
+  togglePlanModule(plan: Pick<Plan, 'featureCodes'>, code: string, enabled: boolean): void {
+    plan.featureCodes = enabled
+      ? [...new Set([...plan.featureCodes, code])]
+      : plan.featureCodes.filter(featureCode => featureCode !== code);
   }
 
   setStatus(tenant: PlatformTenant, action: 'activate' | 'suspend' | 'resume' | 'archive'): void {
@@ -262,6 +297,10 @@ export class PlatformAdminComponent implements OnInit {
     const units = ['B', 'KB', 'MB', 'GB'];
     const index = Math.min(Math.floor(Math.log(bytes) / Math.log(1024)), units.length - 1);
     return `${(bytes / Math.pow(1024, index)).toFixed(1)} ${units[index]}`;
+  }
+
+  private emptyPlan(): CreatePlanRequest {
+    return { code: '', name: '', maxEmployees: 0, maxUsers: 0, maxBranches: 0, maxStorageBytes: 0, featureCodes: [] };
   }
 
   private showError(error: any): void {

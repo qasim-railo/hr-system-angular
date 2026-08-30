@@ -1,7 +1,10 @@
 .registration-shell { min-height: 100vh; background: #f3f6f5; padding: 2rem; display: flex; justify-content: center; }
-.registration-card { background: white; width: min(900px, 100%); padding: 2.5rem; border-radius: 14px; box-shadow: 0 8px 28px #183b4d16; }
+.registration-card { background: white; width: min(720px, 100%); padding: 2.5rem; border-radius: 14px; box-shadow: 0 8px 28px #183b4d16; }
 .brand { display: flex; align-items: center; gap: .6rem; color: #123d50; font-size: 1.25rem; }.brand-mark { background: #f0b35b; border-radius: 8px; padding: .5rem; color: #123d50; }
 .eyebrow { color: #087f70; font-weight: 700; text-transform: uppercase; font-size: .75rem; margin-top: 2rem; }.intro { color: #6b7e87; }
 h1 { color: #123d50; }.grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; } h2 { font-size: 1.05rem; margin-top: 1.7rem; color: #123d50; }
-label { display: grid; gap: .35rem; color: #52635e; font-size: .85rem; font-weight: 600; } input { padding: .7rem; border: 1px solid #d6e1dd; border-radius: 7px; font: inherit; font-weight: 400; }.wide { grid-column: span 2; }
+label { display: grid; gap: .35rem; color: #52635e; font-size: .85rem; font-weight: 600; } input, select { padding: .7rem; border: 1px solid #d6e1dd; border-radius: 7px; font: inherit; font-weight: 400; background: white; }.wide { grid-column: span 2; }
+.phone-input { align-items: center; border: 1px solid #d6e1dd; border-radius: 7px; display: flex; overflow: hidden; }
+.phone-input span { background: #edf4f5; color: #123d50; font-weight: 600; padding: .7rem; white-space: nowrap; }
+.phone-input input { border: 0; border-radius: 0; min-width: 0; width: 100%; }
 button { margin-top: 1.5rem; background: #087f70; color: white; border: 0; border-radius: 7px; padding: .8rem 1.2rem; cursor: pointer; }.login-link { margin-top: 1rem; color: #6b7e87; }.login-link a { color: #087f70; }.alert { padding: .7rem; border-radius: 7px; }.error { background: #fdeceb; color: #b44b42; }.success { text-align: center; padding: 3rem 1rem; }.code { background: #edf4f5; padding: 1rem; display: inline-block; } @media (max-width: 650px) { .registration-card { padding: 1.4rem; }.grid { grid-template-columns: 1fr; }.wide { grid-column: auto; } }

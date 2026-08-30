@@ -4,6 +4,7 @@ import { RecycleBinComponent } from './features/recycle-bin/recycle-bin.componen
 import { LoginComponent } from './features/auth/login/login.component';
 import { authGuard } from './core/guards/auth.guard';
 import { permissionGuard } from './core/guards/permission.guard';
+import { platformAdminScopeGuard } from './core/guards/platform-admin-scope.guard';
 import { MainLayoutComponent } from './layout/main-layout/main-layout.component';
 import { DashboardComponent } from './features/dashboard/dashboard/dashboard.component';
 import { AssetsListComponent } from './features/assets/assets-list/assets-list.component';
@@ -26,7 +27,7 @@ export const routes: Routes = [
   {
     path: '',
     component: MainLayoutComponent,
-    canActivateChild: [authGuard],
+    canActivateChild: [authGuard, platformAdminScopeGuard],
     children: [
       // Default Dashboard
       { path: 'dashboard', component: DashboardComponent },

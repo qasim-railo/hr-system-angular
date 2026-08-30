@@ -4,14 +4,17 @@ import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 
 export interface RegistrationRequest {
-  legalName: string; tradeName?: string; commercialRegistrationNumber: string; industry?: string;
-  employeeCount: number; address: string; country: string; phone: string; email: string; website?: string;
-  contactPerson: string; contactPhone: string; administratorUsername: string; administratorPassword: string;
-  administratorName: string; administratorEmail: string; administratorPhone: string;
+  legalName: string;
+  commercialRegistrationNumber: string;
+  country: string;
+  phone: string;
+  administratorPassword: string;
+  administratorName: string;
+  administratorEmail: string;
 }
 
 export interface RegistrationResult {
-  tenantCode: string; administratorUsername: string; status: string; completedStep: number;
+  tenantCode: string; administratorEmail: string; status: string; completedStep: number;
 }
 
 @Injectable({ providedIn: 'root' })

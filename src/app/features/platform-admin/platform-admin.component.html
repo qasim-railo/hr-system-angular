@@ -11,6 +11,16 @@
   <div class="alert success" *ngIf="message">{{ message }}</div>
   <div class="alert error" *ngIf="error">{{ error }}</div>
 
+  <nav class="platform-menu" aria-label="Platform administration sections">
+    <button type="button" [class.active]="activeSection === 'tenants'" (click)="activeSection = 'tenants'"><span class="material-symbols-rounded">domain</span>Tenants</button>
+    <button type="button" [class.active]="activeSection === 'plans'" (click)="activeSection = 'plans'"><span class="material-symbols-rounded">layers</span>Plans & Modules</button>
+    <button type="button" [class.active]="activeSection === 'subscriptions'" (click)="activeSection = 'subscriptions'"><span class="material-symbols-rounded">autorenew</span>Subscriptions</button>
+    <button type="button" [class.active]="activeSection === 'billing'" (click)="activeSection = 'billing'"><span class="material-symbols-rounded">receipt_long</span>Billing</button>
+    <button type="button" [class.active]="activeSection === 'support'" (click)="activeSection = 'support'"><span class="material-symbols-rounded">support_agent</span>Support</button>
+    <button type="button" [class.active]="activeSection === 'audit'" (click)="activeSection = 'audit'"><span class="material-symbols-rounded">history</span>Audit Log</button>
+  </nav>
+
+  <ng-container *ngIf="activeSection === 'tenants'">
   <div class="stats-grid" *ngIf="statistics">
     <article><strong>{{ statistics.totalTenants }}</strong><span>Total tenants</span></article>
     <article><strong>{{ statistics.activeTenants }}</strong><span>Active</span></article>
@@ -44,8 +54,29 @@
     </div>
     <p *ngIf="!tenants.length">No tenants found.</p>
   </div>
-  <section class="plans-section" *ngIf="plans.length">
+  </ng-container>
+
+  <section class="plans-section" *ngIf="activeSection === 'plans' && (plans.length || availablePlanModules.length)">
     <div class="section-heading"><div><p class="eyebrow">SaaS catalog</p><h2>Plans and feature access</h2></div><span class="material-symbols-rounded">layers</span></div>
+    <article class="plan-editor new-plan-editor">
+      <div class="plan-editor-heading"><div><span class="eyebrow">New offering</span><h3>Create plan</h3></div><span class="material-symbols-rounded">add_box</span></div>
+      <div class="plan-limits">
+        <label>Code<input maxlength="50" [(ngModel)]="newPlan.code" placeholder="e.g. ENTERPRISE"></label>
+        <label>Name<input maxlength="150" [(ngModel)]="newPlan.name" placeholder="e.g. PeopleOS Enterprise"></label>
+        <label>Employees<input type="number" min="0" [(ngModel)]="newPlan.maxEmployees"></label>
+        <label>Users<input type="number" min="0" [(ngModel)]="newPlan.maxUsers"></label>
+        <label>Branches<input type="number" min="0" [(ngModel)]="newPlan.maxBranches"></label>
+        <label>Storage (bytes)<input type="number" min="0" [(ngModel)]="newPlan.maxStorageBytes"></label>
+      </div>
+      <fieldset class="module-selector">
+        <legend>Included modules</legend>
+        <label *ngFor="let module of availablePlanModules">
+          <input type="checkbox" [checked]="newPlan.featureCodes.includes(module.code)" (change)="toggleNewPlanModule(module.code, $any($event.target).checked)">
+          {{ module.name }}
+        </label>
+      </fieldset>
+      <button type="button" class="save-plan" (click)="createPlan()">Create plan</button>
+    </article>
     <div class="plans-grid">
       <article class="plan-editor" *ngFor="let plan of plans">
         <div class="plan-editor-heading"><div><span class="eyebrow">{{ plan.code }}</span><h3>{{ plan.name }}</h3></div><span class="material-symbols-rounded">workspace_premium</span></div>
@@ -56,12 +87,18 @@
           <label>Branches<input type="number" min="0" [(ngModel)]="plan.maxBranches"></label>
           <label>Storage (bytes)<input type="number" min="0" [(ngModel)]="plan.maxStorageBytes"></label>
         </div>
-        <label>Feature codes (comma separated)<textarea rows="3" [(ngModel)]="featureCodesText[plan.planId]"></textarea></label>
+        <fieldset class="module-selector">
+          <legend>Included modules</legend>
+          <label *ngFor="let module of availablePlanModules">
+            <input type="checkbox" [checked]="plan.featureCodes.includes(module.code)" (change)="togglePlanModule(plan, module.code, $any($event.target).checked)">
+            {{ module.name }}
+          </label>
+        </fieldset>
         <button type="button" class="save-plan" (click)="savePlan(plan)">Save plan</button>
       </article>
     </div>
   </section>
-  <section class="subscriptions-section" *ngIf="subscriptions.length">
+  <section class="subscriptions-section" *ngIf="activeSection === 'subscriptions' && subscriptions.length">
     <div class="section-heading"><div><p class="eyebrow">Lifecycle control</p><h2>Tenant subscriptions</h2></div><span class="material-symbols-rounded">autorenew</span></div>
     <div class="subscription-table">
       <article class="subscription-row" *ngFor="let subscription of subscriptions">
@@ -85,7 +122,7 @@
     </div>
   </section>
 
-  <section class="billing-section">
+  <section class="billing-section" *ngIf="activeSection === 'billing'">
     <div class="section-heading"><div><p class="eyebrow">Billing ledger</p><h2>SaaS billing</h2></div><span class="material-symbols-rounded">receipt_long</span></div>
     <div class="billing-grid">
       <article class="billing-card" *ngFor="let tenant of tenants">
@@ -128,7 +165,7 @@
     </div>
   </section>
 
-  <section class="support-queue-section" *ngIf="supportQueue.length">
+  <section class="support-queue-section" *ngIf="activeSection === 'support' && supportQueue.length">
     <div class="section-heading"><div><p class="eyebrow">Support queue</p><h2>Tenant support tickets</h2></div><span class="material-symbols-rounded">support_agent</span></div>
     <div class="support-queue-list">
       <article class="support-ticket-item" *ngFor="let ticket of supportQueue">
@@ -150,6 +187,20 @@
         </div>
       </article>
     </div>
+  </section>
+  <section class="audit-section" *ngIf="activeSection === 'audit'">
+    <div class="section-heading"><div><p class="eyebrow">Platform activity</p><h2>Super Admin audit log</h2></div><span class="material-symbols-rounded">history</span></div>
+    <div class="audit-table" *ngIf="auditLogs.length; else emptyAuditLog">
+      <div class="audit-row header"><span>When</span><span>Action</span><span>Tenant</span><span>Performed by</span><span>Details</span></div>
+      <div class="audit-row" *ngFor="let log of auditLogs">
+        <span>{{ log.createdAt | date:'medium' }}</span>
+        <span><strong>{{ log.action }}</strong><small>{{ log.entity }} #{{ log.entityId }}</small></span>
+        <span>{{ log.tenantName }}</span>
+        <span>{{ log.userId }}</span>
+        <span>{{ log.details }}</span>
+      </div>
+    </div>
+    <ng-template #emptyAuditLog><p class="empty-state">No platform actions have been recorded yet.</p></ng-template>
   </section>
   <ng-template #loadingState><p>Loading platform tenants...</p></ng-template>
 </section>

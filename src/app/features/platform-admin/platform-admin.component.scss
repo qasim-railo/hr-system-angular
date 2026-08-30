@@ -20,18 +20,27 @@ button { border: 0; border-radius: 7px; padding: .55rem .8rem; cursor: pointer; 
 .alert { padding: .75rem; margin-bottom: 1rem; border-radius: 8px; }
 .success { background: #e7f6ee; color: #1b7c56; }
 .error { background: #fdeceb; color: #b44b42; }
+.platform-menu { display: flex; flex-wrap: wrap; gap: .5rem; margin: 1.5rem 0; }
+.platform-menu button { align-items: center; background: #edf4f5; color: #123d50; display: flex; gap: .4rem; }
+.platform-menu button.active { background: #123d50; color: #fff; }
+.platform-menu .material-symbols-rounded { font-size: 18px; }
 .plans-section { margin-top: 2rem; }
 .section-heading { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem; }
 .section-heading h2 { margin: 0; color: #123d50; }
 .section-heading > .material-symbols-rounded { color: #158f91; font-size: 2rem; }
 .plans-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
 .plan-editor { background: #fff; border-radius: 14px; padding: 1.25rem; box-shadow: 0 8px 24px #183b4d12; }
+.new-plan-editor { margin-bottom: 1rem; }
 .plan-editor-heading { display: flex; justify-content: space-between; }
 .plan-editor-heading h3 { margin: 0 0 1rem; color: #123d50; }
 .plan-editor-heading > .material-symbols-rounded { color: #158f91; }
 .plan-limits { display: grid; grid-template-columns: repeat(2, 1fr); gap: .75rem; }
 .plan-editor label { display: grid; gap: .3rem; color: #6b7e87; font-size: .8rem; margin-bottom: .75rem; }
 .plan-editor input, .plan-editor textarea { border: 1px solid #d7e1e5; border-radius: 7px; padding: .55rem; font: inherit; color: #123d50; }
+.module-selector { border: 1px solid #d7e1e5; border-radius: 7px; display: grid; gap: .45rem; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); margin: 0 0 .75rem; padding: .75rem; }
+.module-selector legend { color: #6b7e87; font-size: .8rem; padding: 0 .25rem; }
+.module-selector label { align-items: center; display: flex; gap: .45rem; margin: 0; }
+.module-selector input { accent-color: #158f91; }
 .save-plan { background: #158f91; color: #fff; }
 .subscriptions-section { margin-top: 2rem; }
 .subscription-table { display: grid; gap: .75rem; }
@@ -68,3 +77,9 @@ button { border: 0; border-radius: 7px; padding: .55rem .8rem; cursor: pointer; 
 .support-ticket-header small { color: #6b7e87; }
 .support-ticket-meta { display: flex; justify-content: space-between; gap: .75rem; color: #6b7e87; font-size: .8rem; }
 .support-ticket-item p { margin: 0; }
+.audit-section { margin-top: 2rem; }
+.audit-table { background: #fff; border-radius: 14px; box-shadow: 0 8px 24px #183b4d12; overflow-x: auto; }
+.audit-row { display: grid; gap: 1rem; grid-template-columns: 1.1fr 1fr 1fr 1fr 2fr; min-width: 850px; padding: .9rem 1rem; border-bottom: 1px solid #edf1f2; }
+.audit-row.header { color: #6b7e87; font-size: .8rem; text-transform: uppercase; }
+.audit-row span { display: grid; gap: .2rem; color: #52635e; }
+.audit-row small { color: #6b7e87; }

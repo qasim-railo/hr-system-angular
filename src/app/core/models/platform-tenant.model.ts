@@ -36,3 +36,30 @@ export interface Plan {
   maxStorageBytes: number;
   featureCodes: string[];
 }
+
+export interface PlanModule {
+  code: string;
+  name: string;
+}
+
+export interface CreatePlanRequest {
+  code: string;
+  name: string;
+  maxEmployees: number;
+  maxUsers: number;
+  maxBranches: number;
+  maxStorageBytes: number;
+  featureCodes: string[];
+}
+
+export interface PlatformAuditLog {
+  id: number;
+  tenantId: number;
+  tenantName: string;
+  action: string;
+  entity: string;
+  entityId: string;
+  userId: string;
+  details: string;
+  createdAt: string;
+}

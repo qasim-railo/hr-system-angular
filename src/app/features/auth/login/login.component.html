@@ -1,7 +1,7 @@
 <!-- <div class="login-container">
   <h2>Login</h2>
   <form [formGroup]="loginForm" (ngSubmit)="login()">
-    <input formControlName="username" placeholder="Username" />
+    <input formControlName="email" type="email" placeholder="Email" />
     <input formControlName="password" type="password" placeholder="Password" />
     <button type="submit">Login</button>
     <div class="error" *ngIf="error">{{ error }}</div>
@@ -21,16 +21,17 @@
     </div>
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
       <div class="mb-3">
-        <label for="username" class="form-label">Username</label>
+        <label for="email" class="form-label">Email</label>
         <input
-          id="username"
-          type="text"
+          id="email"
+          type="email"
           class="form-control"
-          formControlName="username"
-          [class.is-invalid]="submitted && loginForm.controls.username.invalid"
+          formControlName="email"
+          autocomplete="email"
+          [class.is-invalid]="submitted && loginForm.controls.email.invalid"
         />
-        <div *ngIf="submitted && loginForm.controls.username.invalid" class="invalid-feedback">
-          Username is required
+        <div *ngIf="submitted && loginForm.controls.email.invalid" class="invalid-feedback">
+          Enter a valid email address
         </div>
       </div>
 

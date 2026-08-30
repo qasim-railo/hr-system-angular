@@ -11,7 +11,7 @@ export interface AccessRole {
 
 export interface AccessUser {
   id: number;
-  username: string;
+  email: string;
   roles: string[];
   permissions: string[];
   isActive?: boolean;
@@ -31,12 +31,12 @@ export class AccessService {
     return this.http.post<AccessRole>(`${this.apiUrl}/roles`, { name, permissions, permissionScopes });
   }
 
-  createUser(username: string, password: string, roles: string[], isActive: boolean): Observable<AccessUser> {
-    return this.http.post<AccessUser>(`${this.apiUrl}/users`, { username, password, roles, isActive });
+  createUser(email: string, password: string, roles: string[], isActive: boolean): Observable<AccessUser> {
+    return this.http.post<AccessUser>(`${this.apiUrl}/users`, { email, password, roles, isActive });
   }
 
-  inviteUser(username: string, roles: string[], temporaryPassword?: string): Observable<AccessUser> {
-    return this.http.post<AccessUser>(`${this.apiUrl}/users/invite`, { username, roles, temporaryPassword, isActive: true });
+  inviteUser(email: string, roles: string[], temporaryPassword?: string): Observable<AccessUser> {
+    return this.http.post<AccessUser>(`${this.apiUrl}/users/invite`, { email, roles, temporaryPassword, isActive: true });
   }
 
   disableUser(id: number): Observable<void> {

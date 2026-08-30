@@ -21,7 +21,7 @@ export class AccessManagementComponent implements OnInit {
   scopeOptions = ['TenantWide', 'SelectedCompanies', 'SelectedBranches', 'SelectedDepartments', 'OwnTeam', 'Self'];
   permissionScopes: Record<string, { dataScope: string; scopeIds: number[] }> = {};
   roleForm = this.fb.group({ name: ['', [Validators.required, Validators.maxLength(100)]], permissions: [[] as string[]] });
-  userForm = this.fb.group({ username: ['', [Validators.required, Validators.maxLength(100)]], password: ['', [Validators.required, Validators.minLength(6)]], roles: [[] as string[]], isActive: [true] });
+  userForm = this.fb.group({ email: ['', [Validators.required, Validators.email, Validators.maxLength(200)]], password: ['', [Validators.required, Validators.minLength(6)]], roles: [[] as string[]], isActive: [true] });
 
   constructor(private fb: FormBuilder, private access: AccessService) {}
 
@@ -47,15 +47,15 @@ export class AccessManagementComponent implements OnInit {
   createUser(): void {
     if (this.userForm.invalid) return;
     const value = this.userForm.getRawValue();
-    this.access.createUser(value.username!.trim(), value.password!, value.roles || [], value.isActive ?? true).subscribe({
-      next: () => { this.message = 'User created successfully.'; this.error = ''; this.userForm.reset({ username: '', password: '', roles: [], isActive: true }); this.loadData(); },
+    this.access.createUser(value.email!.trim(), value.password!, value.roles || [], value.isActive ?? true).subscribe({
+      next: () => { this.message = 'User created successfully.'; this.error = ''; this.userForm.reset({ email: '', password: '', roles: [], isActive: true }); this.loadData(); },
       error: err => this.showError(err)
     });
   }
 
   disableUser(user: AccessUser): void {
     this.access.disableUser(user.id).subscribe({
-      next: () => { this.message = `${user.username} has been disabled.`; this.loadData(); },
+      next: () => { this.message = `${user.email} has been disabled.`; this.loadData(); },
       error: err => this.showError(err)
     });
   }
