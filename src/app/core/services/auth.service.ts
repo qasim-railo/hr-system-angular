@@ -66,4 +66,15 @@ export class AuthService {
     const roles = payload?.role ?? payload?.['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
     return Array.isArray(roles) ? roles.includes(role) : roles === role;
   }
+
+  getRoles(): string[] {
+    const payload = this.getTokenPayload();
+    const roles = payload?.role ?? payload?.['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
+    return Array.isArray(roles) ? roles : roles ? [roles] : [];
+  }
+
+  getEmail(): string | null {
+    const payload = this.getTokenPayload();
+    return payload?.['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name'] ?? payload?.unique_name ?? payload?.name ?? null;
+  }
 }

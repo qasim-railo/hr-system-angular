@@ -80,6 +80,7 @@ Created by Qasim Ali
 📍 Doha, Qatar
 📧 qasim.railo@gmail.com
 📞 +974 74001784
+📞 +92 3105293728
 🔗 LinkedIn
 
 App Password for gmail.App name;

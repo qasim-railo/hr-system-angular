@@ -1,7 +1,20 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { MATERIAL_UI_MODULES } from '../../../shared/material-ui.imports';
 import { AccessRole, AccessService, AccessUser } from '../../../core/services/access.service';
+import { AuthService } from '../../../core/services/auth.service';
+
+const ROLE_RANKS: Record<string, number> = {
+  'PeopleOS Super Admin': 100,
+  'Admin': 80,
+  'Company Administrator': 80,
+  'Manager': 50,
+  'HR': 40,
+  'Employee': 10
+};
+const DEFAULT_RANK = 20;
+const rankOf = (role: string) => ROLE_RANKS[role] ?? DEFAULT_RANK;
+const highestRank = (roles: string[]) => roles.reduce((max, r) => Math.max(max, rankOf(r)), 0);
 
 @Component({
   standalone: true,
@@ -11,6 +24,10 @@ import { AccessRole, AccessService, AccessUser } from '../../../core/services/ac
   styleUrl: './access-management.component.scss'
 })
 export class AccessManagementComponent implements OnInit {
+  private readonly auth = inject(AuthService);
+  private readonly myRank = highestRank(this.auth.getRoles());
+  private readonly myEmail = this.auth.getEmail()?.toLowerCase();
+
   roles: AccessRole[] = [];
   users: AccessUser[] = [];
   permissions: { id: number; name: string; description?: string }[] = [];
@@ -54,10 +71,17 @@ export class AccessManagementComponent implements OnInit {
   }
 
   disableUser(user: AccessUser): void {
+    if (!this.canDisable(user)) return;
     this.access.disableUser(user.id).subscribe({
       next: () => { this.message = `${user.email} has been disabled.`; this.loadData(); },
       error: err => this.showError(err)
     });
+  }
+
+  canDisable(user: AccessUser): boolean {
+    if (user.isActive === false) return false;
+    if (this.myEmail && user.email.toLowerCase() === this.myEmail) return false;
+    return this.myRank > highestRank(user.roles);
   }
 
   togglePermission(name: string, checked: boolean): void {

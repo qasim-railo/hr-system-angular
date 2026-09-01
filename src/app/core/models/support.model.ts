@@ -9,7 +9,7 @@ export interface SupportArticle {
 
 export interface SupportHelpCenter {
   contactEmail: string;
-  contactPhone: string;
+  contactPhones: string[];
   supportHours: string;
   articles: SupportArticle[];
 }
