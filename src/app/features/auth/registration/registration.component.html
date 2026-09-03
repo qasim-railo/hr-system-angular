@@ -13,7 +13,7 @@
           <label>Commercial registration number<input formControlName="commercialRegistrationNumber"></label>
           <label>Country
             <select formControlName="country" (change)="formatPhone()">
-              <option *ngFor="let country of countries" [value]="country.code">{{ country.name }} ({{ country.dialCode }})</option>
+              <option *ngFor="let country of countries" [value]="country.code">{{ country.name }}</option>
             </select>
           </label>
           <label>Mobile number

@@ -1,192 +1,172 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { DuplicateOverrideDialogComponent } from '../duplicate-override-dialog.component';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
-import { MatInputModule } from '@angular/material/input';
-import { Employee } from '../../../core/models/employee.model';
-import { ActivatedRoute } from '@angular/router';
-import { Router } from '@angular/router';
-import { EmployeeService } from '../../../core/services/employee.service';
-import { MATERIAL_UI_MODULES } from '../../../shared/material-ui.imports';
-import { CompanyService } from '../../../core/services/company.service';
-import { Department } from '../../../core/models/department.model';
-import { Company } from '../../../core/models/company.model';
-import { DepartmentService } from '../../departments/services/department.service';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { AsYouType, CountryCode, getCountries, getCountryCallingCode, parsePhoneNumberFromString } from 'libphonenumber-js';
 import { AlertService } from '../../../core/services/alert.service';
+import { CompanyService } from '../../../core/services/company.service';
 import { CustomFieldDefinition, CustomFieldService } from '../../../core/services/custom-field.service';
+import { EmployeeService, InitialEmployee } from '../../../core/services/employee.service';
+import { TenantAdminService, Designation, EmployeeCategory } from '../../../core/services/tenant-admin.service';
+import { Company } from '../../../core/models/company.model';
+import { Department } from '../../../core/models/department.model';
+import { DepartmentService } from '../../departments/services/department.service';
+import { MATERIAL_UI_MODULES } from '../../../shared/material-ui.imports';
+
 @Component({
   selector: 'app-employee-form',
   standalone: true,
-  imports: [
-    CommonModule,
-    ReactiveFormsModule
-    , ...MATERIAL_UI_MODULES
-  ],
+  imports: [CommonModule, ReactiveFormsModule, ...MATERIAL_UI_MODULES],
   templateUrl: './employee-form.component.html',
   styleUrl: './employee-form.component.scss'
 })
 export class EmployeeFormComponent implements OnInit {
-  private companyService = inject(CompanyService);
-  private departmentService = inject(DepartmentService);
-  private employeeService = inject(EmployeeService);
-  private alertService = inject(AlertService);
-  private dialog = inject(MatDialog);
-  private customFieldService = inject(CustomFieldService);
+  private readonly companyService = inject(CompanyService);
+  private readonly departmentService = inject(DepartmentService);
+  private readonly employeeService = inject(EmployeeService);
+  private readonly alertService = inject(AlertService);
+  private readonly customFieldService = inject(CustomFieldService);
+  private readonly tenantAdminService = inject(TenantAdminService);
 
   companies: Company[] = [];
   departments: Department[] = [];
+  readonly nationalities = getCountries()
+    .map(code => ({
+      code,
+      name: new Intl.DisplayNames(['en'], { type: 'region' }).of(code) ?? code
+    }))
+    .sort((left, right) => left.name.localeCompare(right.name));
+  readonly phoneCountries = this.nationalities.map(country => ({
+    ...country,
+    dialCode: this.dialCode(country.code)
+  }));
+  categories: EmployeeCategory[] = [];
+  designations: Designation[] = [];
   customFields: CustomFieldDefinition[] = [];
   customFieldValues: Record<string, string> = {};
+  isEditMode = false;
+  employeeId?: number;
 
-  constructor(
-    private fb: FormBuilder,
-    private route: ActivatedRoute,
-    private router: Router
-  ) { }
-
-  form: FormGroup = this.fb.group({
-    companyId: [null, Validators.required],
-    departmentId: [null, Validators.required],
-    employeeCode: [''],
+  readonly form = inject(FormBuilder).group({
+    companyId: [null as number | null, Validators.required],
+    departmentId: [null as number | null, Validators.required],
     firstName: ['', Validators.required],
     lastName: ['', Validators.required],
-    dateOfBirth: ['', Validators.required],
-    gender: [''],
-    nationality: [''],
-    motherName: [''],
-    homeCountryAddress: [''],
-    homeCountryPhone: [''],
-    emergencyContactName: ['', Validators.required],
-    emergencyPhone: [''],
     email: ['', [Validators.required, Validators.email]],
-    passportNumber: ['', Validators.required],
-    passportExpiry: [''],
-    passportCountry: [''],
-    photoPath: ['']
+    phoneCountry: ['QA'],
+    phone: ['', Validators.required],
+    nationality: ['', Validators.required],
+    employeeCategoryId: [null as number | null, Validators.required],
+    designationId: [null as number | null, Validators.required]
   });
 
-  isEditMode = false;
-  employeeId!: number;
+  constructor(private route: ActivatedRoute, private router: Router) {}
 
-  ngOnInit() {
-
-    // Load all companies
-    this.companyService.getCompanies().subscribe(data => {
-      this.companies = data;
-    });
+  ngOnInit(): void {
+    this.companyService.getCompanies().subscribe(data => this.companies = data);
+    this.tenantAdminService.getEmployeeCategories().subscribe(data => this.categories = data.filter(item => item.isActive));
+    this.tenantAdminService.getDesignations().subscribe(data => this.designations = data.filter(item => item.isActive));
     this.customFieldService.getDefinitions(false).subscribe(data => this.customFields = data);
-
-    // Load departments when companyId changes
-    this.form.get('companyId')?.valueChanges.subscribe(companyId => {
-      this.loadDepartments(companyId);
+    this.form.controls.companyId.valueChanges.subscribe(companyId => {
+      this.departments = [];
+      this.form.controls.departmentId.setValue(null);
+      if (companyId) this.loadDepartments(companyId);
     });
 
-    // Edit mode
-    const id = this.route.snapshot.paramMap.get('id');
-    if (id) {
-      this.isEditMode = true;
-      this.employeeId = +id;
-      this.employeeService.getById(this.employeeId).subscribe((emp: Employee) => {
-        emp.dateOfBirth = this.formatDate(emp.dateOfBirth);
-        emp.passportExpiry = this.formatDate(emp.passportExpiry!);
-        this.form.patchValue(emp);
-        this.customFieldValues = { ...(emp as Employee & { customFields?: Record<string, string> }).customFields };
-        // Load departments of the employee's company
-        this.loadDepartments(emp.companyId);
-      });
-    }
-  }
-  loadDepartments(companyId: number) {
-    this.departmentService.getDepartmentsByCompanyId(companyId).subscribe((data: any) => {
-      this.departments = data;
+    const id = Number(this.route.snapshot.paramMap.get('id'));
+    if (!id) return;
+
+    this.isEditMode = true;
+    this.employeeId = id;
+    this.employeeService.getProfile(id).subscribe({
+      next: profile => {
+        const employee = profile.employee;
+        this.form.patchValue({
+          companyId: employee.companyId,
+          departmentId: employee.departmentId,
+          firstName: employee.firstName,
+          lastName: employee.lastName,
+          email: employee.email,
+          phone: employee.homeCountryPhone,
+          nationality: employee.nationality,
+          employeeCategoryId: profile.employment?.employeeCategoryId,
+          designationId: profile.employment?.designationId
+        });
+        this.customFieldValues = Object.fromEntries(
+          (profile.customFields ?? []).map((value: { key: string; value: string }) => [value.key, value.value])
+        );
+        this.loadDepartments(employee.companyId);
+      },
+      error: error => this.alertService.error(error.error?.message || 'Unable to load employee.')
     });
-  } formatDate(dateString: string): string {
-    const date = new Date(dateString);
-    return date.toISOString().split('T')[0]; // returns yyyy-MM-dd
   }
+
+  get filteredDesignations(): Designation[] {
+    const departmentId = this.form.controls.departmentId.value;
+    const categoryId = this.form.controls.employeeCategoryId.value;
+    return this.designations.filter(item =>
+      (!item.departmentId || item.departmentId === departmentId) &&
+      (!item.employeeCategoryId || item.employeeCategoryId === categoryId));
+  }
+
+  get selectedDialCode(): string {
+    return this.dialCode(this.form.controls.phoneCountry.value);
+  }
+
+  dialCode(countryCode: string | null): string {
+    return countryCode ? `+${getCountryCallingCode(countryCode as CountryCode)}` : '';
+  }
+
   setCustomFieldBoolean(key: string, event: Event): void {
     this.customFieldValues[key] = (event.target as HTMLInputElement).checked ? 'true' : 'false';
   }
 
+  formatPhone(): void {
+    const countryCode = this.form.controls.phoneCountry.value;
+    const phone = this.form.controls.phone.value;
+    if (!countryCode || !phone) return;
+    this.form.controls.phone.setValue(new AsYouType(countryCode as CountryCode).input(phone), { emitEvent: false });
+  }
 
-  private getTokenPayload(): any {
-    try {
-      const raw = localStorage.getItem('jwt');
-      if (!raw) return null;
-      const parts = raw.split('.');
-      if (parts.length < 2) return null;
-      const payload = atob(parts[1].replace(/-/g, '+').replace(/_/g, '/'));
-      return JSON.parse(payload);
-    } catch {
-      return null;
+  onSubmit(): void {
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
     }
-  }
 
-  canCurrentUserOverride(): boolean {
-    const p = this.getTokenPayload();
-    if (!p) return false;
-    // look for role claim
-    if (p && (p.role === 'Admin' || (p.roles && p.roles.indexOf('Admin') !== -1))) return true;
-    if (p && (p['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'] === 'Admin')) return true;
-    return false;
-  }
+    const value = this.form.getRawValue();
+    const phone = parsePhoneNumberFromString(value.phone ?? '', value.phoneCountry as CountryCode);
+    if (!phone?.isValid()) {
+      this.alertService.error('Enter a valid phone number for the selected country code.');
+      return;
+    }
 
-  onSubmit() {
-    console.log(this.form.value)
-    if (this.form.invalid) return;
+    const employee: InitialEmployee = {
+      companyId: value.companyId!,
+      departmentId: value.departmentId!,
+      firstName: value.firstName ?? '',
+      lastName: value.lastName ?? '',
+      email: value.email ?? '',
+      phone: phone.number,
+      nationality: value.nationality ?? '',
+      employeeCategoryId: value.employeeCategoryId!,
+      designationId: value.designationId!,
+      customFields: this.customFieldValues
+    };
+    const request = this.isEditMode
+      ? this.employeeService.updateInitial(this.employeeId!, employee)
+      : this.employeeService.createInitial(employee);
 
-    const employee: Employee & { customFields?: Record<string, string> } = { ...this.form.value, customFields: this.customFieldValues };
-
-    if (this.isEditMode) {
-      this.employeeService.update(this.employeeId, employee).subscribe(() => {
-        this.alertService.success('Updated successful');
+    request.subscribe({
+      next: () => {
+        this.alertService.success(this.isEditMode ? 'Employee updated.' : 'Employee draft created.');
         this.router.navigate(['/employees']);
-      });
-    } else {
-      // Before creating, run duplicate check
-      const payload = {
-        passportNumber: employee.passportNumber,
-        email: employee.email,
-        firstName: employee.firstName,
-        lastName: employee.lastName,
-        dateOfBirth: employee.dateOfBirth
-      };
+      },
+      error: error => this.alertService.error('Error saving employee: ' + (error.error?.message || error.error || error.message))
+    });
+  }
 
-      this.employeeService.duplicateCheck(payload).subscribe((dup: any) => {
-        if (dup && dup.hasPotentialDuplicates) {
-          // Open override dialog
-          const canOverride = this.canCurrentUserOverride();
-          const dialogRef = this.dialog.open(DuplicateOverrideDialogComponent, { data: { matches: dup.candidates || dup.candidates, canOverride } });
-          dialogRef.afterClosed().subscribe((res: any) => {
-            if (!res) return;
-            if (res.action === 'open') {
-              // Open existing employee
-              this.router.navigate(['/employees', res.id]);
-              return;
-            }
-            if (res.action === 'override') {
-              // Call create with override header
-              this.employeeService.createWithOverride(employee, res.reason).subscribe(() => {
-                this.alertService.success('Added successful (override)');
-                this.router.navigate(['/employees']);
-              }, err => {
-                this.alertService.error('Error creating employee: ' + (err.error?.message || err.message));
-              });
-            }
-            // otherwise canceled
-          });
-
-          return;
-        }
-
-        this.employeeService.create(employee).subscribe(() => {
-          this.alertService.success('Added successful');
-          this.router.navigate(['/employees']);
-        });
-      });
-    }
+  private loadDepartments(companyId: number): void {
+    this.departmentService.getDepartmentsByCompanyId(companyId).subscribe(data => this.departments = data);
   }
 }

@@ -15,7 +15,7 @@
     <div class="col-md-4">
       <mat-form-field appearance="fill" class="w-100">
         <mat-label>Category</mat-label>
-        <input matInput formControlName="category">
+        <mat-select formControlName="employeeCategoryId"><mat-option *ngFor="let category of categories" [value]="category.employeeCategoryId">{{ category.name }}</mat-option></mat-select>
       </mat-form-field>
     </div>
 
@@ -23,7 +23,7 @@
     <div class="col-md-4">
       <mat-form-field appearance="fill" class="w-100">
         <mat-label>Offer Designation</mat-label>
-        <input matInput formControlName="offerDesignation">
+        <mat-select formControlName="designationId"><mat-option *ngFor="let designation of designations" [value]="designation.designationId">{{ designation.name }}</mat-option></mat-select>
       </mat-form-field>
     </div>
 

@@ -8,6 +8,7 @@ import { Subscription } from '../../core/models/subscription.model';
 import { SubscriptionService } from '../../core/services/subscription.service';
 import { SupportService } from '../../core/services/support.service';
 import { SupportTicket } from '../../core/models/support.model';
+import { CountryMaster, CurrencyMaster, TimeZoneMaster } from '../../core/models/master-data.model';
 
 @Component({
   standalone: true,
@@ -17,7 +18,7 @@ import { SupportTicket } from '../../core/models/support.model';
   styleUrl: './platform-admin.component.scss'
 })
 export class PlatformAdminComponent implements OnInit {
-  activeSection: 'tenants' | 'plans' | 'subscriptions' | 'billing' | 'support' | 'audit' = 'tenants';
+  activeSection: 'tenants' | 'plans' | 'subscriptions' | 'billing' | 'support' | 'audit' | 'master-data' = 'tenants';
   tenants: PlatformTenant[] = [];
   statistics?: PlatformStatistics;
   plans: Plan[] = [];
@@ -34,6 +35,13 @@ export class PlatformAdminComponent implements OnInit {
   loading = true;
   error = '';
   message = '';
+  countries: CountryMaster[] = [];
+  currencies: CurrencyMaster[] = [];
+  timeZones: TimeZoneMaster[] = [];
+  readonly availableTimeZoneIds = Array.from(new Set(['UTC', ...Intl.supportedValuesOf('timeZone')]));
+  newCountry: CountryMaster = { code: '', name: '', isActive: true };
+  newCurrency: CurrencyMaster = { code: '', name: '', symbol: '', decimalPlaces: 2, isActive: true };
+  newTimeZone: TimeZoneMaster = { timeZoneId: '', displayName: '', isActive: true };
 
   constructor(private platform: PlatformAdminService, private subscriptionService: SubscriptionService, private support: SupportService) {}
 
@@ -85,6 +93,31 @@ export class PlatformAdminComponent implements OnInit {
       next: logs => this.auditLogs = logs,
       error: err => this.showError(err)
     });
+    this.platform.getCountries().subscribe({ next: value => this.countries = value, error: err => this.showError(err) });
+    this.platform.getCurrencies().subscribe({ next: value => this.currencies = value, error: err => this.showError(err) });
+    this.platform.getTimeZones().subscribe({ next: value => this.timeZones = value, error: err => this.showError(err) });
+  }
+
+  saveCountry(country: CountryMaster): void {
+    this.platform.saveCountry(country).subscribe({ next: () => { this.newCountry = { code: '', name: '', isActive: true }; this.message = 'Country master saved.'; this.load(); }, error: err => this.showError(err) });
+  }
+  deleteCountry(country: CountryMaster): void {
+    if (!country.countryId) return;
+    this.platform.deleteCountry(country.countryId).subscribe({ next: () => { this.message = 'Country master deleted.'; this.load(); }, error: err => this.showError(err) });
+  }
+  saveCurrency(currency: CurrencyMaster): void {
+    this.platform.saveCurrency(currency).subscribe({ next: () => { this.newCurrency = { code: '', name: '', symbol: '', decimalPlaces: 2, isActive: true }; this.message = 'Currency master saved.'; this.load(); }, error: err => this.showError(err) });
+  }
+  deleteCurrency(currency: CurrencyMaster): void {
+    if (!currency.currencyId) return;
+    this.platform.deleteCurrency(currency.currencyId).subscribe({ next: () => { this.message = 'Currency master deleted.'; this.load(); }, error: err => this.showError(err) });
+  }
+  saveTimeZone(timeZone: TimeZoneMaster): void {
+    const request = this.timeZones.includes(timeZone) ? this.platform.updateTimeZone(timeZone) : this.platform.saveTimeZone(timeZone);
+    request.subscribe({ next: () => { this.newTimeZone = { timeZoneId: '', displayName: '', isActive: true }; this.message = 'Time-zone master saved.'; this.load(); }, error: err => this.showError(err) });
+  }
+  deleteTimeZone(timeZone: TimeZoneMaster): void {
+    this.platform.deleteTimeZone(timeZone.timeZoneId).subscribe({ next: () => { this.message = 'Time-zone master deleted.'; this.load(); }, error: err => this.showError(err) });
   }
 
   subscriptionStatus(status: string | number): string {

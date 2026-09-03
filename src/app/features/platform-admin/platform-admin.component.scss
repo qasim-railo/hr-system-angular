@@ -25,6 +25,17 @@ button { border: 0; border-radius: 7px; padding: .55rem .8rem; cursor: pointer; 
 .platform-menu button.active { background: #123d50; color: #fff; }
 .platform-menu .material-symbols-rounded { font-size: 18px; }
 .plans-section { margin-top: 2rem; }
+.master-data-section { margin-top: 2rem; }
+.master-grid { display: grid; gap: 1rem; }
+.master-card { background: #fff; border-radius: 14px; box-shadow: 0 8px 24px #183b4d12; padding: 1rem; }
+.master-card h3 { color: #123d50; margin-top: 0; }
+.master-form, .master-row { align-items: center; display: grid; gap: .5rem; grid-template-columns: 90px minmax(140px, 1fr) minmax(120px, 1fr) auto auto; margin-top: .5rem; }
+.master-row { border-top: 1px solid #edf1f2; padding-top: .5rem; }
+.master-form input, .master-form select, .master-row input, .master-row select { border: 1px solid #d7e1e5; border-radius: 7px; color: #123d50; font: inherit; padding: .45rem; }
+.master-form label, .master-row label { color: #6b7e87; font-size: .8rem; white-space: nowrap; }
+.master-form button, .master-row button { background: #edf4f5; color: #123d50; }
+.currency-form, .currency-row { grid-template-columns: 80px minmax(140px, 1fr) 80px 70px auto auto; }
+@media (max-width: 700px) { .master-form, .master-row, .currency-form, .currency-row { grid-template-columns: 1fr; } }
 .section-heading { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem; }
 .section-heading h2 { margin: 0; color: #123d50; }
 .section-heading > .material-symbols-rounded { color: #158f91; font-size: 2rem; }

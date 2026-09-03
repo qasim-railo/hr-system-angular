@@ -17,9 +17,9 @@ export interface TenantProfile {
   country: string;
   currency: string;
   timeZone: string;
-  countryCode: string;
-  currencyCode: string;
-  timeZoneId: string;
+  defaultCountryId: number;
+  defaultCurrencyId: number;
+  defaultTimeZoneId: string;
   dateFormat: string;
   numberFormat: string;
   status?: string;
@@ -153,9 +153,16 @@ export interface PayrollComponent {
   isActive: boolean;
 }
 export interface OvertimePolicy {
-  id?: number; name: string; employeeCategory: string; dayType: string; classification: 'OT1' | 'OT2';
+  id?: number; name: string; employeeCategory: string; dayType: string; classification: string; overtimeTypeId?: number;
   rateMultiplier: number; dailyThresholdMinutes: number; maximumApprovedMinutes: number;
   approvalRequired: boolean; effectiveFrom: string; effectiveTo?: string; isActive: boolean;
+}
+export interface OvertimeType {
+  id?: number; code: string; name: string; eligibility: string; calculationMethod: 'Multiplier' | 'Fixed';
+  rateMultiplier: number; maximumMinutes: number; approvalRequired: boolean; payrollComponentId?: number; isActive: boolean;
+}
+export interface OvertimePolicyAssignment {
+  id?: number; overtimePolicyId: number; scope: string; targetId?: number; effectiveFrom: string; effectiveTo?: string; isActive: boolean;
 }
 export interface LeavePolicy {
   id?: number; name: string; entitlementDays: number; accrualMethod: 'Annual' | 'Monthly' | 'Daily' | 'OnJoining';
@@ -164,7 +171,11 @@ export interface LeavePolicy {
 }
 export interface AttendanceConfiguration {
   allowedSources: string; graceInMinutes: number; graceOutMinutes: number; missingPunchPolicy: 'Flag' | 'Ignore' | 'AutoAbsent';
-  lateEarlyRule: 'Track' | 'Ignore' | 'Flag'; approvalRequired: boolean; defaultWorkingHours: number;
+  lateEarlyRule: 'Track' | 'Ignore' | 'Flag'; approvalRequired: boolean; defaultWorkingHours: number; expectedWorkMinutes: number;
+  workingDays: TenantWorkingDay[];
+}
+export interface TenantWorkingDay {
+  dayOfWeek: number; isWorkingDay: boolean; defaultStartTime: string; defaultEndTime: string; breakMinutes: number;
 }
 export interface AttendanceImportLog {
   id: number; importedAt: string; source: string; fileName: string; totalRows: number; importedRows: number; errorRows: number; errors: string;

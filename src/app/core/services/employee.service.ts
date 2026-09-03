@@ -5,6 +5,19 @@ import { environment } from '../../../environments/environment';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
+export interface InitialEmployee {
+  companyId: number;
+  departmentId: number;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  nationality: string;
+  employeeCategoryId: number;
+  designationId: number;
+  customFields?: Record<string, string>;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -50,6 +63,13 @@ export class EmployeeService {
     return this.http.post<Employee>(this.baseUrl, employee);
   }
 
+  createInitial(employee: InitialEmployee): Observable<Employee> {
+    return this.http.post<Employee>(`${this.baseUrl}/initial`, employee);
+  }
+  updateInitial(id: number, employee: InitialEmployee): Observable<Employee> {
+    return this.http.put<Employee>(`${this.baseUrl}/${id}/initial`, employee);
+  }
+
   createWithOverride(employee: Employee, overrideReason: string): Observable<Employee> {
     const headers = { 'X-Override': 'true', 'X-Override-Reason': overrideReason };
     return this.http.post<Employee>(this.baseUrl, employee, { headers });
@@ -57,6 +77,12 @@ export class EmployeeService {
 
   update(id: number, employee: Employee): Observable<Employee> {
     return this.http.put<Employee>(`${this.baseUrl}/${id}`, employee);
+  }
+  submitForApproval(id: number, workflowId: number): Observable<{ requestId: number }> {
+    return this.http.post<{ requestId: number }>(`${this.baseUrl}/${id}/submit-for-approval`, { workflowId });
+  }
+  getApprovalWorkflows(): Observable<{ id: number; name: string; requestType: string }[]> {
+    return this.http.get<{ id: number; name: string; requestType: string }[]>(`${this.baseUrl}/approval-workflows`);
   }
 
   delete(id: number): Observable<void> {

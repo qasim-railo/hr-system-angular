@@ -20,10 +20,10 @@ export interface Employee {
   passportCountry?: string;
   photoPath?: string;
   status?: number;
+  recordStatus?: number;
   companyName?: string;
   departmentName?: string;
   category?: string;
   designation?: string;
   joiningDate?: string;
 }
-

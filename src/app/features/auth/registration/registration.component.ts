@@ -2,8 +2,10 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
-import { AsYouType, CountryCode, getCountries, getCountryCallingCode, parsePhoneNumberFromString } from 'libphonenumber-js';
+import { AsYouType, CountryCode, getCountryCallingCode, parsePhoneNumberFromString } from 'libphonenumber-js';
 import { RegistrationService } from '../../../core/services/registration.service';
+import { Country } from '../../../core/models/country.model';
+import { CountryService } from '../../../core/services/country.service';
 
 @Component({
   standalone: true,
@@ -16,11 +18,7 @@ export class RegistrationComponent {
   loading = false;
   error = '';
   result?: { tenantCode: string; administratorEmail: string };
-  readonly countries = getCountries().map(code => ({
-    code,
-    dialCode: `+${getCountryCallingCode(code)}`,
-    name: new Intl.DisplayNames(['en'], { type: 'region' }).of(code) ?? code
-  })).sort((left, right) => left.name.localeCompare(right.name));
+  countries: Country[] = [];
   form = this.fb.nonNullable.group({
     legalName: ['', [Validators.required, Validators.maxLength(200)]],
     commercialRegistrationNumber: ['', [Validators.required, Validators.maxLength(50)]],
@@ -31,7 +29,17 @@ export class RegistrationComponent {
     administratorName: ['', Validators.required], administratorEmail: ['', [Validators.required, Validators.email]]
   });
 
-  constructor(private fb: FormBuilder, private registration: RegistrationService, private router: Router) {}
+  constructor(
+    private fb: FormBuilder,
+    private registration: RegistrationService,
+    private countriesService: CountryService,
+    private router: Router
+  ) {
+    this.countriesService.list().subscribe({
+      next: countries => this.countries = countries,
+      error: () => this.error = 'Unable to load available countries.'
+    });
+  }
 
   submit(): void {
     this.error = '';
@@ -41,7 +49,7 @@ export class RegistrationComponent {
       this.error = 'Password and confirm password must match.';
       return;
     }
-    const parsedPhone = parsePhoneNumberFromString(value.phone, value.country);
+    const parsedPhone = parsePhoneNumberFromString(value.phone, value.country as CountryCode);
     if (!parsedPhone?.isValid()) {
       this.error = `Enter a valid mobile number for ${this.countryName(value.country)}.`;
       return;
@@ -62,13 +70,13 @@ export class RegistrationComponent {
     this.form.controls.phone.setValue(new AsYouType(country).input(value), { emitEvent: false });
   }
 
-  countryName(country: CountryCode): string {
+  countryName(country: string): string {
     return this.countries.find(item => item.code === country)?.name ?? 'the selected country';
   }
 
   get selectedDialCode(): string {
     const country = this.form.controls.country.value;
-    return this.countries.find(item => item.code === country)?.dialCode ?? '';
+    return country ? `+${getCountryCallingCode(country as CountryCode)}` : '';
   }
 
   goToLogin(): void { this.router.navigate(['/login']); }

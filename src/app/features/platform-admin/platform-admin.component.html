@@ -17,6 +17,7 @@
     <button type="button" [class.active]="activeSection === 'subscriptions'" (click)="activeSection = 'subscriptions'"><span class="material-symbols-rounded">autorenew</span>Subscriptions</button>
     <button type="button" [class.active]="activeSection === 'billing'" (click)="activeSection = 'billing'"><span class="material-symbols-rounded">receipt_long</span>Billing</button>
     <button type="button" [class.active]="activeSection === 'support'" (click)="activeSection = 'support'"><span class="material-symbols-rounded">support_agent</span>Support</button>
+    <button type="button" [class.active]="activeSection === 'master-data'" (click)="activeSection = 'master-data'"><span class="material-symbols-rounded">public</span>Master Data</button>
     <button type="button" [class.active]="activeSection === 'audit'" (click)="activeSection = 'audit'"><span class="material-symbols-rounded">history</span>Audit Log</button>
   </nav>
 
@@ -55,6 +56,15 @@
     <p *ngIf="!tenants.length">No tenants found.</p>
   </div>
   </ng-container>
+
+  <section class="master-data-section" *ngIf="activeSection === 'master-data'">
+    <div class="section-heading"><div><p class="eyebrow">PeopleOS-managed</p><h2>Countries, currencies, and time zones</h2></div><span class="material-symbols-rounded">public</span></div>
+    <div class="master-grid">
+      <article class="master-card"><h3>Countries</h3><div class="master-form"><input maxlength="2" [(ngModel)]="newCountry.code" placeholder="ISO code"><input [(ngModel)]="newCountry.name" placeholder="Name"><label><input type="checkbox" [(ngModel)]="newCountry.isActive"> Active</label><button (click)="saveCountry(newCountry)">Add</button></div><div class="master-row" *ngFor="let country of countries"><input maxlength="2" [(ngModel)]="country.code"><input [(ngModel)]="country.name"><label><input type="checkbox" [(ngModel)]="country.isActive"> Active</label><button (click)="saveCountry(country)">Save</button><button (click)="deleteCountry(country)">Delete</button></div></article>
+      <article class="master-card"><h3>Currencies</h3><div class="master-form currency-form"><input maxlength="3" [(ngModel)]="newCurrency.code" placeholder="Code"><input [(ngModel)]="newCurrency.name" placeholder="Name"><input maxlength="10" [(ngModel)]="newCurrency.symbol" placeholder="Symbol"><input type="number" min="0" max="6" [(ngModel)]="newCurrency.decimalPlaces"><label><input type="checkbox" [(ngModel)]="newCurrency.isActive"> Active</label><button (click)="saveCurrency(newCurrency)">Add</button></div><div class="master-row currency-row" *ngFor="let currency of currencies"><input maxlength="3" [(ngModel)]="currency.code"><input [(ngModel)]="currency.name"><input maxlength="10" [(ngModel)]="currency.symbol"><input type="number" min="0" max="6" [(ngModel)]="currency.decimalPlaces"><label><input type="checkbox" [(ngModel)]="currency.isActive"> Active</label><button (click)="saveCurrency(currency)">Save</button><button (click)="deleteCurrency(currency)">Delete</button></div></article>
+      <article class="master-card"><h3>Time zones</h3><div class="master-form"><select [(ngModel)]="newTimeZone.timeZoneId"><option value="" disabled>Select IANA time zone</option><option *ngFor="let timeZoneId of availableTimeZoneIds" [value]="timeZoneId">{{ timeZoneId }}</option></select><input [(ngModel)]="newTimeZone.displayName" placeholder="Display name"><select [(ngModel)]="newTimeZone.countryCode"><option [ngValue]="undefined" disabled>Select country</option><option *ngFor="let country of countries" [value]="country.code">{{ country.name }}</option></select><label><input type="checkbox" [(ngModel)]="newTimeZone.isActive"> Active</label><button (click)="saveTimeZone(newTimeZone)">Add</button></div><div class="master-row" *ngFor="let timeZone of timeZones"><span>{{ timeZone.timeZoneId }}</span><input [(ngModel)]="timeZone.displayName"><select [(ngModel)]="timeZone.countryCode"><option [ngValue]="undefined" disabled>Select country</option><option *ngFor="let country of countries" [value]="country.code">{{ country.name }}</option></select><label><input type="checkbox" [(ngModel)]="timeZone.isActive"> Active</label><button (click)="saveTimeZone(timeZone)">Save</button><button (click)="deleteTimeZone(timeZone)">Delete</button></div></article>
+    </div>
+  </section>
 
   <section class="plans-section" *ngIf="activeSection === 'plans' && (plans.length || availablePlanModules.length)">
     <div class="section-heading"><div><p class="eyebrow">SaaS catalog</p><h2>Plans and feature access</h2></div><span class="material-symbols-rounded">layers</span></div>

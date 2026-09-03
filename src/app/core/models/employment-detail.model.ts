@@ -3,6 +3,8 @@ export interface EmploymentDetail {
   employeeId: number;
   joiningDate: string;
   category: string;
+  employeeCategoryId?: number;
+  designationId?: number;
   offerDesignation: string;
   molDesignation: string;
   basicSalary: number;

@@ -12,6 +12,10 @@
             <input matInput formControlName="name" required />
           </mat-form-field>
         </div>
+        <div class="col-md-3"><mat-form-field appearance="outline" class="w-100"><mat-label>Break (minutes)</mat-label><input matInput type="number" min="0" formControlName="breakMinutes" /></mat-form-field></div>
+        <div class="col-md-6"><label class="d-block mb-2">Working days</label><mat-checkbox class="me-3" *ngFor="let day of weekdays" [checked]="isWorkingDay(day)" (change)="setWorkingDay(day, $event.checked)">{{ day }}</mat-checkbox></div>
+        <div class="col-md-3"><mat-form-field appearance="outline" class="w-100"><mat-label>Effective from</mat-label><input matInput type="date" formControlName="effectiveFrom" /></mat-form-field></div>
+        <div class="col-md-3"><mat-form-field appearance="outline" class="w-100"><mat-label>Effective to</mat-label><input matInput type="date" formControlName="effectiveTo" /></mat-form-field></div>
 
         <!-- Start Time -->
         <div class="col-md-3">

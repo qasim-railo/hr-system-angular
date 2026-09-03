@@ -5,7 +5,7 @@
     <mat-card class="form-card">
       <h2>{{ editing ? 'Edit workflow' : 'New workflow' }}</h2>
       <mat-form-field appearance="outline"><mat-label>Name</mat-label><input matInput [(ngModel)]="form.name"></mat-form-field>
-      <mat-form-field appearance="outline"><mat-label>Module</mat-label><mat-select [(ngModel)]="form.module"><mat-option *ngFor="let module of ['Leave','Overtime','Loan','Salary Change','Attendance Correction','Payroll','Asset Request','Final Settlement']" [value]="module">{{ module }}</mat-option></mat-select></mat-form-field>
+      <mat-form-field appearance="outline"><mat-label>Module</mat-label><mat-select [(ngModel)]="form.module"><mat-option *ngFor="let module of ['Employee','Leave','Overtime','Loan','Salary Change','Attendance Correction','Payroll','Asset Request','Final Settlement']" [value]="module">{{ module }}</mat-option></mat-select></mat-form-field>
       <mat-form-field appearance="outline"><mat-label>Request type</mat-label><input matInput [(ngModel)]="form.requestType"></mat-form-field>
       <mat-checkbox [(ngModel)]="form.isActive">Active</mat-checkbox>
       <div class="step" *ngFor="let step of form.steps; let i = index">

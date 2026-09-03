@@ -1,10 +1,11 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { EmploymentDetailService } from '../../../core/services/employment-detail.service';
 import { EmploymentDetail } from '../../../core/models/employment-detail.model';
 import { MATERIAL_UI_MODULES } from '../../../shared/material-ui.imports';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AlertService } from '../../../core/services/alert.service';
+import { Designation, EmployeeCategory, TenantAdminService } from '../../../core/services/tenant-admin.service';
 
 @Component({
   standalone: true,
@@ -19,17 +20,22 @@ export class EmploymentDetailFormComponent implements OnInit {
   isEditMode = false;
   detailId: number | null = null;
   employeeId!: number;
+  categories: EmployeeCategory[] = [];
+  designations: Designation[] = [];
 
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private alertService: AlertService,
     private service: EmploymentDetailService,
+    private admin: TenantAdminService,
     private router: Router
   ) { }
 
   ngOnInit(): void {
     this.buildForm();
+    this.admin.getEmployeeCategories().subscribe(items => this.categories = items.filter(item => item.isActive));
+    this.admin.getDesignations().subscribe(items => this.designations = items.filter(item => item.isActive));
 
     const idParam = this.route.snapshot.paramMap.get('id');
     if (idParam) {
@@ -51,7 +57,9 @@ export class EmploymentDetailFormComponent implements OnInit {
     this.form = this.fb.group({
       joiningDate: ['', Validators.required],
       category: [''],
+      employeeCategoryId: [null, Validators.required],
       offerDesignation: [''],
+      designationId: [null, Validators.required],
       molDesignation: [''],
       basicSalary: [0],
       accommodationAllowance: [0],

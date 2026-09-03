@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { BillingHistory, BillingInvoice, CreateBillingInvoiceRequest, RecordPaymentRequest, UpdateBillingInvoiceStatusRequest } from '../models/billing.model';
 import { CreatePlanRequest, Plan, PlanModule, PlatformAuditLog, PlatformStatistics, PlatformTenant } from '../models/platform-tenant.model';
+import { CountryMaster, CurrencyMaster, TimeZoneMaster } from '../models/master-data.model';
 
 @Injectable({ providedIn: 'root' })
 export class PlatformAdminService {
@@ -59,4 +60,22 @@ export class PlatformAdminService {
   updateInvoiceStatus(tenantId: number, invoiceId: number, request: UpdateBillingInvoiceStatusRequest): Observable<BillingInvoice> {
     return this.http.put<BillingInvoice>(`${this.apiUrl}/tenants/${tenantId}/billing/invoices/${invoiceId}/status`, request);
   }
+  getCountries(): Observable<CountryMaster[]> { return this.http.get<CountryMaster[]>(`${this.apiUrl}/master-data/countries`); }
+  saveCountry(country: CountryMaster): Observable<CountryMaster> {
+    return country.countryId ? this.http.put<CountryMaster>(`${this.apiUrl}/master-data/countries/${country.countryId}`, country) : this.http.post<CountryMaster>(`${this.apiUrl}/master-data/countries`, country);
+  }
+  deleteCountry(id: number): Observable<void> { return this.http.delete<void>(`${this.apiUrl}/master-data/countries/${id}`); }
+  getCurrencies(): Observable<CurrencyMaster[]> { return this.http.get<CurrencyMaster[]>(`${this.apiUrl}/master-data/currencies`); }
+  saveCurrency(currency: CurrencyMaster): Observable<CurrencyMaster> {
+    return currency.currencyId ? this.http.put<CurrencyMaster>(`${this.apiUrl}/master-data/currencies/${currency.currencyId}`, currency) : this.http.post<CurrencyMaster>(`${this.apiUrl}/master-data/currencies`, currency);
+  }
+  deleteCurrency(id: number): Observable<void> { return this.http.delete<void>(`${this.apiUrl}/master-data/currencies/${id}`); }
+  getTimeZones(): Observable<TimeZoneMaster[]> { return this.http.get<TimeZoneMaster[]>(`${this.apiUrl}/master-data/time-zones`); }
+  saveTimeZone(timeZone: TimeZoneMaster): Observable<TimeZoneMaster> {
+    return this.http.post<TimeZoneMaster>(`${this.apiUrl}/master-data/time-zones`, timeZone);
+  }
+  updateTimeZone(timeZone: TimeZoneMaster): Observable<TimeZoneMaster> {
+    return this.http.put<TimeZoneMaster>(`${this.apiUrl}/master-data/time-zones/${encodeURIComponent(timeZone.timeZoneId)}`, timeZone);
+  }
+  deleteTimeZone(id: string): Observable<void> { return this.http.delete<void>(`${this.apiUrl}/master-data/time-zones/${encodeURIComponent(id)}`); }
 }

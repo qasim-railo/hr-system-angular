@@ -1,0 +1,33 @@
+.phone-label {
+  color: rgba(0, 0, 0, .6);
+  display: grid;
+  font-size: .75rem;
+  gap: .3rem;
+}
+
+.phone-input {
+  align-items: center;
+  border: 1px solid rgba(0, 0, 0, .42);
+  border-radius: 4px;
+  display: flex;
+  height: 56px;
+  overflow: hidden;
+}
+
+.phone-input select {
+  background: #f5f5f5;
+  border: 0;
+  border-right: 1px solid rgba(0, 0, 0, .12);
+  height: 100%;
+  max-width: 7rem;
+  padding: 0 .5rem;
+}
+
+.phone-input input {
+  border: 0;
+  height: 100%;
+  min-width: 0;
+  outline: 0;
+  padding: 0 .75rem;
+  width: 100%;
+}

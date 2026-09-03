@@ -1,1 +1,53 @@
-<section class="components-page"><header><div><p class="eyebrow">Tenant configuration</p><h1>Attendance configuration</h1><p class="subtitle">Control attendance sources, grace periods, missing punches and working hours.</p></div><span class="material-symbols-rounded">fact_check</span></header><div class="alert success" *ngIf="message">{{message}}</div><div class="alert error" *ngIf="error">{{error}}</div><div class="grid"><mat-card class="form-card"><h2>Attendance rules</h2><mat-form-field appearance="outline"><mat-label>Allowed sources</mat-label><input matInput [(ngModel)]="config.allowedSources" placeholder="Manual,Excel"></mat-form-field><mat-form-field appearance="outline"><mat-label>Grace in (minutes)</mat-label><input matInput type="number" [(ngModel)]="config.graceInMinutes"></mat-form-field><mat-form-field appearance="outline"><mat-label>Grace out (minutes)</mat-label><input matInput type="number" [(ngModel)]="config.graceOutMinutes"></mat-form-field><mat-form-field appearance="outline"><mat-label>Missing punch policy</mat-label><mat-select [(ngModel)]="config.missingPunchPolicy"><mat-option value="Flag">Flag</mat-option><mat-option value="Ignore">Ignore</mat-option><mat-option value="AutoAbsent">Auto absent</mat-option></mat-select></mat-form-field><mat-form-field appearance="outline"><mat-label>Late/early rule</mat-label><mat-select [(ngModel)]="config.lateEarlyRule"><mat-option value="Track">Track</mat-option><mat-option value="Flag">Flag</mat-option><mat-option value="Ignore">Ignore</mat-option></mat-select></mat-form-field><mat-form-field appearance="outline"><mat-label>Default working hours</mat-label><input matInput type="number" step="0.5" [(ngModel)]="config.defaultWorkingHours"></mat-form-field><mat-checkbox [(ngModel)]="config.approvalRequired">Approval required</mat-checkbox><div class="actions"><button mat-flat-button color="primary" (click)="save()">Save configuration</button></div></mat-card><mat-card><h2>Import history</h2><div class="empty" *ngIf="!imports.length">No imports recorded.</div><div class="component" *ngFor="let item of imports"><div><strong>{{item.fileName || item.source}}</strong><small>{{item.importedAt | date:'medium'}} · {{item.importedRows}} imported / {{item.errorRows}} errors</small></div></div></mat-card></div></section>
+<section class="components-page">
+    <header>
+        <div>
+            <p class="eyebrow">Tenant configuration</p>
+            <h1>Attendance configuration</h1>
+            <p class="subtitle">Control attendance sources, grace periods, missing punches and working hours.</p>
+        </div><span class="material-symbols-rounded">fact_check</span>
+    </header>
+    <div class="alert success" *ngIf="message">{{message}}</div>
+    <div class="alert error" *ngIf="error">{{error}}</div>
+    <div class="grid"><mat-card class="form-card">
+            <h2>Attendance rules</h2><mat-form-field appearance="outline"><mat-label>Allowed sources</mat-label><input
+                    matInput [(ngModel)]="config.allowedSources"
+                    placeholder="Manual,Excel"></mat-form-field><mat-form-field appearance="outline"><mat-label>Grace in
+                    (minutes)</mat-label><input matInput type="number"
+                    [(ngModel)]="config.graceInMinutes"></mat-form-field><mat-form-field
+                appearance="outline"><mat-label>Grace out (minutes)</mat-label><input matInput type="number"
+                    [(ngModel)]="config.graceOutMinutes"></mat-form-field><mat-form-field
+                appearance="outline"><mat-label>Missing punch policy</mat-label><mat-select
+                    [(ngModel)]="config.missingPunchPolicy"><mat-option value="Flag">Flag</mat-option><mat-option
+                        value="Ignore">Ignore</mat-option><mat-option value="AutoAbsent">Auto
+                        absent</mat-option></mat-select></mat-form-field><mat-form-field
+                appearance="outline"><mat-label>Late/early rule</mat-label><mat-select
+                    [(ngModel)]="config.lateEarlyRule"><mat-option value="Track">Track</mat-option><mat-option
+                        value="Flag">Flag</mat-option><mat-option
+                        value="Ignore">Ignore</mat-option></mat-select></mat-form-field><mat-form-field
+                appearance="outline"><mat-label>Expected work minutes</mat-label><input matInput type="number" min="1"
+                    [(ngModel)]="config.expectedWorkMinutes"></mat-form-field><mat-checkbox
+                [(ngModel)]="config.approvalRequired">Approval required</mat-checkbox>
+            <h2>Working week</h2>
+            <div class="working-days">
+                <div class="working-day" *ngFor="let day of config.workingDays"><mat-checkbox
+                        [(ngModel)]="day.isWorkingDay">{{ dayName(day) }}</mat-checkbox><mat-form-field
+                        appearance="outline"><mat-label>Start</mat-label><input matInput type="time"
+                            [(ngModel)]="day.defaultStartTime"
+                            [disabled]="!day.isWorkingDay"></mat-form-field><mat-form-field
+                        appearance="outline"><mat-label>End</mat-label><input matInput type="time"
+                            [(ngModel)]="day.defaultEndTime"
+                            [disabled]="!day.isWorkingDay"></mat-form-field><mat-form-field
+                        appearance="outline"><mat-label>Break (minutes)</mat-label><input matInput type="number" min="0"
+                            [(ngModel)]="day.breakMinutes" [disabled]="!day.isWorkingDay"></mat-form-field></div>
+            </div>
+            <div class="actions"><button mat-flat-button color="primary" (click)="save()">Save configuration</button>
+            </div>
+        </mat-card><mat-card>
+            <h2>Import history</h2>
+            <div class="empty" *ngIf="!imports.length">No imports recorded.</div>
+            <div class="component" *ngFor="let item of imports">
+                <div><strong>{{item.fileName || item.source}}</strong><small>{{item.importedAt | date:'medium'}} ·
+                        {{item.importedRows}} imported / {{item.errorRows}} errors</small></div>
+            </div>
+        </mat-card></div>
+</section>

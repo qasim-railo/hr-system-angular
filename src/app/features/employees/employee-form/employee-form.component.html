@@ -1,174 +1,39 @@
 <div class="container mt-5">
   <mat-card class="p-4">
-    <h2 class="mb-4">{{ isEditMode ? '✏️ Edit' : '➕ Add' }} Employee</h2>
+    <h2 class="mb-4">{{ isEditMode ? 'Edit' : 'Add' }} Employee</h2>
+    <p class="text-muted">Complete additional employee information through tenant-configured custom fields.</p>
 
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
       <div class="row g-3">
-
-       
-        <!-- First Name -->
+        <div class="col-md-4"><mat-form-field appearance="outline" class="w-100"><mat-label>First Name</mat-label><input matInput formControlName="firstName" required></mat-form-field></div>
+        <div class="col-md-4"><mat-form-field appearance="outline" class="w-100"><mat-label>Last Name</mat-label><input matInput formControlName="lastName" required></mat-form-field></div>
+        <div class="col-md-4"><mat-form-field appearance="outline" class="w-100"><mat-label>Email</mat-label><input matInput type="email" formControlName="email" required></mat-form-field></div>
         <div class="col-md-4">
-          <mat-form-field appearance="outline" class="w-100">
-            <mat-label>First Name</mat-label>
-            <input matInput formControlName="firstName" required />
-          </mat-form-field>
+          <label class="phone-label">Phone
+            <div class="phone-input">
+              <select formControlName="phoneCountry" (change)="formatPhone()" aria-label="Phone country">
+                <option *ngFor="let country of phoneCountries" [value]="country.code">{{ country.name }} ({{ country.code }}) {{ country.dialCode }}</option>
+              </select>
+              <input type="tel" formControlName="phone" (input)="formatPhone()" [placeholder]="selectedDialCode" autocomplete="tel-national" required>
+            </div>
+          </label>
         </div>
-
-        <!-- Last Name -->
-        <div class="col-md-4">
-          <mat-form-field appearance="outline" class="w-100">
-            <mat-label>Last Name</mat-label>
-            <input matInput formControlName="lastName" required />
-          </mat-form-field>
-        </div>
-
-        <!-- Email -->
-        <div class="col-md-4">
-          <mat-form-field appearance="outline" class="w-100">
-            <mat-label>Email</mat-label>
-            <input matInput type="email" formControlName="email" />
-          </mat-form-field>
-        </div>
-
-        <!-- Passport Number -->
-        <div class="col-md-4">
-          <mat-form-field appearance="outline" class="w-100">
-            <mat-label>Passport Number</mat-label>
-            <input matInput formControlName="passportNumber" />
-          </mat-form-field>
-        </div>
-
-        <!-- Passport Expiry -->
-        <div class="col-md-4">
-          <mat-form-field appearance="outline" class="w-100">
-            <mat-label>Passport Expiry</mat-label>
-            <input matInput type="date" formControlName="passportExpiry" />
-          </mat-form-field>
-        </div>
-
-        <!-- Passport Country -->
-        <div class="col-md-4">
-          <mat-form-field appearance="outline" class="w-100">
-            <mat-label>Passport Country</mat-label>
-            <input matInput formControlName="passportCountry" />
-          </mat-form-field>
-        </div>
-
-        <!-- Date of Birth -->
-        <div class="col-md-4">
-          <mat-form-field appearance="outline" class="w-100">
-            <mat-label>Date of Birth</mat-label>
-            <input matInput type="date" formControlName="dateOfBirth" />
-          </mat-form-field>
-        </div>
-
-        <!-- Gender -->
-        <div class="col-md-4">
-          <mat-form-field appearance="outline" class="w-100">
-            <mat-label>Gender</mat-label>
-            <input matInput formControlName="gender" />
-          </mat-form-field>
-        </div>
-
-        <!-- Nationality -->
-        <div class="col-md-4">
-          <mat-form-field appearance="outline" class="w-100">
-            <mat-label>Nationality</mat-label>
-            <input matInput formControlName="nationality" />
-          </mat-form-field>
-        </div>
-
-        <!-- Mother's Name -->
-        <div class="col-md-4">
-          <mat-form-field appearance="outline" class="w-100">
-            <mat-label>Mother's Name</mat-label>
-            <input matInput formControlName="motherName" />
-          </mat-form-field>
-        </div>
-
-        <!-- Home Country Address -->
-        <div class="col-md-4">
-          <mat-form-field appearance="outline" class="w-100">
-            <mat-label>Home Country Address</mat-label>
-            <input matInput formControlName="homeCountryAddress" />
-          </mat-form-field>
-        </div>
-
-        <!-- Home Country Phone -->
-        <div class="col-md-4">
-          <mat-form-field appearance="outline" class="w-100">
-            <mat-label>Home Country Phone</mat-label>
-            <input matInput formControlName="homeCountryPhone" />
-          </mat-form-field>
-        </div>
-
-        <!-- Emergency Contact Name -->
-        <div class="col-md-4">
-          <mat-form-field appearance="outline" class="w-100">
-            <mat-label>Emergency Contact Name</mat-label>
-            <input matInput formControlName="emergencyContactName" />
-          </mat-form-field>
-        </div>
-
-        <!-- Emergency Phone -->
-        <div class="col-md-4">
-          <mat-form-field appearance="outline" class="w-100">
-            <mat-label>Emergency Phone</mat-label>
-            <input matInput formControlName="emergencyPhone" />
-          </mat-form-field>
-        </div>
-
-        <!-- Photo Path -->
-        <!-- <div class="col-md-4">
-          <mat-form-field appearance="outline" class="w-100">
-            <mat-label>Photo Path</mat-label>
-            <input matInput formControlName="photoPath" />
-          </mat-form-field>
-        </div> -->
-
-        <!-- Company ID -->
-        <div class="col-md-4">
-          <mat-form-field appearance="outline" class="w-100">
-            <mat-label>Select Company</mat-label>
-            <mat-select formControlName="companyId" required>
-              <mat-option *ngFor="let company of companies" [value]="company.companyId">
-                {{ company.name }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-
-
-        </div>
-
-        <div class="col-md-4">
-          <mat-form-field appearance="outline" class="w-100">
-            <mat-label>Select Department</mat-label>
-            <mat-select formControlName="departmentId" required>
-              <mat-option *ngFor="let dept of departments" [value]="dept.departmentId">
-                {{ dept.name }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
+        <div class="col-md-4"><mat-form-field appearance="outline" class="w-100"><mat-label>Nationality</mat-label><mat-select formControlName="nationality" required><mat-option *ngFor="let nationality of nationalities" [value]="nationality.code">{{ nationality.name }}</mat-option></mat-select></mat-form-field></div>
+        <div class="col-md-4"><mat-form-field appearance="outline" class="w-100"><mat-label>Company</mat-label><mat-select formControlName="companyId" required><mat-option *ngFor="let company of companies" [value]="company.companyId">{{ company.name }}</mat-option></mat-select></mat-form-field></div>
+        <div class="col-md-4"><mat-form-field appearance="outline" class="w-100"><mat-label>Department</mat-label><mat-select formControlName="departmentId" required><mat-option *ngFor="let department of departments" [value]="department.departmentId">{{ department.name }}</mat-option></mat-select></mat-form-field></div>
+        <div class="col-md-4"><mat-form-field appearance="outline" class="w-100"><mat-label>Employee Category</mat-label><mat-select formControlName="employeeCategoryId" required><mat-option *ngFor="let category of categories" [value]="category.employeeCategoryId">{{ category.name }}</mat-option></mat-select></mat-form-field></div>
+        <div class="col-md-4"><mat-form-field appearance="outline" class="w-100"><mat-label>Designation</mat-label><mat-select formControlName="designationId" required><mat-option *ngFor="let designation of filteredDesignations" [value]="designation.designationId">{{ designation.name }}</mat-option></mat-select></mat-form-field></div>
         <div class="col-md-4" *ngFor="let field of customFields">
           <mat-form-field appearance="outline" class="w-100">
             <mat-label>{{ field.label }}<span *ngIf="field.isRequired"> *</span></mat-label>
-            <mat-select *ngIf="field.fieldType === 3" [(ngModel)]="customFieldValues[field.key]" [ngModelOptions]="{standalone: true}">
-              <mat-option *ngFor="let option of field.options" [value]="option">{{ option }}</mat-option>
-            </mat-select>
+            <mat-select *ngIf="field.fieldType === 3" [(ngModel)]="customFieldValues[field.key]" [ngModelOptions]="{standalone: true}"><mat-option *ngFor="let option of field.options" [value]="option">{{ option }}</mat-option></mat-select>
             <textarea matInput *ngIf="field.fieldType === 4" [(ngModel)]="customFieldValues[field.key]" [ngModelOptions]="{standalone: true}"></textarea>
-            <input *ngIf="field.fieldType === 5 || field.fieldType === 6" type="checkbox" [checked]="customFieldValues[field.key] === 'true'" (change)="setCustomFieldBoolean(field.key, $event)" />
-            <input matInput *ngIf="field.fieldType !== 3 && field.fieldType !== 4 && field.fieldType !== 5 && field.fieldType !== 6" [type]="field.fieldType === 2 ? 'date' : field.fieldType === 1 || field.fieldType === 7 ? 'number' : 'text'" [(ngModel)]="customFieldValues[field.key]" [ngModelOptions]="{standalone: true}" />
+            <input *ngIf="field.fieldType === 5 || field.fieldType === 6" type="checkbox" [checked]="customFieldValues[field.key] === 'true'" (change)="setCustomFieldBoolean(field.key, $event)">
+            <input matInput *ngIf="field.fieldType !== 3 && field.fieldType !== 4 && field.fieldType !== 5 && field.fieldType !== 6" [type]="field.fieldType === 2 ? 'date' : field.fieldType === 1 || field.fieldType === 7 ? 'number' : 'text'" [(ngModel)]="customFieldValues[field.key]" [ngModelOptions]="{standalone: true}">
           </mat-form-field>
         </div>
       </div>
-
-      <!-- Submit Button -->
-      <div class="text-end mt-4">
-        <button mat-raised-button color="primary" type="submit">
-          {{ isEditMode ? 'Update' : 'Save' }}
-        </button>
-      </div>
+      <div class="text-end mt-4"><button mat-raised-button color="primary" type="submit">{{ isEditMode ? 'Update' : 'Save Draft' }}</button></div>
     </form>
   </mat-card>
 </div>
